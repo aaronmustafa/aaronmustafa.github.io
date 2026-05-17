@@ -347,7 +347,7 @@
     align-items: center;
     gap: 16px;
     padding: 0 60px;
-    margin-bottom: 80px;
+    margin-bottom: 48px;
   }
 
   .divider-num {
@@ -369,7 +369,7 @@
   }
 
   .about {
-    padding: 120px 60px;
+    padding: 88px 60px;
     display: block;
     position: relative;
   }
@@ -528,7 +528,7 @@
   .resume,
   .publications,
   .writing {
-    padding: 120px 60px;
+    padding: 88px 60px;
   }
 
   .projects-bg,
@@ -549,7 +549,7 @@
   }
 
   .resume-grid {
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-template-columns: repeat(6, minmax(0, 1fr));
   }
 
   .writing-grid {
@@ -656,6 +656,10 @@
   }
 
   .resume-card.wide {
+    grid-column: span 3;
+  }
+
+  .resume-card.third {
     grid-column: span 2;
   }
 
@@ -1061,6 +1065,7 @@
     }
 
     .resume-card.wide,
+    .resume-card.third,
     .resume-card.full {
       grid-column: auto;
     }
@@ -1092,12 +1097,13 @@
     .about-grid { grid-template-columns: 1fr; }
     .projects,
     .resume,
-    .writing { padding-top: 80px; padding-bottom: 80px; }
+    .publications,
+    .writing { padding-top: 72px; padding-bottom: 72px; }
     .contact {
       grid-template-columns: 1fr;
       padding-top: 80px;
     }
-    .section-divider { padding: 0 30px; margin-bottom: 50px; }
+    .section-divider { padding: 0 30px; margin-bottom: 36px; }
     footer {
       padding: 30px;
       flex-direction: column;

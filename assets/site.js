@@ -342,10 +342,12 @@ function buildResume(resumeMd, awardsMd) {
   document.getElementById('resumeGrid').innerHTML = order
     .filter((title) => byTitle.has(title))
     .map((title) => {
-      const wide = /Working Experience|Publications/.test(title) ? ' wide' : '';
-      const full = /Working Experience/.test(title) ? ' full' : '';
+      let layoutClass = '';
+      if (/Professional Summary|Core Capability Areas/.test(title)) layoutClass = ' wide';
+      if (/Selected Certifications|Education|Awards/.test(title)) layoutClass = ' third';
+      if (/Working Experience/.test(title)) layoutClass = ' full';
       return (
-        '<article class="resume-card reveal' + wide + full + '">' +
+        '<article class="resume-card reveal' + layoutClass + '">' +
           '<div class="resume-label">' + title + '</div>' +
           '<h3 class="resume-title">' + title + '</h3>' +
           '<div class="rich-markdown">' + renderMarkdown(byTitle.get(title)) + '</div>' +
