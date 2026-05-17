@@ -6,8 +6,7 @@ const SITE_FILES = {
   publications: '../contents/publications.md',
   awards: '../contents/awards.md',
   academic: '../contents/academic.md',
-  articlesIndex: '../contents/articles/index.json',
-  ckadIndex: '../contents/ckad/ckad.md'
+  articlesIndex: '../contents/articles/index.json'
 };
 
 const state = {
@@ -22,17 +21,13 @@ function assetUrl(path) {
 
 async function fetchText(path) {
   const response = await fetch(assetUrl(path), { cache: 'no-cache' });
-  if (!response.ok) {
-    throw new Error('Failed to load ' + path + ' (' + response.status + ')');
-  }
+  if (!response.ok) throw new Error('Failed to load ' + path + ' (' + response.status + ')');
   return response.text();
 }
 
 async function fetchJson(path) {
   const response = await fetch(assetUrl(path), { cache: 'no-cache' });
-  if (!response.ok) {
-    throw new Error('Failed to load ' + path + ' (' + response.status + ')');
-  }
+  if (!response.ok) throw new Error('Failed to load ' + path + ' (' + response.status + ')');
   return response.json();
 }
 
@@ -164,39 +159,6 @@ function renderMarkdown(md) {
   return html.join('');
 }
 
-function stripSocialLinksBlock(md) {
-  const blockMatch = md.match(/<div class="social-links">[\s\S]*?<\/div>/);
-  if (!blockMatch) return { markdown: md, socialLinks: [] };
-
-  const block = blockMatch[0];
-  const socialLinks = [...block.matchAll(/<a[^>]*href="([^"]+)"[^>]*aria-label="([^"]+)"[^>]*>/g)].map((match) => {
-    const href = match[1];
-    const label = match[2];
-    return {
-      platform: label,
-      href,
-      handle: formatHandle(label, href)
-    };
-  });
-
-  return {
-    markdown: md.replace(block, '').trim(),
-    socialLinks
-  };
-}
-
-function formatHandle(label, href) {
-  if (href.startsWith('mailto:')) return href.replace('mailto:', '');
-  try {
-    const url = new URL(href);
-    const path = url.pathname.replace(/\/$/, '');
-    const tail = path.split('/').filter(Boolean).pop();
-    return tail || label;
-  } catch (error) {
-    return label;
-  }
-}
-
 function splitSections(md, level = 2) {
   const lines = md.replace(/\r/g, '').split('\n');
   const marker = '#'.repeat(level) + ' ';
@@ -223,19 +185,54 @@ function splitSubsections(md, level = 3) {
   return splitSections(md, level);
 }
 
+function stripSocialLinksBlock(md) {
+  const blockMatch = md.match(/<div class="social-links">[\s\S]*?<\/div>/);
+  if (!blockMatch) return { markdown: md, socialLinks: [] };
+
+  const socialLinks = [...blockMatch[0].matchAll(/<a[^>]*href="([^"]+)"[^>]*aria-label="([^"]+)"[^>]*>/g)].map((match) => ({
+    platform: match[2],
+    href: match[1],
+    handle: formatHandle(match[2], match[1])
+  }));
+
+  return {
+    markdown: md.replace(blockMatch[0], '').trim(),
+    socialLinks
+  };
+}
+
+function formatHandle(label, href) {
+  if (href.startsWith('mailto:')) return href.replace('mailto:', '');
+  try {
+    const url = new URL(href);
+    return url.pathname.replace(/\/$/, '').split('/').filter(Boolean).pop() || label;
+  } catch {
+    return label;
+  }
+}
+
 function observeRevealElements(root = document) {
   if (!state.revealObserver) return;
   root.querySelectorAll('.reveal').forEach((el) => state.revealObserver.observe(el));
 }
 
-function buildHero(config, homeMd, resumeMd, articles) {
+function formatDate(dateString) {
+  const date = new Date(dateString);
+  if (Number.isNaN(date.getTime())) return dateString;
+  return date.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+}
+
+function escapeAttr(value) {
+  return String(value).replace(/"/g, '&quot;');
+}
+
+function buildHero(config, homeMd, articles) {
   const personName = (config['page-top-title'] || 'Nashwan Mustafa').trim();
   const subtitle = config['home-subtitle'] || 'Platform Engineering | MLOps and AI | Secure Cloud Platforms | Technical Writing';
   const eyebrow = config['top-section-bg-text'] || 'Platform and AI Engineering';
   const nameParts = personName.split(' ');
   const firstName = nameParts.shift() || personName;
   const lastName = nameParts.join(' ') || '';
-  const yearsMatch = resumeMd.match(/(\d+\+)\s*years/i);
   const topics = Array.from(new Set(articles.slice(0, 5).map((article) => article.topic))).filter(Boolean);
 
   document.title = config.title || document.title;
@@ -256,37 +253,17 @@ function buildHero(config, homeMd, resumeMd, articles) {
     document.getElementById('aboutContent').innerHTML = renderMarkdown(bodyWithoutFirstHeading);
   }
 
-  const certSection = splitSections(resumeMd, 2).find((section) => /certifications/i.test(section.title));
-  const certCount = certSection ? (certSection.body.match(/^\s*-\s+/gm) || []).length : 0;
-  const articleCount = articles.length;
-  const stats = [
-    { value: yearsMatch ? yearsMatch[1] : '15+', label: 'Years in Engineering' },
-    { value: certCount ? String(certCount).padStart(2, '0') : '08', label: 'Certifications' },
-    { value: articleCount ? String(articleCount).padStart(2, '0') : '18', label: 'Published Articles' }
-  ];
-
-  document.getElementById('aboutStats').innerHTML = stats.map((stat, index) => (
-    '<div class="about-stat reveal reveal-delay-' + Math.min(index + 1, 3) + '">' +
-      '<div class="stat-num">' + stat.value + '</div>' +
-      '<div class="stat-label">' + stat.label + '</div>' +
-    '</div>'
-  )).join('');
-
   observeRevealElements(document.getElementById('about'));
 }
 
 function buildProjects(projectsMd) {
   const rootSections = splitSections(projectsMd, 2);
   const selectedProjectsSection = rootSections.find((section) => /selected projects/i.test(section.title));
-  const labsSection = rootSections.find((section) => /hands-on labs/i.test(section.title));
   const intro = selectedProjectsSection ? selectedProjectsSection.body.replace(/###\s[\s\S]*/m, '').trim() : '';
   const sections = selectedProjectsSection ? splitSubsections('## ' + selectedProjectsSection.title + '\n' + selectedProjectsSection.body, 3) : splitSubsections(projectsMd, 3);
-  const grid = document.getElementById('projectsGrid');
-  const introNode = document.getElementById('projectsIntro');
 
-  introNode.innerHTML = intro ? renderMarkdown(intro) : '';
-
-  grid.innerHTML = sections.map((section, index) => {
+  document.getElementById('projectsIntro').innerHTML = intro ? renderMarkdown(intro) : '';
+  document.getElementById('projectsGrid').innerHTML = sections.map((section, index) => {
     const bulletMatches = [...section.body.matchAll(/^\s*-\s+(.*)$/gm)].map((match) => match[1]);
     const summary = section.body.replace(/^\s*-\s+.*$/gm, '').trim();
     return (
@@ -300,8 +277,6 @@ function buildProjects(projectsMd) {
   }).join('');
 
   observeRevealElements(document.getElementById('projects'));
-
-  return { labsSection };
 }
 
 function buildMarquee(projectsMd, articles) {
@@ -309,16 +284,15 @@ function buildMarquee(projectsMd, articles) {
   const articleTopics = Array.from(new Set(articles.map((article) => article.topic))).slice(0, 4);
   const items = [...new Set(['Platform Engineering', ...projectTitles, ...articleTopics])].filter(Boolean);
   const doubled = [...items, ...items];
-
-  document.getElementById('marqueeTrack').innerHTML = doubled.map((item) => (
-    '<div class="marquee-item"><span class="marquee-text">' + item + '</span><span class="marquee-dot"></span></div>'
-  )).join('');
+  document.getElementById('marqueeTrack').innerHTML = doubled.map((item) => '<div class="marquee-item"><span class="marquee-text">' + item + '</span><span class="marquee-dot"></span></div>').join('');
 }
 
-function buildResume(resumeMd, awardsMd, academicMd) {
+function buildResume(resumeMd, awardsMd) {
   const sections = splitSections(resumeMd, 2);
-  const grid = document.getElementById('resumeGrid');
-  const sectionOrder = [
+  const byTitle = new Map(sections.map((section) => [section.title, section.body]));
+  if (!byTitle.get('Awards') && awardsMd.trim()) byTitle.set('Awards', awardsMd.trim());
+
+  const order = [
     'Professional Summary',
     'Core Capability Areas',
     'Working Experience',
@@ -328,15 +302,7 @@ function buildResume(resumeMd, awardsMd, academicMd) {
     'Publications'
   ];
 
-  const byTitle = new Map(sections.map((section) => [section.title, section.body]));
-  if (!byTitle.get('Awards') && awardsMd.trim()) byTitle.set('Awards', awardsMd.trim());
-  if (!byTitle.get('Education') || !byTitle.get('Publications')) {
-    splitSections(academicMd, 4).forEach((section) => {
-      if (!byTitle.get(section.title)) byTitle.set(section.title, section.body);
-    });
-  }
-
-  const cards = sectionOrder
+  document.getElementById('resumeGrid').innerHTML = order
     .filter((title) => byTitle.has(title))
     .map((title) => {
       const wide = /Working Experience|Publications/.test(title) ? ' wide' : '';
@@ -348,109 +314,76 @@ function buildResume(resumeMd, awardsMd, academicMd) {
           '<div class="rich-markdown">' + renderMarkdown(byTitle.get(title)) + '</div>' +
         '</article>'
       );
-    });
+    }).join('');
 
-  grid.innerHTML = cards.join('');
   observeRevealElements(document.getElementById('resume'));
 }
 
 function buildWriting(publicationsMd, academicMd, articles) {
   const column = document.getElementById('articlesColumn');
   const panels = document.getElementById('writingPanels');
-  const ordered = [...articles].sort((a, b) => {
-    if (a.featured !== b.featured) return a.featured ? -1 : 1;
-    return (b.date || '').localeCompare(a.date || '');
-  });
+  const academicSections = splitSections(academicMd, 4);
+  const supportSection = academicSections.find((section) => /support or contact/i.test(section.title));
+  const academicWithoutSupport = academicSections
+    .filter((section) => !/support or contact|publications/i.test(section.title))
+    .map((section) => '#### ' + section.title + '\n' + section.body)
+    .join('\n\n');
 
-  column.innerHTML = ordered.map((article, index) => (
-    '<article class="article-card reveal reveal-delay-' + (index % 3) + '" tabindex="0" data-article-file="' + article.file + '" data-article-title="' + article.title.replace(/"/g, '&quot;') + '">' +
-      '<div class="article-meta">' +
-        '<span class="article-topic">' + article.topic + '</span>' +
-        '<span>' + formatDate(article.date) + '</span>' +
-        (article.featured ? '<span>Featured</span>' : '') +
-      '</div>' +
-      '<h3 class="article-title">' + article.title + '</h3>' +
-      '<p class="article-summary">' + article.summary + '</p>' +
-      '<span class="article-link">Open article <span>→</span></span>' +
-    '</article>'
+  const grouped = [...articles]
+    .sort((a, b) => {
+      if (a.topic !== b.topic) return a.topic.localeCompare(b.topic);
+      if (a.featured !== b.featured) return a.featured ? -1 : 1;
+      return (b.date || '').localeCompare(a.date || '');
+    })
+    .reduce((acc, article) => {
+      acc[article.topic] ||= [];
+      acc[article.topic].push(article);
+      return acc;
+    }, {});
+
+  column.innerHTML = Object.entries(grouped).map(([topic, topicArticles], groupIndex) => (
+    '<section class="article-group reveal reveal-delay-' + (groupIndex % 3) + '">' +
+      '<div class="article-group-meta">' + String(topicArticles.length).padStart(2, '0') + ' Articles</div>' +
+      '<h3 class="article-group-title">' + topic + '</h3>' +
+      topicArticles.map((article, index) => (
+        '<article class="article-card">' +
+          '<div class="article-meta">' +
+            '<span class="article-topic">' + article.topic + '</span>' +
+            '<span>' + formatDate(article.date) + '</span>' +
+            (article.featured ? '<span>Featured</span>' : '') +
+          '</div>' +
+          '<h4 class="article-title">' + article.title + '</h4>' +
+          '<p class="article-summary">' + article.summary + '</p>' +
+          '<a href="#" class="article-link" data-article-file="' + article.file + '" data-article-title="' + escapeAttr(article.title) + '">Open article <span>→</span></a>' +
+        '</article>'
+      )).join('') +
+    '</section>'
   )).join('');
 
-  panels.innerHTML = [
-    {
-      label: 'Publications',
-      title: 'Academic and published work',
-      body: publicationsMd.trim()
-    },
-    {
-      label: 'Academic Background',
-      title: 'Education and research interests',
-      body: academicMd.trim()
-    }
-  ].map((panel, index) => (
-    '<article class="writing-panel reveal reveal-delay-' + (index + 1) + '">' +
-      '<div class="writing-label">' + panel.label + '</div>' +
-      '<h3 class="writing-title">' + panel.title + '</h3>' +
-      '<div class="rich-markdown">' + renderMarkdown(panel.body) + '</div>' +
-    '</article>'
-  )).join('');
+  panels.innerHTML =
+    '<article class="article-viewer-panel article-viewer-inline reveal">' +
+      '<div class="viewer-status" id="inlineViewerStatus">Article Viewer</div>' +
+      '<div class="rich-markdown" id="inlineViewerContent"><p class="article-viewer-empty">Select an article and use the open article link to read it here.</p></div>' +
+    '</article>' +
+    '<article class="writing-panel reveal reveal-delay-1">' +
+      '<div class="writing-label">Publications</div>' +
+      '<h3 class="writing-title">Detailed publication record</h3>' +
+      '<div class="rich-markdown">' + renderMarkdown(publicationsMd.trim()) + '</div>' +
+    '</article>' +
+    (academicWithoutSupport
+      ? '<article class="writing-panel reveal reveal-delay-2">' +
+          '<div class="writing-label">Academic Background</div>' +
+          '<h3 class="writing-title">Education and research interests</h3>' +
+          '<div class="rich-markdown">' + renderMarkdown(academicWithoutSupport) + '</div>' +
+        '</article>'
+      : '');
+
+  document.getElementById('supportNote').innerHTML = supportSection
+    ? renderMarkdown('#### ' + supportSection.title + '\n' + supportSection.body)
+    : '';
 
   observeRevealElements(document.getElementById('writing'));
-}
-
-function buildResources(labsSection, ckadMd) {
-  const resourcePanels = document.getElementById('resourcePanels');
-  const docsColumn = document.getElementById('docsColumn');
-  const ckadSections = splitSections(ckadMd, 4);
-  const ckadOverview = ckadSections.find((section) => /ckad exercises/i.test(section.title));
-  const ckadContents = ckadSections.find((section) => /ckad contents/i.test(section.title));
-  const ckadPractice = ckadSections.find((section) => /killercoda/i.test(section.title));
-  const labsBody = labsSection ? '## ' + labsSection.title + '\n\n' + labsSection.body : '';
-
-  resourcePanels.innerHTML = [
-    {
-      label: 'Hands-On Labs',
-      title: 'Practical learning projects and demos',
-      body: labsBody || 'Practical labs will appear here.'
-    },
-    {
-      label: 'CKAD Track',
-      title: 'Exam preparation and Kubernetes study material',
-      body: [
-        ckadOverview ? '#### ' + ckadOverview.title + '\n' + ckadOverview.body : '',
-        ckadPractice ? '#### ' + ckadPractice.title + '\n' + ckadPractice.body : ''
-      ].filter(Boolean).join('\n\n') || ckadMd.trim()
-    }
-  ].map((panel, index) => (
-    '<article class="resource-panel reveal reveal-delay-' + (index + 1) + '">' +
-      '<div class="resource-label">' + panel.label + '</div>' +
-      '<h3 class="resource-title">' + panel.title + '</h3>' +
-      '<div class="rich-markdown">' + renderMarkdown(panel.body) + '</div>' +
-    '</article>'
-  )).join('');
-
-  const docs = [
-    { file: '../contents/ckad/ckad_core_concepts.md', title: 'Core Concepts', tag: 'CKAD', summary: 'Core Kubernetes primitives, object behavior, and essential application developer concepts.' },
-    { file: '../contents/ckad/multi_container_pod.md', title: 'Multi-Container Pods', tag: 'CKAD', summary: 'Patterns for sidecars, adapters, and grouped workloads within a single pod.' },
-    { file: '../contents/ckad/pod_design.md', title: 'Pod Design', tag: 'CKAD', summary: 'Deployment styles, labels, selectors, and pod-oriented design exercises.' },
-    { file: '../contents/ckad/configuration.md', title: 'Configuration', tag: 'CKAD', summary: 'ConfigMaps, Secrets, security context, service accounts, and application configuration techniques.' },
-    { file: '../contents/ckad/observability.md', title: 'Observability', tag: 'CKAD', summary: 'Health checks, logging, monitoring, and debugging-oriented Kubernetes practice.' },
-    { file: '../contents/ckad/services_and_networking.md', title: 'Services and Networking', tag: 'CKAD', summary: 'Service exposure, DNS, ingress, and internal networking behavior.' },
-    { file: '../contents/ckad/state_persistence.md', title: 'State Persistence', tag: 'CKAD', summary: 'Persistent volumes, claims, and workload storage patterns.' },
-    { file: '../contents/ckad/helm.md', title: 'Helm', tag: 'Addon', summary: 'Helm packaging and templating notes for practical cluster delivery workflows.' },
-    { file: '../contents/ckad/crd.md', title: 'CRD', tag: 'Addon', summary: 'Custom Resource Definition concepts and extension patterns.' },
-    { file: '../contents/ckad/podman.md', title: 'Podman', tag: 'Addon', summary: 'Container runtime notes and Podman-based workflow references.' }
-  ];
-
-  docsColumn.innerHTML = docs.map((doc, index) => (
-    '<article class="doc-card reveal reveal-delay-' + (index % 3) + '" tabindex="0" data-doc-file="' + doc.file + '" data-doc-title="' + doc.title.replace(/"/g, '&quot;') + '">' +
-      '<div class="doc-meta"><span class="doc-tag">' + doc.tag + '</span><span>Open note</span></div>' +
-      '<h3 class="doc-title">' + doc.title + '</h3>' +
-      '<p class="doc-summary">' + doc.summary + '</p>' +
-      '<span class="article-link">Read note <span>→</span></span>' +
-    '</article>'
-  )).join('');
-
-  observeRevealElements(document.getElementById('resources'));
+  observeRevealElements(document.querySelector('.support-note'));
 }
 
 function buildContact(homeLinks) {
@@ -473,53 +406,19 @@ function buildContact(homeLinks) {
   observeRevealElements(document.getElementById('contact'));
 }
 
-async function openArticle(file, title) {
-  const viewer = document.getElementById('articleViewer');
-  const content = document.getElementById('viewerContent');
-  const status = document.getElementById('viewerStatus');
-  viewer.classList.add('is-open');
-  viewer.setAttribute('aria-hidden', 'false');
+async function openArticleInline(file, title) {
+  const content = document.getElementById('inlineViewerContent');
+  const status = document.getElementById('inlineViewerStatus');
+  if (!content || !status) return;
+
   status.textContent = title;
   content.innerHTML = '<p class="loading">Loading article</p>';
-  document.body.style.overflow = 'hidden';
-
   try {
     const markdown = await fetchText('../contents/articles/' + file);
     content.innerHTML = renderMarkdown(markdown);
-  } catch (error) {
+  } catch {
     content.innerHTML = '<p>Unable to load this article right now.</p>';
   }
-}
-
-async function openDocument(file, title) {
-  const viewer = document.getElementById('articleViewer');
-  const content = document.getElementById('viewerContent');
-  const status = document.getElementById('viewerStatus');
-  viewer.classList.add('is-open');
-  viewer.setAttribute('aria-hidden', 'false');
-  status.textContent = title;
-  content.innerHTML = '<p class="loading">Loading document</p>';
-  document.body.style.overflow = 'hidden';
-
-  try {
-    const markdown = await fetchText(file);
-    content.innerHTML = renderMarkdown(markdown);
-  } catch (error) {
-    content.innerHTML = '<p>Unable to load this document right now.</p>';
-  }
-}
-
-function closeArticle() {
-  const viewer = document.getElementById('articleViewer');
-  viewer.classList.remove('is-open');
-  viewer.setAttribute('aria-hidden', 'true');
-  document.body.style.overflow = '';
-}
-
-function formatDate(dateString) {
-  const date = new Date(dateString);
-  if (Number.isNaN(date.getTime())) return dateString;
-  return date.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
 }
 
 function setupInteractions() {
@@ -537,77 +436,46 @@ function setupInteractions() {
 
   if (finePointer) {
     document.body.classList.add('custom-cursor-enabled');
-
     const target = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
     const ring = { x: target.x, y: target.y };
-    let rafId = null;
 
     const render = () => {
       ring.x += (target.x - ring.x) * 0.18;
       ring.y += (target.y - ring.y) * 0.18;
       cursor.style.transform = 'translate3d(' + (target.x - 5) + 'px, ' + (target.y - 5) + 'px, 0)';
       cursorRing.style.transform = 'translate3d(' + (ring.x - 18) + 'px, ' + (ring.y - 18) + 'px, 0)';
-      rafId = window.requestAnimationFrame(render);
+      window.requestAnimationFrame(render);
     };
 
     window.addEventListener('mousemove', (event) => {
       target.x = event.clientX;
       target.y = event.clientY;
     });
-
     window.addEventListener('mouseleave', () => {
       cursor.style.opacity = '0';
       cursorRing.style.opacity = '0';
     });
-
     window.addEventListener('mouseenter', () => {
       cursor.style.opacity = '1';
       cursorRing.style.opacity = '1';
     });
-
     document.addEventListener('mouseover', (event) => {
-      if (event.target.closest('a, button, .article-card, .doc-card')) {
-        cursorRing.classList.add('hover');
-      }
+      if (event.target.closest('a, button')) cursorRing.classList.add('hover');
     });
-
     document.addEventListener('mouseout', (event) => {
-      if (event.target.closest('a, button, .article-card, .doc-card')) {
-        cursorRing.classList.remove('hover');
-      }
+      if (event.target.closest('a, button')) cursorRing.classList.remove('hover');
     });
-
-    if (!rafId) render();
+    render();
   } else {
     cursor.style.display = 'none';
     cursorRing.style.display = 'none';
   }
 
   document.addEventListener('click', (event) => {
-    const articleCard = event.target.closest('[data-article-file]');
-    if (articleCard) {
-      openArticle(articleCard.dataset.articleFile, articleCard.dataset.articleTitle);
-    }
-
-    const docCard = event.target.closest('[data-doc-file]');
-    if (docCard) {
-      openDocument(docCard.dataset.docFile, docCard.dataset.docTitle);
-    }
-
-    if (event.target.closest('[data-close-viewer="true"]') || event.target.closest('#viewerClose')) {
-      closeArticle();
-    }
-  });
-
-  document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') closeArticle();
-    if ((event.key === 'Enter' || event.key === ' ') && document.activeElement?.matches?.('[data-article-file]')) {
+    const articleLink = event.target.closest('[data-article-file]');
+    if (articleLink) {
       event.preventDefault();
-      openArticle(document.activeElement.dataset.articleFile, document.activeElement.dataset.articleTitle);
-    }
-    if ((event.key === 'Enter' || event.key === ' ') && document.activeElement?.matches?.('[data-doc-file]')) {
-      event.preventDefault();
-      openDocument(document.activeElement.dataset.docFile, document.activeElement.dataset.docTitle);
+      openArticleInline(articleLink.dataset.articleFile, articleLink.dataset.articleTitle);
     }
   });
 }
@@ -616,17 +484,7 @@ async function init() {
   setupInteractions();
 
   try {
-    const [
-      configText,
-      homeText,
-      projectsText,
-      resumeText,
-      publicationsText,
-      awardsText,
-      academicText,
-      articlesIndex,
-      ckadText
-    ] = await Promise.all([
+    const [configText, homeText, projectsText, resumeText, publicationsText, awardsText, academicText, articlesIndex] = await Promise.all([
       fetchText(SITE_FILES.config),
       fetchText(SITE_FILES.home),
       fetchText(SITE_FILES.projects),
@@ -634,8 +492,7 @@ async function init() {
       fetchText(SITE_FILES.publications),
       fetchText(SITE_FILES.awards),
       fetchText(SITE_FILES.academic),
-      fetchJson(SITE_FILES.articlesIndex),
-      fetchText(SITE_FILES.ckadIndex)
+      fetchJson(SITE_FILES.articlesIndex)
     ]);
 
     const config = parseYaml(configText);
@@ -643,17 +500,15 @@ async function init() {
     state.articles = Array.isArray(articlesIndex.articles) ? articlesIndex.articles : [];
     state.socialLinks = homeData.socialLinks;
 
-    buildHero(config, homeData.markdown, resumeText, state.articles);
-    const { labsSection } = buildProjects(projectsText);
+    buildHero(config, homeData.markdown, state.articles);
+    buildProjects(projectsText);
     buildMarquee(projectsText, state.articles);
-    buildResume(resumeText, awardsText, academicText);
+    buildResume(resumeText, awardsText);
     buildWriting(publicationsText, academicText, state.articles);
-    buildResources(labsSection, ckadText);
     buildContact(state.socialLinks);
   } catch (error) {
     console.error(error);
     document.getElementById('aboutContent').innerHTML = '<p>Content could not be loaded. Please check that the markdown files are available.</p>';
-    document.getElementById('projectsGrid').innerHTML = '<article class="project-card"><h3 class="project-title">Content unavailable</h3><p class="project-summary">Markdown content could not be loaded.</p></article>';
   }
 }
 
