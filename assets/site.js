@@ -12,7 +12,8 @@ const SITE_FILES = {
 const state = {
   articles: [],
   socialLinks: [],
-  revealObserver: null
+  revealObserver: null,
+  selectedTopic: 'AI'
 };
 
 function assetUrl(path) {
@@ -298,8 +299,7 @@ function buildResume(resumeMd, awardsMd) {
     'Working Experience',
     'Selected Certifications',
     'Education',
-    'Awards',
-    'Publications'
+    'Awards'
   ];
 
   document.getElementById('resumeGrid').innerHTML = order
@@ -319,17 +319,21 @@ function buildResume(resumeMd, awardsMd) {
   observeRevealElements(document.getElementById('resume'));
 }
 
-function buildWriting(publicationsMd, academicMd, articles) {
+function buildPublications(publicationsMd) {
+  document.getElementById('publicationsGrid').innerHTML =
+    '<article class="publication-card reveal">' +
+      '<div class="publication-label">Publications</div>' +
+      '<h3 class="publication-title">Detailed publication record</h3>' +
+      '<div class="rich-markdown">' + renderMarkdown(publicationsMd.trim()) + '</div>' +
+    '</article>';
+
+  observeRevealElements(document.getElementById('publications'));
+}
+
+function renderArticleBrowser() {
   const column = document.getElementById('articlesColumn');
   const panels = document.getElementById('writingPanels');
-  const academicSections = splitSections(academicMd, 4);
-  const supportSection = academicSections.find((section) => /support or contact/i.test(section.title));
-  const academicWithoutSupport = academicSections
-    .filter((section) => !/support or contact|publications/i.test(section.title))
-    .map((section) => '#### ' + section.title + '\n' + section.body)
-    .join('\n\n');
-
-  const grouped = [...articles]
+  const grouped = [...state.articles]
     .sort((a, b) => {
       if (a.topic !== b.topic) return a.topic.localeCompare(b.topic);
       if (a.featured !== b.featured) return a.featured ? -1 : 1;
@@ -341,11 +345,37 @@ function buildWriting(publicationsMd, academicMd, articles) {
       return acc;
     }, {});
 
-  column.innerHTML = Object.entries(grouped).map(([topic, topicArticles], groupIndex) => (
-    '<section class="article-group reveal reveal-delay-' + (groupIndex % 3) + '">' +
-      '<div class="article-group-meta">' + String(topicArticles.length).padStart(2, '0') + ' Articles</div>' +
-      '<h3 class="article-group-title">' + topic + '</h3>' +
-      topicArticles.map((article) => (
+  const topics = Object.keys(grouped);
+  if (!topics.length) {
+    column.innerHTML = '<div class="article-topic-card reveal"><div class="article-topic-meta">No sections</div><div class="article-topic-name">No articles available.</div></div>';
+    panels.innerHTML = '<article class="writing-panel reveal"><div class="writing-label">Articles</div><div class="writing-title">No articles available.</div></article>';
+    observeRevealElements(document.getElementById('writing'));
+    return;
+  }
+
+  if (!topics.includes(state.selectedTopic)) {
+    state.selectedTopic = topics.includes('AI') ? 'AI' : topics[0];
+  }
+
+  column.innerHTML = topics.map((topic, groupIndex) => {
+    const topicArticles = grouped[topic];
+    return (
+      '<section class="article-topic-card reveal reveal-delay-' + (groupIndex % 3) + '">' +
+        '<button type="button" class="article-topic-button' + (state.selectedTopic === topic ? ' is-active' : '') + '" data-topic-button="' + escapeAttr(topic) + '">' +
+          '<div class="article-topic-meta">' + String(topicArticles.length).padStart(2, '0') + ' Articles</div>' +
+          '<h3 class="article-topic-name">' + topic + '</h3>' +
+        '</button>' +
+      '</section>'
+    );
+  }).join('');
+
+  const selectedArticles = grouped[state.selectedTopic].slice(0, 4);
+  panels.innerHTML =
+    '<article class="writing-panel article-browser-panel reveal">' +
+      '<div class="writing-label">Selected Section</div>' +
+      '<h3 class="writing-title">' + state.selectedTopic + '</h3>' +
+      '<div class="article-browser-results">' +
+      selectedArticles.map((article) => (
         '<article class="article-card">' +
           '<div class="article-meta">' +
             '<span class="article-topic">' + article.topic + '</span>' +
@@ -357,29 +387,20 @@ function buildWriting(publicationsMd, academicMd, articles) {
           '<a href="#" class="article-link" data-article-file="' + article.file + '" data-article-title="' + escapeAttr(article.title) + '">Open article <span>→</span></a>' +
         '</article>'
       )).join('') +
-    '</section>'
-  )).join('');
-
-  panels.innerHTML =
-    '<article class="writing-panel reveal reveal-delay-1">' +
-      '<div class="writing-label">Publications</div>' +
-      '<h3 class="writing-title">Detailed publication record</h3>' +
-      '<div class="rich-markdown">' + renderMarkdown(publicationsMd.trim()) + '</div>' +
-    '</article>' +
-    (academicWithoutSupport
-      ? '<article class="writing-panel reveal reveal-delay-2">' +
-          '<div class="writing-label">Academic Background</div>' +
-          '<h3 class="writing-title">Education and research interests</h3>' +
-          '<div class="rich-markdown">' + renderMarkdown(academicWithoutSupport) + '</div>' +
-        '</article>'
-      : '');
-
-  document.getElementById('supportNote').innerHTML = supportSection
-    ? renderMarkdown('#### ' + supportSection.title + '\n' + supportSection.body)
-    : '';
+      '</div>' +
+    '</article>';
 
   observeRevealElements(document.getElementById('writing'));
+}
+
+function buildWriting(academicMd, articles) {
+  state.articles = articles;
+  const academicSections = splitSections(academicMd, 4);
+  const supportSection = academicSections.find((section) => /support or contact/i.test(section.title));
+  document.getElementById('supportNote').innerHTML = supportSection ? renderMarkdown('#### ' + supportSection.title + '\n' + supportSection.body) : '';
+
   observeRevealElements(document.querySelector('.support-note'));
+  renderArticleBrowser();
 }
 
 function buildContact(homeLinks) {
@@ -477,6 +498,13 @@ function setupInteractions() {
   }
 
   document.addEventListener('click', (event) => {
+    const topicButton = event.target.closest('[data-topic-button]');
+    if (topicButton) {
+      state.selectedTopic = topicButton.dataset.topicButton;
+      renderArticleBrowser();
+      return;
+    }
+
     const articleLink = event.target.closest('[data-article-file]');
     if (articleLink) {
       event.preventDefault();
@@ -517,7 +545,8 @@ async function init() {
     buildProjects(projectsText);
     buildMarquee(projectsText, state.articles);
     buildResume(resumeText, awardsText);
-    buildWriting(publicationsText, academicText, state.articles);
+    buildPublications(publicationsText);
+    buildWriting(academicText, state.articles);
     buildContact(state.socialLinks);
   } catch (error) {
     console.error(error);

@@ -140,8 +140,8 @@
   .hero-left {
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
-    padding: 0 60px 80px;
+    justify-content: center;
+    padding: 110px 60px 80px;
     position: relative;
     z-index: 2;
   }
@@ -159,7 +159,7 @@
 
   .hero-name {
     font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(4rem, 7vw, 7.5rem);
+    font-size: clamp(3.2rem, 5.8vw, 6.1rem);
     font-weight: 300;
     line-height: 0.9;
     letter-spacing: -0.02em;
@@ -494,6 +494,7 @@
 
   .projects,
   .resume,
+  .publications,
   .writing {
     padding: 120px 60px;
   }
@@ -505,7 +506,8 @@
 
   .projects-grid,
   .resume-grid,
-  .writing-grid {
+  .writing-grid,
+  .publications-grid {
     display: grid;
     gap: 24px;
   }
@@ -515,16 +517,21 @@
   }
 
   .resume-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   }
 
   .writing-grid {
-    grid-template-columns: 1.1fr 0.9fr;
+    grid-template-columns: minmax(250px, 0.6fr) minmax(0, 1.4fr);
     align-items: start;
+  }
+
+  .publications-grid {
+    grid-template-columns: 1fr;
   }
 
   .project-card,
   .resume-card,
+  .publication-card,
   .writing-panel,
   .article-card,
   .article-viewer-panel {
@@ -536,10 +543,12 @@
 
   .project-card,
   .resume-card,
+  .publication-card,
   .writing-panel { padding: 36px; }
 
   .project-card::before,
   .resume-card::before,
+  .publication-card::before,
   .writing-panel::before,
   .article-card::before,
   .article-viewer-panel::before {
@@ -555,6 +564,7 @@
 
   .project-index,
   .resume-label,
+  .publication-label,
   .writing-label {
     font-family: 'DM Mono', monospace;
     font-size: 0.62rem;
@@ -566,6 +576,7 @@
 
   .project-title,
   .resume-title,
+  .publication-title,
   .writing-title {
     font-family: 'Cormorant Garamond', serif;
     font-size: 2rem;
@@ -577,6 +588,7 @@
 
   .project-summary,
   .resume-card .rich-markdown,
+  .publication-card .rich-markdown,
   .writing-panel .rich-markdown {
     font-size: 0.9rem;
   }
@@ -619,12 +631,13 @@
     grid-column: 1 / -1;
   }
 
-  .articles-column {
+  .articles-column,
+  .article-browser-results {
     display: grid;
     gap: 18px;
   }
 
-  .article-group {
+  .article-topic-card {
     display: grid;
     gap: 16px;
     padding: 28px;
@@ -632,7 +645,7 @@
     border: 1px solid var(--line);
   }
 
-  .article-group-title {
+  .article-topic-name {
     font-family: 'Cormorant Garamond', serif;
     font-size: 2rem;
     font-weight: 300;
@@ -640,12 +653,35 @@
     color: var(--cream);
   }
 
-  .article-group-meta {
+  .article-topic-meta {
     font-family: 'DM Mono', monospace;
     font-size: 0.62rem;
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--mist);
+  }
+
+  .article-topic-button {
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    border: 1px solid var(--line);
+    color: inherit;
+    padding: 22px 24px;
+    cursor: pointer;
+    transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+  }
+
+  .article-topic-button:hover,
+  .article-topic-button:focus-visible,
+  .article-topic-button.is-active {
+    background: rgba(200,71,10,0.05);
+    border-color: rgba(200,71,10,0.25);
+    transform: translateY(-2px);
+  }
+
+  .article-topic-button.is-active .article-topic-name {
+    color: var(--sand);
   }
 
   .article-card {
@@ -705,6 +741,26 @@
     text-decoration: none;
     border-bottom: 1px solid rgba(200,71,10,0.45);
     padding-bottom: 3px;
+  }
+
+  .article-browser-panel {
+    min-height: 560px;
+    max-height: 760px;
+    overflow: hidden;
+  }
+
+  .article-browser-results {
+    max-height: 620px;
+    overflow: auto;
+    padding-right: 6px;
+  }
+
+  .article-browser-results::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .article-browser-results::-webkit-scrollbar-thumb {
+    background: rgba(212,196,160,0.16);
   }
 
   .vision-strip {
@@ -967,7 +1023,8 @@
   @media (max-width: 1100px) {
     .resume-grid,
     .writing-grid,
-    .projects-grid {
+    .projects-grid,
+    .publications-grid {
       grid-template-columns: 1fr;
     }
 
@@ -983,7 +1040,10 @@
     .nav-links { gap: 18px; }
     .nav-links a { font-size: 0.62rem; }
     .hero { grid-template-columns: 1fr; }
-    .hero-left { padding: 160px 30px 60px; }
+    .hero-left {
+      justify-content: flex-start;
+      padding: 125px 30px 60px;
+    }
     .hero-right { display: none; }
     .about,
     .projects,
@@ -1127,23 +1187,37 @@
     </div>
   </section>
 
-  <section class="writing" id="writing">
+  <section class="publications" id="publications">
     <div class="section-divider reveal">
       <span class="divider-num">04</span>
       <div class="divider-line"></div>
-      <span class="divider-label">Writing and Publications</span>
+      <span class="divider-label">Publications</span>
+    </div>
+    <div class="publications-grid" id="publicationsGrid">
+      <div class="publication-card reveal">
+        <div class="publication-label">Loading</div>
+        <div class="publication-title">Publication details are being prepared.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="writing" id="writing">
+    <div class="section-divider reveal">
+      <span class="divider-num">05</span>
+      <div class="divider-line"></div>
+      <span class="divider-label">Articles</span>
     </div>
     <div class="writing-grid">
       <div class="articles-column" id="articlesColumn">
-        <div class="article-card reveal">
-          <div class="article-meta"><span>Loading articles</span></div>
-          <div class="article-title">Featured writing is being prepared.</div>
+        <div class="article-topic-card reveal">
+          <div class="article-topic-meta">Loading sections</div>
+          <div class="article-topic-name">Articles are being prepared.</div>
         </div>
       </div>
       <div id="writingPanels">
         <div class="writing-panel reveal">
           <div class="writing-label">Loading</div>
-          <div class="writing-title">Publications and academic content are on the way.</div>
+          <div class="writing-title">Selected articles are being prepared.</div>
         </div>
       </div>
     </div>
@@ -1152,7 +1226,7 @@
   <section class="contact" id="contact">
     <div>
       <div class="section-divider reveal" style="padding: 0; margin-bottom: 48px;">
-        <span class="divider-num">05</span>
+        <span class="divider-num">06</span>
         <div class="divider-line"></div>
         <span class="divider-label">Connect</span>
       </div>
