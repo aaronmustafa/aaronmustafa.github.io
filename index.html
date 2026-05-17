@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aaron Mustafa — CEO & Founder, Kurdonia</title>
+<title>Nashwan Mustafa | Platform and AI Engineering</title>
+<link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Syne:wght@400;500;700;800&family=DM+Mono:ital,wght@0,300;1,300&display=swap" rel="stylesheet">
@@ -18,6 +19,8 @@
     --gold: #b8972a;
     --mist: #8a8070;
     --deep: #1a1410;
+    --panel: rgba(212,196,160,0.03);
+    --line: rgba(212,196,160,0.08);
   }
 
   html { scroll-behavior: smooth; }
@@ -30,29 +33,6 @@
     cursor: none;
   }
 
-  /* Custom Cursor */
-  .cursor {
-    position: fixed;
-    width: 10px; height: 10px;
-    background: var(--ember);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9999;
-    transition: transform 0.1s ease;
-    mix-blend-mode: difference;
-  }
-  .cursor-ring {
-    position: fixed;
-    width: 36px; height: 36px;
-    border: 1px solid rgba(200,71,10,0.5);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9998;
-    transition: transform 0.25s ease, width 0.3s, height 0.3s, border-color 0.3s;
-  }
-  .cursor-ring.hover { width: 60px; height: 60px; border-color: var(--gold); }
-
-  /* Noise Overlay */
   body::before {
     content: '';
     position: fixed;
@@ -63,25 +43,58 @@
     opacity: 0.6;
   }
 
-  /* NAV */
+  a { color: inherit; }
+
+  .cursor {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    background: var(--ember);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.1s ease;
+    mix-blend-mode: difference;
+  }
+
+  .cursor-ring {
+    position: fixed;
+    width: 36px;
+    height: 36px;
+    border: 1px solid rgba(200,71,10,0.5);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transition: transform 0.25s ease, width 0.3s, height 0.3s, border-color 0.3s;
+  }
+
+  .cursor-ring.hover {
+    width: 60px;
+    height: 60px;
+    border-color: var(--gold);
+  }
+
   nav {
     position: fixed;
-    top: 0; left: 0; right: 0;
+    top: 0;
+    left: 0;
+    right: 0;
     z-index: 50;
     padding: 28px 60px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    mix-blend-mode: normal;
   }
+
   nav::after {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(to bottom, rgba(10,7,5,0.9), transparent);
+    background: linear-gradient(to bottom, rgba(10,7,5,0.92), transparent);
     z-index: -1;
     pointer-events: none;
   }
+
   .nav-logo {
     font-family: 'Cormorant Garamond', serif;
     font-size: 1.1rem;
@@ -91,7 +104,13 @@
     color: var(--sand);
     text-decoration: none;
   }
-  .nav-links { display: flex; gap: 40px; list-style: none; }
+
+  .nav-links {
+    display: flex;
+    gap: 40px;
+    list-style: none;
+  }
+
   .nav-links a {
     font-family: 'DM Mono', monospace;
     font-size: 0.68rem;
@@ -101,9 +120,10 @@
     text-decoration: none;
     transition: color 0.3s;
   }
-  .nav-links a:hover { color: var(--cream); }
 
-  /* HERO */
+  .nav-links a:hover,
+  .nav-links a:focus-visible { color: var(--cream); }
+
   .hero {
     position: relative;
     min-height: 100vh;
@@ -142,6 +162,7 @@
     opacity: 0;
     animation: fadeUp 0.9s 0.5s forwards;
   }
+
   .hero-name em {
     font-style: italic;
     color: var(--sand);
@@ -156,16 +177,17 @@
     opacity: 0;
     animation: fadeUp 0.8s 0.8s forwards;
   }
+
   .hero-role-line {
     width: 48px;
     height: 1px;
     background: var(--ember);
   }
+
   .hero-role-text {
-    font-family: 'Syne', sans-serif;
     font-size: 0.78rem;
     font-weight: 500;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--mist);
   }
@@ -175,7 +197,6 @@
     overflow: hidden;
   }
 
-  /* Geometric backdrop */
   .hero-art {
     position: absolute;
     inset: 0;
@@ -183,21 +204,27 @@
     align-items: center;
     justify-content: center;
   }
+
   .geo-ring {
     position: absolute;
     border-radius: 50%;
     border: 1px solid rgba(212,196,160,0.08);
   }
+
   .geo-ring:nth-child(1) { width: 500px; height: 500px; animation: rotateSlow 40s linear infinite; }
   .geo-ring:nth-child(2) { width: 380px; height: 380px; border-color: rgba(200,71,10,0.1); animation: rotateSlow 28s linear infinite reverse; }
   .geo-ring:nth-child(3) { width: 260px; height: 260px; animation: rotateSlow 20s linear infinite; }
+
   .geo-ring::before {
     content: '';
     position: absolute;
-    width: 6px; height: 6px;
+    width: 6px;
+    height: 6px;
     background: var(--ember);
     border-radius: 50%;
-    top: -3px; left: 50%; transform: translateX(-50%);
+    top: -3px;
+    left: 50%;
+    transform: translateX(-50%);
   }
 
   .hero-portrait-wrap {
@@ -207,6 +234,7 @@
     align-items: center;
     justify-content: center;
   }
+
   .hero-portrait-bg {
     width: 360px;
     height: 480px;
@@ -218,10 +246,12 @@
     animation: fadeIn 1.2s 1s forwards;
     box-shadow: 0 0 120px rgba(200,71,10,0.12), inset 0 0 60px rgba(0,0,0,0.5);
   }
+
   .hero-portrait-bg::after {
-    content: 'AM';
+    content: attr(data-monogram);
     position: absolute;
-    bottom: 40px; left: 50%;
+    bottom: 40px;
+    left: 50%;
     transform: translateX(-50%);
     font-family: 'Cormorant Garamond', serif;
     font-size: 9rem;
@@ -230,39 +260,58 @@
     letter-spacing: -0.05em;
     line-height: 1;
   }
+
   .hero-portrait-glow {
     position: absolute;
-    bottom: -40px; left: 50%; transform: translateX(-50%);
-    width: 200px; height: 200px;
+    bottom: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 200px;
     background: radial-gradient(circle, rgba(200,71,10,0.25) 0%, transparent 70%);
     border-radius: 50%;
   }
 
+  .hero-orbit-copy {
+    position: absolute;
+    top: 18%;
+    right: 6%;
+    width: 180px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    line-height: 1.8;
+    letter-spacing: 0.18em;
+    color: rgba(212,196,160,0.55);
+    text-transform: uppercase;
+    writing-mode: vertical-rl;
+  }
+
   .hero-scroll {
     position: absolute;
-    bottom: 40px; left: 60px;
+    bottom: 40px;
+    left: 60px;
     display: flex;
     align-items: center;
     gap: 14px;
     opacity: 0;
     animation: fadeUp 0.8s 1.2s forwards;
   }
+
   .scroll-bar {
     width: 1px;
     height: 48px;
     background: linear-gradient(to bottom, var(--ember), transparent);
     animation: scrollPulse 2s ease-in-out infinite;
   }
+
   .scroll-label {
     font-family: 'DM Mono', monospace;
     font-size: 0.6rem;
     letter-spacing: 0.2em;
     color: var(--mist);
-    writing-mode: vertical-rl;
     text-transform: uppercase;
   }
 
-  /* DIVIDER */
   .section-divider {
     display: flex;
     align-items: center;
@@ -270,13 +319,20 @@
     padding: 0 60px;
     margin-bottom: 80px;
   }
+
   .divider-num {
     font-family: 'DM Mono', monospace;
     font-size: 0.6rem;
     color: var(--ember);
     letter-spacing: 0.1em;
   }
-  .divider-line { flex: 1; height: 1px; background: rgba(212,196,160,0.1); }
+
+  .divider-line {
+    flex: 1;
+    height: 1px;
+    background: rgba(212,196,160,0.1);
+  }
+
   .divider-label {
     font-family: 'DM Mono', monospace;
     font-size: 0.6rem;
@@ -285,23 +341,25 @@
     color: var(--mist);
   }
 
-  /* ABOUT */
   .about {
     padding: 120px 60px;
     display: grid;
-    grid-template-columns: 1fr 1.4fr;
+    grid-template-columns: 0.8fr 1.4fr;
     gap: 80px;
     align-items: start;
     position: relative;
   }
+
   .about::before {
     content: '';
     position: absolute;
-    top: 0; left: 0;
+    top: 0;
+    left: 0;
     width: 1px;
     height: 100%;
     background: linear-gradient(to bottom, transparent, rgba(200,71,10,0.2) 30%, rgba(200,71,10,0.2) 70%, transparent);
   }
+
   .about-tag {
     font-family: 'Cormorant Garamond', serif;
     font-size: clamp(3rem, 5vw, 5.5rem);
@@ -311,11 +369,18 @@
     letter-spacing: -0.03em;
     margin-bottom: 40px;
   }
-  .about-stat-grid { display: flex; flex-direction: column; gap: 32px; }
+
+  .about-stat-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
   .about-stat {
     border-top: 1px solid rgba(212,196,160,0.1);
     padding-top: 20px;
   }
+
   .stat-num {
     font-family: 'Cormorant Garamond', serif;
     font-size: 2.8rem;
@@ -323,6 +388,7 @@
     color: var(--ember);
     line-height: 1;
   }
+
   .stat-label {
     font-family: 'DM Mono', monospace;
     font-size: 0.6rem;
@@ -331,7 +397,7 @@
     color: var(--mist);
     margin-top: 6px;
   }
-  .about-right {}
+
   .about-heading {
     font-family: 'Cormorant Garamond', serif;
     font-size: clamp(2rem, 3vw, 3rem);
@@ -340,121 +406,279 @@
     color: var(--cream);
     margin-bottom: 32px;
   }
-  .about-heading em { font-style: italic; color: var(--sand); }
-  .about-body {
-    font-family: 'Syne', sans-serif;
-    font-size: 0.9rem;
-    line-height: 1.9;
-    color: var(--mist);
-    max-width: 520px;
-  }
-  .about-body p + p { margin-top: 20px; }
-  .highlight { color: var(--cream); }
 
-  /* KURDONIA SECTION */
-  .kurdonia {
+  .about-heading em { font-style: italic; color: var(--sand); }
+
+  .rich-markdown {
+    font-size: 0.92rem;
+    line-height: 1.95;
+    color: var(--mist);
+  }
+
+  .rich-markdown > * + * { margin-top: 18px; }
+
+  .rich-markdown h1,
+  .rich-markdown h2,
+  .rich-markdown h3,
+  .rich-markdown h4 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    line-height: 1.15;
+    color: var(--cream);
+    margin-top: 34px;
+    margin-bottom: 14px;
+  }
+
+  .rich-markdown h2 { font-size: 2rem; }
+  .rich-markdown h3 { font-size: 1.4rem; }
+  .rich-markdown h4 { font-size: 1.1rem; color: var(--sand); }
+
+  .rich-markdown p { max-width: 860px; }
+
+  .rich-markdown ul,
+  .rich-markdown ol {
+    list-style: none;
+    display: grid;
+    gap: 10px;
+  }
+
+  .rich-markdown ul li,
+  .rich-markdown ol li {
+    position: relative;
+    padding-left: 20px;
+  }
+
+  .rich-markdown ul li::before,
+  .rich-markdown ol li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.82em;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--ember);
+    transform: translateY(-50%);
+  }
+
+  .rich-markdown a {
+    color: var(--cream);
+    text-decoration-color: rgba(200,71,10,0.6);
+    text-underline-offset: 0.18em;
+  }
+
+  .rich-markdown strong { color: var(--cream); font-weight: 600; }
+  .rich-markdown em { color: var(--sand); }
+
+  .rich-markdown code {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.86em;
+    color: var(--cream);
+    background: rgba(212,196,160,0.06);
+    padding: 0.12em 0.4em;
+    border-radius: 999px;
+  }
+
+  .rich-markdown pre {
+    background: rgba(0,0,0,0.28);
+    border: 1px solid var(--line);
+    padding: 22px;
+    overflow-x: auto;
+    border-radius: 4px;
+  }
+
+  .rich-markdown pre code {
+    background: none;
+    padding: 0;
+    border-radius: 0;
+    color: var(--sand);
+  }
+
+  .projects,
+  .resume,
+  .writing {
     padding: 120px 60px;
+  }
+
+  .projects-bg,
+  .writing-bg {
+    position: relative;
+  }
+
+  .projects-grid,
+  .resume-grid,
+  .writing-grid {
+    display: grid;
+    gap: 24px;
+  }
+
+  .projects-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .resume-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .writing-grid {
+    grid-template-columns: 1.1fr 0.9fr;
+    align-items: start;
+  }
+
+  .project-card,
+  .resume-card,
+  .writing-panel,
+  .article-card,
+  .article-viewer-panel {
+    background: var(--panel);
+    border: 1px solid var(--line);
     position: relative;
     overflow: hidden;
   }
-  .kurdonia-bg {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(200,71,10,0.04) 0%, transparent 50%);
-    pointer-events: none;
-  }
-  .kurdonia-inner {
-    display: grid;
-    grid-template-columns: 1.2fr 1fr;
-    gap: 80px;
-    align-items: center;
-  }
-  .kurdonia-content {}
-  .kurdonia-kicker {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.65rem;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 20px;
-  }
-  .kurdonia-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(3rem, 5vw, 5rem);
-    font-weight: 300;
-    line-height: 0.95;
-    color: var(--cream);
-    margin-bottom: 36px;
-    letter-spacing: -0.02em;
-  }
-  .kurdonia-title span {
-    display: block;
-    font-style: italic;
-    color: var(--sand);
-  }
-  .kurdonia-desc {
-    font-size: 0.9rem;
-    line-height: 1.9;
-    color: var(--mist);
-    max-width: 480px;
-    margin-bottom: 48px;
-  }
-  .kurdonia-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 14px;
-    font-family: 'DM Mono', monospace;
-    font-size: 0.68rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--cream);
-    text-decoration: none;
-    border-bottom: 1px solid var(--ember);
-    padding-bottom: 4px;
-    transition: color 0.3s, gap 0.3s;
-  }
-  .kurdonia-link:hover { color: var(--ember); gap: 20px; }
-  .kurdonia-link-arrow { font-size: 1rem; }
 
-  .kurdonia-visual {
-    position: relative;
-    height: 400px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .k-card {
-    width: 260px;
-    padding: 36px;
-    background: rgba(212,196,160,0.03);
-    border: 1px solid rgba(212,196,160,0.08);
-    border-radius: 4px;
+  .project-card,
+  .resume-card,
+  .writing-panel { padding: 36px; }
+
+  .project-card::before,
+  .resume-card::before,
+  .writing-panel::before,
+  .article-card::before,
+  .article-viewer-panel::before {
+    content: '';
     position: absolute;
-    transition: transform 0.4s ease;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--ember), transparent);
+    opacity: 0.6;
   }
-  .k-card:hover { transform: translateY(-8px); }
-  .k-card:nth-child(1) { transform: rotate(-4deg) translate(-40px, 20px); z-index: 1; }
-  .k-card:nth-child(1):hover { transform: rotate(-2deg) translate(-40px, 10px); }
-  .k-card:nth-child(2) { transform: rotate(3deg) translate(40px, -20px); z-index: 2; }
-  .k-card:nth-child(2):hover { transform: rotate(1.5deg) translate(40px, -28px); }
-  .k-card-icon { font-size: 1.8rem; margin-bottom: 16px; }
-  .k-card-label {
+
+  .project-index,
+  .resume-label,
+  .writing-label {
     font-family: 'DM Mono', monospace;
-    font-size: 0.58rem;
-    letter-spacing: 0.2em;
+    font-size: 0.62rem;
+    letter-spacing: 0.22em;
     text-transform: uppercase;
     color: var(--ember);
-    margin-bottom: 10px;
-  }
-  .k-card-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.5rem;
-    font-weight: 300;
-    color: var(--cream);
-    line-height: 1.2;
+    margin-bottom: 18px;
   }
 
-  /* VISION STRIP */
+  .project-title,
+  .resume-title,
+  .writing-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    font-weight: 300;
+    line-height: 1.05;
+    color: var(--cream);
+    margin-bottom: 16px;
+  }
+
+  .project-summary,
+  .resume-card .rich-markdown,
+  .writing-panel .rich-markdown {
+    font-size: 0.9rem;
+  }
+
+  .project-points {
+    margin-top: 20px;
+    display: grid;
+    gap: 12px;
+    list-style: none;
+  }
+
+  .project-points li {
+    color: var(--mist);
+    padding-left: 18px;
+    position: relative;
+    line-height: 1.8;
+  }
+
+  .project-points li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.8em;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--gold);
+    transform: translateY(-50%);
+  }
+
+  .resume-card.wide {
+    grid-column: span 2;
+  }
+
+  .resume-card.full {
+    grid-column: 1 / -1;
+  }
+
+  .articles-column {
+    display: grid;
+    gap: 18px;
+  }
+
+  .article-card {
+    padding: 28px;
+    cursor: pointer;
+    transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+  }
+
+  .article-card:hover,
+  .article-card:focus-visible {
+    transform: translateY(-4px);
+    border-color: rgba(200,71,10,0.25);
+    background: rgba(200,71,10,0.05);
+  }
+
+  .article-meta {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: 16px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--mist);
+  }
+
+  .article-topic {
+    color: var(--gold);
+  }
+
+  .article-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    font-weight: 300;
+    line-height: 1.08;
+    color: var(--cream);
+    margin-bottom: 12px;
+  }
+
+  .article-summary {
+    color: var(--mist);
+    line-height: 1.85;
+    font-size: 0.88rem;
+  }
+
+  .article-link {
+    display: inline-flex;
+    margin-top: 18px;
+    align-items: center;
+    gap: 10px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--cream);
+  }
+
   .vision-strip {
     padding: 60px 0;
     overflow: hidden;
@@ -462,12 +686,14 @@
     border-bottom: 1px solid rgba(212,196,160,0.06);
     position: relative;
   }
+
   .marquee-track {
     display: flex;
     gap: 0;
     white-space: nowrap;
-    animation: marquee 20s linear infinite;
+    animation: marquee 22s linear infinite;
   }
+
   .marquee-item {
     display: inline-flex;
     align-items: center;
@@ -475,6 +701,7 @@
     padding: 0 32px;
     flex-shrink: 0;
   }
+
   .marquee-text {
     font-family: 'Cormorant Garamond', serif;
     font-size: 2.2rem;
@@ -483,60 +710,15 @@
     color: rgba(212,196,160,0.15);
     letter-spacing: 0.02em;
   }
-  .marquee-dot { width: 5px; height: 5px; background: var(--ember); border-radius: 50%; flex-shrink: 0; }
 
-  /* EXPERTISE */
-  .expertise {
-    padding: 120px 60px;
-  }
-  .expertise-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1px;
-    background: rgba(212,196,160,0.06);
-    margin-top: 80px;
-  }
-  .expertise-item {
-    background: var(--ink);
-    padding: 48px 40px;
-    position: relative;
-    transition: background 0.4s;
-    overflow: hidden;
-  }
-  .expertise-item::before {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 0;
-    width: 100%; height: 2px;
+  .marquee-dot {
+    width: 5px;
+    height: 5px;
     background: var(--ember);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.4s ease;
-  }
-  .expertise-item:hover { background: rgba(200,71,10,0.04); }
-  .expertise-item:hover::before { transform: scaleX(1); }
-  .expertise-num {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.58rem;
-    letter-spacing: 0.15em;
-    color: var(--ember);
-    margin-bottom: 28px;
-  }
-  .expertise-name {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.8rem;
-    font-weight: 300;
-    color: var(--cream);
-    line-height: 1.1;
-    margin-bottom: 20px;
-  }
-  .expertise-desc {
-    font-size: 0.8rem;
-    line-height: 1.8;
-    color: var(--mist);
+    border-radius: 50%;
+    flex-shrink: 0;
   }
 
-  /* CONTACT */
   .contact {
     padding: 140px 60px 100px;
     display: grid;
@@ -545,6 +727,7 @@
     align-items: start;
     position: relative;
   }
+
   .contact-heading {
     font-family: 'Cormorant Garamond', serif;
     font-size: clamp(3.5rem, 6vw, 6rem);
@@ -553,15 +736,27 @@
     color: var(--cream);
     letter-spacing: -0.03em;
   }
-  .contact-heading em { display: block; font-style: italic; color: var(--sand); }
+
+  .contact-heading em {
+    display: block;
+    font-style: italic;
+    color: var(--sand);
+  }
+
   .contact-sub {
     font-size: 0.85rem;
     line-height: 1.8;
     color: var(--mist);
     margin-top: 32px;
-    max-width: 400px;
+    max-width: 450px;
   }
-  .contact-links { display: flex; flex-direction: column; gap: 0; }
+
+  .contact-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
   .contact-link-item {
     display: flex;
     align-items: center;
@@ -569,12 +764,13 @@
     padding: 28px 0;
     border-bottom: 1px solid rgba(212,196,160,0.08);
     text-decoration: none;
-    group: true;
     transition: padding-left 0.3s;
     color: inherit;
   }
-  .contact-link-item:hover { padding-left: 12px; }
-  .contact-link-left {}
+
+  .contact-link-item:hover,
+  .contact-link-item:focus-visible { padding-left: 12px; }
+
   .contact-link-platform {
     font-family: 'DM Mono', monospace;
     font-size: 0.6rem;
@@ -583,21 +779,87 @@
     color: var(--mist);
     margin-bottom: 6px;
   }
+
   .contact-link-handle {
     font-family: 'Cormorant Garamond', serif;
     font-size: 1.4rem;
     font-weight: 300;
     color: var(--cream);
   }
+
   .contact-arrow {
     font-family: 'DM Mono', monospace;
     font-size: 0.8rem;
     color: var(--ember);
     transition: transform 0.3s;
   }
-  .contact-link-item:hover .contact-arrow { transform: translateX(6px); }
 
-  /* FOOTER */
+  .contact-link-item:hover .contact-arrow,
+  .contact-link-item:focus-visible .contact-arrow { transform: translateX(6px); }
+
+  .viewer {
+    position: fixed;
+    inset: 0;
+    z-index: 1200;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+  }
+
+  .viewer.is-open { display: flex; }
+
+  .viewer-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(5,3,2,0.88);
+    backdrop-filter: blur(10px);
+  }
+
+  .article-viewer-panel {
+    position: relative;
+    width: min(980px, 100%);
+    max-height: min(88vh, 920px);
+    padding: 32px;
+    overflow: auto;
+    background: rgba(16,11,8,0.96);
+    z-index: 1;
+  }
+
+  .viewer-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 1px solid var(--line);
+    background: transparent;
+    color: var(--cream);
+    font-family: 'DM Mono', monospace;
+    cursor: pointer;
+  }
+
+  .viewer-close:hover,
+  .viewer-close:focus-visible { border-color: rgba(200,71,10,0.4); }
+
+  .viewer-status {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--mist);
+    margin-bottom: 18px;
+  }
+
+  .loading {
+    color: var(--mist);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
   footer {
     padding: 40px 60px;
     display: flex;
@@ -605,6 +867,7 @@
     align-items: center;
     border-top: 1px solid rgba(212,196,160,0.06);
   }
+
   .footer-copy {
     font-family: 'DM Mono', monospace;
     font-size: 0.6rem;
@@ -612,6 +875,7 @@
     color: rgba(138,128,112,0.4);
     text-transform: uppercase;
   }
+
   .footer-mark {
     font-family: 'Cormorant Garamond', serif;
     font-size: 0.9rem;
@@ -621,60 +885,104 @@
     text-transform: uppercase;
   }
 
-  /* ANIMATIONS */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-  @keyframes rotateSlow {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-  }
-  @keyframes scrollPulse {
-    0%, 100% { opacity: 0.4; transform: scaleY(1); }
-    50% { opacity: 1; transform: scaleY(1.1); }
-  }
-  @keyframes marquee {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
-  }
-
-  /* Scroll reveal */
   .reveal {
     opacity: 0;
     transform: translateY(40px);
     transition: opacity 0.8s ease, transform 0.8s ease;
   }
+
   .reveal.visible {
     opacity: 1;
     transform: translateY(0);
   }
+
   .reveal-delay-1 { transition-delay: 0.1s; }
   .reveal-delay-2 { transition-delay: 0.2s; }
   .reveal-delay-3 { transition-delay: 0.3s; }
   .reveal-delay-4 { transition-delay: 0.4s; }
 
-  /* RESPONSIVE */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes rotateSlow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.4; transform: scaleY(1); }
+    50% { opacity: 1; transform: scaleY(1.1); }
+  }
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  @media (max-width: 1100px) {
+    .resume-grid,
+    .writing-grid,
+    .projects-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .resume-card.wide,
+    .resume-card.full {
+      grid-column: auto;
+    }
+  }
+
   @media (max-width: 900px) {
+    body { cursor: auto; }
     nav { padding: 24px 30px; }
-    .nav-links { gap: 24px; }
+    .nav-links { gap: 18px; }
+    .nav-links a { font-size: 0.62rem; }
     .hero { grid-template-columns: 1fr; }
     .hero-left { padding: 160px 30px 60px; }
     .hero-right { display: none; }
-    .about { grid-template-columns: 1fr; padding: 80px 30px; gap: 48px; }
-    .kurdonia { padding: 80px 30px; }
-    .kurdonia-inner { grid-template-columns: 1fr; }
-    .kurdonia-visual { display: none; }
-    .expertise { padding: 80px 30px; }
-    .expertise-grid { grid-template-columns: 1fr; }
-    .contact { grid-template-columns: 1fr; padding: 80px 30px; }
-    footer { padding: 30px; flex-direction: column; gap: 12px; text-align: center; }
-    .section-divider { padding: 0 30px; }
+    .about,
+    .projects,
+    .resume,
+    .writing,
+    .contact {
+      padding-left: 30px;
+      padding-right: 30px;
+    }
+    .about {
+      grid-template-columns: 1fr;
+      gap: 48px;
+      padding-top: 80px;
+      padding-bottom: 80px;
+    }
+    .projects,
+    .resume,
+    .writing { padding-top: 80px; padding-bottom: 80px; }
+    .contact {
+      grid-template-columns: 1fr;
+      padding-top: 80px;
+    }
+    .section-divider { padding: 0 30px; margin-bottom: 50px; }
     .hero-scroll { left: 30px; }
+    footer {
+      padding: 30px;
+      flex-direction: column;
+      gap: 12px;
+      text-align: center;
+    }
+    .viewer { padding: 16px; }
+    .article-viewer-panel { padding: 24px; }
+  }
+
+  @media (pointer: coarse) {
+    .cursor,
+    .cursor-ring { display: none; }
   }
 </style>
 </head>
@@ -683,297 +991,666 @@
 <div class="cursor" id="cursor"></div>
 <div class="cursor-ring" id="cursorRing"></div>
 
-<!-- NAV -->
 <nav>
-  <a href="#" class="nav-logo">Aaron Mustafa</a>
+  <a href="#top" class="nav-logo" id="navLogo">Nashwan Mustafa</a>
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
-    <li><a href="#kurdonia">Kurdonia</a></li>
-    <li><a href="#expertise">Expertise</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#resume">Resume</a></li>
+    <li><a href="#writing">Writing</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
 </nav>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-left">
-    <p class="hero-eyebrow">CEO &amp; Founder · Kurdonia</p>
-    <h1 class="hero-name">
-      Aaron<em>Mustafa</em>
-    </h1>
-    <div class="hero-role">
-      <div class="hero-role-line"></div>
-      <span class="hero-role-text">Visionary · Builder · Leader</span>
-    </div>
-    <div class="hero-scroll">
-      <div class="scroll-bar"></div>
-      <span class="scroll-label">Scroll</span>
-    </div>
-  </div>
-  <div class="hero-right">
-    <div class="hero-art">
-      <div class="geo-ring"></div>
-      <div class="geo-ring"></div>
-      <div class="geo-ring"></div>
-    </div>
-    <div class="hero-portrait-wrap">
-      <div class="hero-portrait-bg">
-        <div class="hero-portrait-glow"></div>
+<main id="top">
+  <section class="hero">
+    <div class="hero-left">
+      <p class="hero-eyebrow" id="heroEyebrow">Platform and AI Engineering</p>
+      <h1 class="hero-name" id="heroName">Nashwan<em>Mustafa</em></h1>
+      <div class="hero-role">
+        <div class="hero-role-line"></div>
+        <span class="hero-role-text" id="heroRole">Platform Engineering | MLOps and AI | Secure Cloud Platforms | Technical Writing</span>
+      </div>
+      <div class="hero-scroll">
+        <div class="scroll-bar"></div>
+        <span class="scroll-label">Scroll</span>
       </div>
     </div>
-  </div>
-</section>
+    <div class="hero-right">
+      <div class="hero-art">
+        <div class="geo-ring"></div>
+        <div class="geo-ring"></div>
+        <div class="geo-ring"></div>
+      </div>
+      <div class="hero-portrait-wrap">
+        <div class="hero-portrait-bg" id="heroMonogram" data-monogram="NM">
+          <div class="hero-portrait-glow"></div>
+        </div>
+      </div>
+      <p class="hero-orbit-copy" id="heroOrbitCopy">Kubernetes / Cloud / AI / MLOps / Security / Writing</p>
+    </div>
+  </section>
 
-<!-- ABOUT -->
-<section class="about" id="about">
-  <div class="about-left">
-    <div class="about-tag reveal">About</div>
-    <div class="about-stat-grid">
-      <div class="about-stat reveal reveal-delay-1">
-        <div class="stat-num">CEO</div>
-        <div class="stat-label">Title &amp; Role</div>
-      </div>
-      <div class="about-stat reveal reveal-delay-2">
-        <div class="stat-num">∞</div>
-        <div class="stat-label">Vision Scale</div>
-      </div>
-      <div class="about-stat reveal reveal-delay-3">
-        <div class="stat-num">01</div>
-        <div class="stat-label">Kurdonia</div>
+  <section class="about" id="about">
+    <div class="about-left">
+      <div class="about-tag reveal">About</div>
+      <div class="about-stat-grid" id="aboutStats">
+        <div class="about-stat reveal reveal-delay-1">
+          <div class="stat-num">15+</div>
+          <div class="stat-label">Years in Engineering</div>
+        </div>
+        <div class="about-stat reveal reveal-delay-2">
+          <div class="stat-num">AWS</div>
+          <div class="stat-label">Cloud and Platform Focus</div>
+        </div>
+        <div class="about-stat reveal reveal-delay-3">
+          <div class="stat-num">AI</div>
+          <div class="stat-label">Emerging Delivery Layer</div>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="about-right">
-    <h2 class="about-heading reveal">
-      Building what <em>matters</em> — one bold idea at a time.
-    </h2>
-    <div class="about-body reveal reveal-delay-1">
-      <p>
-        Aaron Mustafa is the <span class="highlight">CEO and Founder of Kurdonia</span> — a visionary leader driving impact through strategic thinking, relentless execution, and a deep commitment to building something that endures.
-      </p>
-      <p>
-        With a founder's mentality and an executive's discipline, Aaron operates at the intersection of innovation and leadership. He builds companies, cultivates culture, and turns ambitious ideas into transformative realities.
-      </p>
-      <p>
-        At the helm of Kurdonia, Aaron sets the direction, assembles exceptional talent, and champions the mission with unwavering clarity and conviction.
-      </p>
+    <div class="about-right">
+      <h2 class="about-heading reveal" id="aboutHeading">Building practical <em>platforms</em> with depth, security, and clarity.</h2>
+      <div class="rich-markdown reveal reveal-delay-1" id="aboutContent">
+        <p class="loading">Loading profile content</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="projects" id="projects">
+    <div class="section-divider reveal">
+      <span class="divider-num">02</span>
+      <div class="divider-line"></div>
+      <span class="divider-label">Selected Work</span>
+    </div>
+    <div class="projects-grid" id="projectsGrid">
+      <div class="project-card reveal">
+        <div class="project-index">Loading</div>
+        <div class="project-title">Selected projects are being prepared.</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="vision-strip">
+    <div class="marquee-track" id="marqueeTrack">
+      <div class="marquee-item"><span class="marquee-text">Platform Engineering</span><span class="marquee-dot"></span></div>
+      <div class="marquee-item"><span class="marquee-text">Kubernetes</span><span class="marquee-dot"></span></div>
+      <div class="marquee-item"><span class="marquee-text">Cloud Security</span><span class="marquee-dot"></span></div>
+      <div class="marquee-item"><span class="marquee-text">AI Systems</span><span class="marquee-dot"></span></div>
+      <div class="marquee-item"><span class="marquee-text">Technical Writing</span><span class="marquee-dot"></span></div>
+      <div class="marquee-item"><span class="marquee-text">Platform Engineering</span><span class="marquee-dot"></span></div>
+      <div class="marquee-item"><span class="marquee-text">Kubernetes</span><span class="marquee-dot"></span></div>
+      <div class="marquee-item"><span class="marquee-text">Cloud Security</span><span class="marquee-dot"></span></div>
+      <div class="marquee-item"><span class="marquee-text">AI Systems</span><span class="marquee-dot"></span></div>
+      <div class="marquee-item"><span class="marquee-text">Technical Writing</span><span class="marquee-dot"></span></div>
     </div>
   </div>
-</section>
 
-<!-- KURDONIA -->
-<section class="kurdonia" id="kurdonia">
-  <div class="kurdonia-bg"></div>
+  <section class="resume" id="resume">
+    <div class="section-divider reveal">
+      <span class="divider-num">03</span>
+      <div class="divider-line"></div>
+      <span class="divider-label">Experience and Credentials</span>
+    </div>
+    <div class="resume-grid" id="resumeGrid">
+      <div class="resume-card reveal">
+        <div class="resume-label">Loading</div>
+        <div class="resume-title">Resume content is being prepared.</div>
+      </div>
+    </div>
+  </section>
 
-  <div class="section-divider reveal">
-    <span class="divider-num">02</span>
-    <div class="divider-line"></div>
-    <span class="divider-label">The Company</span>
-  </div>
+  <section class="writing" id="writing">
+    <div class="section-divider reveal">
+      <span class="divider-num">04</span>
+      <div class="divider-line"></div>
+      <span class="divider-label">Writing and Publications</span>
+    </div>
+    <div class="writing-grid">
+      <div class="articles-column" id="articlesColumn">
+        <div class="article-card reveal">
+          <div class="article-meta"><span>Loading articles</span></div>
+          <div class="article-title">Featured writing is being prepared.</div>
+        </div>
+      </div>
+      <div id="writingPanels">
+        <div class="writing-panel reveal">
+          <div class="writing-label">Loading</div>
+          <div class="writing-title">Publications and academic content are on the way.</div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  <div class="kurdonia-inner">
-    <div class="kurdonia-content">
-      <p class="kurdonia-kicker reveal">Founded & Led by Aaron Mustafa</p>
-      <h2 class="kurdonia-title reveal">
-        Kurdonia
-        <span>Redefining the possible.</span>
-      </h2>
-      <p class="kurdonia-desc reveal reveal-delay-1">
-        Kurdonia is Aaron's flagship venture — a company built on bold conviction and a clear vision for the future. Under his leadership, Kurdonia operates with a culture of excellence, moving fast without compromising depth or quality.
+  <section class="contact" id="contact">
+    <div>
+      <div class="section-divider reveal" style="padding: 0; margin-bottom: 48px;">
+        <span class="divider-num">05</span>
+        <div class="divider-line"></div>
+        <span class="divider-label">Connect</span>
+      </div>
+      <h2 class="contact-heading reveal">Let’s build<em>useful systems.</em></h2>
+      <p class="contact-sub reveal reveal-delay-1" id="contactIntro">
+        Open to thoughtful conversations around platform engineering, cloud security, Kubernetes, MLOps, AI-enabled systems, and practical technical writing.
       </p>
-      <a href="#contact" class="kurdonia-link reveal reveal-delay-2">
-        Learn more about Kurdonia <span class="kurdonia-link-arrow">→</span>
+    </div>
+    <div class="contact-links reveal reveal-delay-2" id="contactLinks">
+      <a href="https://github.com/nbmustafa" target="_blank" rel="noreferrer" class="contact-link-item">
+        <div>
+          <div class="contact-link-platform">GitHub</div>
+          <div class="contact-link-handle">nbmustafa</div>
+        </div>
+        <span class="contact-arrow">→</span>
       </a>
     </div>
-    <div class="kurdonia-visual">
-      <div class="k-card">
-        <div class="k-card-icon">🏛</div>
-        <div class="k-card-label">Mission</div>
-        <div class="k-card-title">Build with purpose &amp; precision</div>
-      </div>
-      <div class="k-card">
-        <div class="k-card-icon">⚡</div>
-        <div class="k-card-label">Approach</div>
-        <div class="k-card-title">Move fast, think deep, lead bold</div>
-      </div>
-    </div>
-  </div>
-</section>
+  </section>
+</main>
 
-<!-- MARQUEE -->
-<div class="vision-strip">
-  <div class="marquee-track">
-    <div class="marquee-item"><span class="marquee-text">Leadership</span><span class="marquee-dot"></span></div>
-    <div class="marquee-item"><span class="marquee-text">Innovation</span><span class="marquee-dot"></span></div>
-    <div class="marquee-item"><span class="marquee-text">Strategy</span><span class="marquee-dot"></span></div>
-    <div class="marquee-item"><span class="marquee-text">Kurdonia</span><span class="marquee-dot"></span></div>
-    <div class="marquee-item"><span class="marquee-text">Vision</span><span class="marquee-dot"></span></div>
-    <div class="marquee-item"><span class="marquee-text">Execution</span><span class="marquee-dot"></span></div>
-    <div class="marquee-item"><span class="marquee-text">Growth</span><span class="marquee-dot"></span></div>
-    <div class="marquee-item"><span class="marquee-text">Culture</span><span class="marquee-dot"></span></div>
-    <!-- Duplicate for seamless loop -->
-    <div class="marquee-item"><span class="marquee-text">Leadership</span><span class="marquee-dot"></span></div>
-    <div class="marquee-item"><span class="marquee-text">Innovation</span><span class="marquee-dot"></span></div>
-    <div class="marquee-item"><span class="marquee-text">Strategy</span><span class="marquee-dot"></span></div>
-    <div class="marquee-item"><span class="marquee-text">Kurdonia</span><span class="marquee-dot"></span></div>
-    <div class="marquee-item"><span class="marquee-text">Vision</span><span class="marquee-dot"></span></div>
-    <div class="marquee-item"><span class="marquee-text">Execution</span><span class="marquee-dot"></span></div>
-    <div class="marquee-item"><span class="marquee-text">Growth</span><span class="marquee-dot"></span></div>
-    <div class="marquee-item"><span class="marquee-text">Culture</span><span class="marquee-dot"></span></div>
+<footer>
+  <div class="footer-copy" id="footerCopy">Nashwan Mustafa</div>
+  <div class="footer-mark" id="footerMark">NM</div>
+</footer>
+
+<div class="viewer" id="articleViewer" aria-hidden="true">
+  <div class="viewer-backdrop" data-close-viewer="true"></div>
+  <div class="article-viewer-panel">
+    <button class="viewer-close" type="button" id="viewerClose" aria-label="Close article">×</button>
+    <div class="viewer-status" id="viewerStatus">Article viewer</div>
+    <div class="rich-markdown" id="viewerContent">
+      <p class="loading">Loading article</p>
+    </div>
   </div>
 </div>
 
-<!-- EXPERTISE -->
-<section class="expertise" id="expertise">
-  <div class="section-divider reveal">
-    <span class="divider-num">03</span>
-    <div class="divider-line"></div>
-    <span class="divider-label">Areas of Expertise</span>
-  </div>
-
-  <div class="expertise-grid">
-    <div class="expertise-item reveal">
-      <div class="expertise-num">01</div>
-      <div class="expertise-name">Company<br>Building</div>
-      <div class="expertise-desc">From zero to scale — founding, structuring, and growing companies with intention and speed.</div>
-    </div>
-    <div class="expertise-item reveal reveal-delay-1">
-      <div class="expertise-num">02</div>
-      <div class="expertise-name">Strategic<br>Leadership</div>
-      <div class="expertise-desc">Setting vision, aligning teams, and making high-stakes decisions with clarity and conviction.</div>
-    </div>
-    <div class="expertise-item reveal reveal-delay-2">
-      <div class="expertise-num">03</div>
-      <div class="expertise-name">Growth &amp;<br>Execution</div>
-      <div class="expertise-desc">Turning bold ideas into measurable outcomes through disciplined execution and relentless focus.</div>
-    </div>
-    <div class="expertise-item reveal reveal-delay-1">
-      <div class="expertise-num">04</div>
-      <div class="expertise-name">Culture &amp;<br>Talent</div>
-      <div class="expertise-desc">Building exceptional teams and cultures where great people do the best work of their lives.</div>
-    </div>
-    <div class="expertise-item reveal reveal-delay-2">
-      <div class="expertise-num">05</div>
-      <div class="expertise-name">Vision &amp;<br>Innovation</div>
-      <div class="expertise-desc">Seeing what others miss and building the future before the rest of the world catches up.</div>
-    </div>
-    <div class="expertise-item reveal reveal-delay-3">
-      <div class="expertise-num">06</div>
-      <div class="expertise-name">Brand &amp;<br>Narrative</div>
-      <div class="expertise-desc">Crafting compelling stories and identities that make companies and ideas impossible to ignore.</div>
-    </div>
-  </div>
-</section>
-
-<!-- CONTACT -->
-<section class="contact" id="contact">
-  <div>
-    <div class="section-divider reveal" style="padding: 0; margin-bottom: 48px;">
-      <span class="divider-num">04</span>
-      <div class="divider-line"></div>
-      <span class="divider-label">Get in Touch</span>
-    </div>
-    <h2 class="contact-heading reveal">
-      Let's build<em>something great.</em>
-    </h2>
-    <p class="contact-sub reveal reveal-delay-1">
-      Whether you're looking to collaborate, invest, or simply connect — Aaron is always open to conversations that matter.
-    </p>
-  </div>
-  <div class="contact-links reveal reveal-delay-2">
-    <a href="mailto:aaron@kurdonia.com" class="contact-link-item">
-      <div class="contact-link-left">
-        <div class="contact-link-platform">Email</div>
-        <div class="contact-link-handle">aaron@kurdonia.com</div>
-      </div>
-      <span class="contact-arrow">→</span>
-    </a>
-    <a href="https://linkedin.com" target="_blank" class="contact-link-item">
-      <div class="contact-link-left">
-        <div class="contact-link-platform">LinkedIn</div>
-        <div class="contact-link-handle">Aaron Mustafa</div>
-      </div>
-      <span class="contact-arrow">→</span>
-    </a>
-    <a href="https://twitter.com" target="_blank" class="contact-link-item">
-      <div class="contact-link-left">
-        <div class="contact-link-platform">Twitter / X</div>
-        <div class="contact-link-handle">@aaronmustafa</div>
-      </div>
-      <span class="contact-arrow">→</span>
-    </a>
-    <a href="https://kurdonia.com" target="_blank" class="contact-link-item">
-      <div class="contact-link-left">
-        <div class="contact-link-platform">Company</div>
-        <div class="contact-link-handle">kurdonia.com</div>
-      </div>
-      <span class="contact-arrow">→</span>
-    </a>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer>
-  <span class="footer-copy">© 2026 Aaron Mustafa — All Rights Reserved</span>
-  <span class="footer-mark">Kurdonia</span>
-</footer>
-
 <script>
-  // Custom cursor
-  const cursor = document.getElementById('cursor');
-  const ring = document.getElementById('cursorRing');
-  let mx = 0, my = 0, rx = 0, ry = 0;
-  document.addEventListener('mousemove', e => {
-    mx = e.clientX; my = e.clientY;
-    cursor.style.left = mx - 5 + 'px';
-    cursor.style.top = my - 5 + 'px';
-  });
-  function animateRing() {
-    rx += (mx - rx - 18) * 0.14;
-    ry += (my - ry - 18) * 0.14;
-    ring.style.left = rx + 'px';
-    ring.style.top = ry + 'px';
-    requestAnimationFrame(animateRing);
-  }
-  animateRing();
-  document.querySelectorAll('a, button, .expertise-item, .k-card').forEach(el => {
-    el.addEventListener('mouseenter', () => ring.classList.add('hover'));
-    el.addEventListener('mouseleave', () => ring.classList.remove('hover'));
-  });
+  const SITE_FILES = {
+    config: 'contents/config.yml',
+    home: 'contents/home.md',
+    projects: 'contents/projects.md',
+    resume: 'contents/resume.md',
+    publications: 'contents/publications.md',
+    awards: 'contents/awards.md',
+    academic: 'contents/academic.md',
+    articlesIndex: 'contents/articles/index.json'
+  };
 
-  // Scroll reveal
-  const reveals = document.querySelectorAll('.reveal');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
+  const state = {
+    articles: [],
+    socialLinks: []
+  };
+
+  function parseYaml(text) {
+    return text.split(/\r?\n/).reduce((acc, line) => {
+      const trimmed = line.trim();
+      if (!trimmed || trimmed.startsWith('#') || !trimmed.includes(':')) return acc;
+      const idx = trimmed.indexOf(':');
+      const key = trimmed.slice(0, idx).trim();
+      let value = trimmed.slice(idx + 1).trim();
+      value = value.replace(/^['"]|['"]$/g, '');
+      acc[key] = value;
+      return acc;
+    }, {});
+  }
+
+  function parseInline(text) {
+    return text
+      .replace(/`([^`]+)`/g, '<code>$1</code>')
+      .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*([^*]+)\*/g, '<em>$1</em>')
+      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noreferrer">$1</a>');
+  }
+
+  function renderMarkdown(md) {
+    const lines = md.replace(/\r/g, '').split('\n');
+    const html = [];
+    let paragraph = [];
+    let listType = null;
+    let listItems = [];
+    let inCode = false;
+    let codeLang = '';
+    let codeLines = [];
+
+    function flushParagraph() {
+      if (paragraph.length) {
+        html.push('<p>' + parseInline(paragraph.join(' ').trim()) + '</p>');
+        paragraph = [];
+      }
+    }
+
+    function flushList() {
+      if (listItems.length) {
+        html.push('<' + listType + '>' + listItems.map(item => '<li>' + parseInline(item.trim()) + '</li>').join('') + '</' + listType + '>');
+        listItems = [];
+        listType = null;
+      }
+    }
+
+    function flushCode() {
+      if (codeLines.length || codeLang) {
+        const code = codeLines.join('\n')
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;');
+        const className = codeLang ? ' class="language-' + codeLang + '"' : '';
+        html.push('<pre><code' + className + '>' + code + '</code></pre>');
+        codeLines = [];
+        codeLang = '';
+      }
+    }
+
+    for (const line of lines) {
+      if (line.startsWith('```')) {
+        if (inCode) {
+          flushCode();
+          inCode = false;
+        } else {
+          flushParagraph();
+          flushList();
+          inCode = true;
+          codeLang = line.slice(3).trim();
+        }
+        continue;
+      }
+
+      if (inCode) {
+        codeLines.push(line);
+        continue;
+      }
+
+      if (!line.trim()) {
+        flushParagraph();
+        flushList();
+        continue;
+      }
+
+      const headingMatch = line.match(/^(#{1,4})\s+(.*)$/);
+      if (headingMatch) {
+        flushParagraph();
+        flushList();
+        const level = Math.min(headingMatch[1].length, 4);
+        html.push('<h' + level + '>' + parseInline(headingMatch[2].trim()) + '</h' + level + '>');
+        continue;
+      }
+
+      const bulletMatch = line.match(/^\s*-\s+(.*)$/);
+      if (bulletMatch) {
+        flushParagraph();
+        if (listType && listType !== 'ul') flushList();
+        listType = 'ul';
+        listItems.push(bulletMatch[1]);
+        continue;
+      }
+
+      const numberedMatch = line.match(/^\s*\d+\.\s+(.*)$/);
+      if (numberedMatch) {
+        flushParagraph();
+        if (listType && listType !== 'ol') flushList();
+        listType = 'ol';
+        listItems.push(numberedMatch[1]);
+        continue;
+      }
+
+      if (line.trim().startsWith('<') && line.trim().endsWith('>')) {
+        flushParagraph();
+        flushList();
+        html.push(line);
+        continue;
+      }
+
+      paragraph.push(line.trim());
+    }
+
+    flushParagraph();
+    flushList();
+    if (inCode) flushCode();
+
+    return html.join('');
+  }
+
+  function stripSocialLinksBlock(md) {
+    const blockMatch = md.match(/<div class="social-links">[\s\S]*?<\/div>/);
+    if (!blockMatch) return { markdown: md, socialLinks: [] };
+
+    const block = blockMatch[0];
+    const socialLinks = [...block.matchAll(/<a[^>]*href="([^"]+)"[^>]*aria-label="([^"]+)"[^>]*>/g)].map((match) => {
+      const href = match[1];
+      const label = match[2];
+      return {
+        platform: label,
+        href,
+        handle: formatHandle(label, href)
+      };
+    });
+
+    return {
+      markdown: md.replace(block, '').trim(),
+      socialLinks
+    };
+  }
+
+  function formatHandle(label, href) {
+    if (href.startsWith('mailto:')) return href.replace('mailto:', '');
+    try {
+      const url = new URL(href);
+      const path = url.pathname.replace(/\/$/, '');
+      const tail = path.split('/').filter(Boolean).pop();
+      return tail || label;
+    } catch (error) {
+      return label;
+    }
+  }
+
+  function splitSections(md, level = 2) {
+    const lines = md.replace(/\r/g, '').split('\n');
+    const marker = '#'.repeat(level) + ' ';
+    const sections = [];
+    let current = null;
+
+    for (const line of lines) {
+      if (line.startsWith(marker)) {
+        if (current) sections.push(current);
+        current = { title: line.slice(marker.length).trim(), body: [] };
+      } else if (current) {
+        current.body.push(line);
+      }
+    }
+
+    if (current) sections.push(current);
+    return sections.map((section) => ({
+      title: section.title,
+      body: section.body.join('\n').trim()
+    }));
+  }
+
+  function splitSubsections(md, level = 3) {
+    return splitSections(md, level);
+  }
+
+  function buildHero(config, homeMd, resumeMd, articles) {
+    const personName = (config['page-top-title'] || 'Nashwan Mustafa').trim();
+    const subtitle = config['home-subtitle'] || 'Platform Engineering | MLOps and AI | Secure Cloud Platforms | Technical Writing';
+    const eyebrow = config['top-section-bg-text'] || 'Platform and AI Engineering';
+    const nameParts = personName.split(' ');
+    const firstName = nameParts.shift() || personName;
+    const lastName = nameParts.join(' ') || '';
+    const yearsMatch = resumeMd.match(/(\d+\+)\s*years/i);
+    const topics = Array.from(new Set(articles.slice(0, 5).map(article => article.topic))).filter(Boolean);
+
+    document.title = config.title || document.title;
+    document.getElementById('navLogo').textContent = personName;
+    document.getElementById('heroEyebrow').textContent = eyebrow;
+    document.getElementById('heroRole').textContent = subtitle;
+    document.getElementById('heroName').innerHTML = firstName + (lastName ? '<em>' + lastName + '</em>' : '');
+    document.getElementById('heroMonogram').setAttribute('data-monogram', (firstName[0] || 'N') + (lastName[0] || 'M'));
+    document.getElementById('heroOrbitCopy').textContent = topics.length ? topics.join(' / ') : 'Kubernetes / Cloud / AI / MLOps / Security';
+    document.getElementById('footerCopy').innerHTML = config['copyright-text'] || personName;
+    document.getElementById('footerMark').textContent = ((firstName[0] || 'N') + (lastName[0] || 'M')).toUpperCase();
+
+    const headings = splitSections(homeMd, 2);
+    const introSection = headings[0];
+    if (introSection) {
+      document.getElementById('aboutHeading').innerHTML = introSection.title.replace("I'm", 'I’m').replace('Nashwan', '<em>Nashwan</em>');
+      const bodyWithoutFirstHeading = homeMd.replace(/^##\s+.*(?:\r?\n)+/, '');
+      document.getElementById('aboutContent').innerHTML = renderMarkdown(bodyWithoutFirstHeading);
+    }
+
+    const certSection = splitSections(resumeMd, 2).find(section => /certifications/i.test(section.title));
+    const certCount = certSection ? (certSection.body.match(/^\s*-\s+/gm) || []).length : 0;
+    const articleCount = articles.length;
+    const stats = [
+      { value: yearsMatch ? yearsMatch[1] : '15+', label: 'Years in Engineering' },
+      { value: certCount ? String(certCount).padStart(2, '0') : '08', label: 'Certifications' },
+      { value: articleCount ? String(articleCount).padStart(2, '0') : '18', label: 'Published Articles' }
+    ];
+
+    document.getElementById('aboutStats').innerHTML = stats.map((stat, index) => (
+      '<div class="about-stat reveal reveal-delay-' + Math.min(index + 1, 3) + '">' +
+        '<div class="stat-num">' + stat.value + '</div>' +
+        '<div class="stat-label">' + stat.label + '</div>' +
+      '</div>'
+    )).join('');
+  }
+
+  function buildProjects(projectsMd) {
+    const sections = splitSubsections(projectsMd, 3);
+    const grid = document.getElementById('projectsGrid');
+
+    grid.innerHTML = sections.map((section, index) => {
+      const bulletMatches = [...section.body.matchAll(/^\s*-\s+(.*)$/gm)].map(match => match[1]);
+      const summary = section.body.replace(/^\s*-\s+.*$/gm, '').trim();
+      return (
+        '<article class="project-card reveal reveal-delay-' + (index % 4) + '">' +
+          '<div class="project-index">' + String(index + 1).padStart(2, '0') + '</div>' +
+          '<h3 class="project-title">' + parseInline(section.title) + '</h3>' +
+          '<div class="project-summary rich-markdown">' + renderMarkdown(summary) + '</div>' +
+          (bulletMatches.length ? '<ul class="project-points">' + bulletMatches.map(point => '<li>' + parseInline(point) + '</li>').join('') + '</ul>' : '') +
+        '</article>'
+      );
+    }).join('');
+  }
+
+  function buildMarquee(projectsMd, articles) {
+    const projectTitles = splitSubsections(projectsMd, 3).slice(0, 4).map(section => section.title.replace(/^\d+\.\s*/, ''));
+    const articleTopics = Array.from(new Set(articles.map(article => article.topic))).slice(0, 4);
+    const items = [...new Set(['Platform Engineering', ...projectTitles, ...articleTopics])].filter(Boolean);
+    const doubled = [...items, ...items];
+
+    document.getElementById('marqueeTrack').innerHTML = doubled.map((item) => (
+      '<div class="marquee-item"><span class="marquee-text">' + item + '</span><span class="marquee-dot"></span></div>'
+    )).join('');
+  }
+
+  function buildResume(resumeMd, awardsMd, academicMd) {
+    const sections = splitSections(resumeMd, 2);
+    const grid = document.getElementById('resumeGrid');
+    const sectionOrder = [
+      'Professional Summary',
+      'Core Capability Areas',
+      'Working Experience',
+      'Selected Certifications',
+      'Education',
+      'Awards',
+      'Publications'
+    ];
+
+    const byTitle = new Map(sections.map(section => [section.title, section.body]));
+    if (!byTitle.get('Awards') && awardsMd.trim()) byTitle.set('Awards', awardsMd.trim());
+    if (!byTitle.get('Education') || !byTitle.get('Publications')) {
+      splitSections(academicMd, 4).forEach(section => {
+        if (!byTitle.get(section.title)) byTitle.set(section.title, section.body);
+      });
+    }
+
+    const cards = sectionOrder
+      .filter(title => byTitle.has(title))
+      .map((title) => {
+        const wide = /Working Experience|Publications/.test(title) ? ' wide' : '';
+        const full = /Working Experience/.test(title) ? ' full' : '';
+        return (
+          '<article class="resume-card reveal' + wide + full + '">' +
+            '<div class="resume-label">' + title + '</div>' +
+            '<h3 class="resume-title">' + title + '</h3>' +
+            '<div class="rich-markdown">' + renderMarkdown(byTitle.get(title)) + '</div>' +
+          '</article>'
+        );
+      });
+
+    grid.innerHTML = cards.join('');
+  }
+
+  function buildWriting(publicationsMd, academicMd, articles) {
+    const column = document.getElementById('articlesColumn');
+    const panels = document.getElementById('writingPanels');
+    const featured = articles.filter(article => article.featured);
+    const selected = (featured.length ? featured : articles).slice(0, 6);
+    const publicationSection = splitSections(publicationsMd, 4).find(section => /publications/i.test(section.title));
+    const academicSections = splitSections(academicMd, 4);
+    const educationSection = academicSections.find(section => /education/i.test(section.title));
+    const researchSection = academicSections.find(section => /research/i.test(section.title));
+
+    column.innerHTML = selected.map((article, index) => (
+      '<article class="article-card reveal reveal-delay-' + (index % 3) + '" tabindex="0" data-article-file="' + article.file + '" data-article-title="' + article.title.replace(/"/g, '&quot;') + '">' +
+        '<div class="article-meta">' +
+          '<span class="article-topic">' + article.topic + '</span>' +
+          '<span>' + formatDate(article.date) + '</span>' +
+          (article.featured ? '<span>Featured</span>' : '') +
+        '</div>' +
+        '<h3 class="article-title">' + article.title + '</h3>' +
+        '<p class="article-summary">' + article.summary + '</p>' +
+        '<span class="article-link">Open article <span>→</span></span>' +
+      '</article>'
+    )).join('');
+
+    panels.innerHTML = [
+      {
+        label: 'Publications',
+        title: 'Academic and published work',
+        body: publicationSection ? publicationSection.body : publicationsMd.trim()
+      },
+      {
+        label: 'Academic Background',
+        title: 'Education and research interests',
+        body: [
+          educationSection ? '#### ' + educationSection.title + '\n' + educationSection.body : '',
+          researchSection ? '#### ' + researchSection.title + '\n' + researchSection.body : ''
+        ].filter(Boolean).join('\n\n') || academicMd.trim()
+      }
+    ].map((panel, index) => (
+      '<article class="writing-panel reveal reveal-delay-' + (index + 1) + '">' +
+        '<div class="writing-label">' + panel.label + '</div>' +
+        '<h3 class="writing-title">' + panel.title + '</h3>' +
+        '<div class="rich-markdown">' + renderMarkdown(panel.body) + '</div>' +
+      '</article>'
+    )).join('');
+  }
+
+  function buildContact(homeLinks) {
+    const links = homeLinks.length ? homeLinks : [
+      { platform: 'LinkedIn', href: 'https://www.linkedin.com/in/nbmustafa/', handle: 'nbmustafa' },
+      { platform: 'GitHub', href: 'https://github.com/nbmustafa', handle: 'nbmustafa' },
+      { platform: 'Hugging Face', href: 'https://huggingface.co/nbmustafa', handle: 'nbmustafa' }
+    ];
+
+    document.getElementById('contactLinks').innerHTML = links.map((link) => (
+      '<a href="' + link.href + '" target="_blank" rel="noreferrer" class="contact-link-item">' +
+        '<div>' +
+          '<div class="contact-link-platform">' + link.platform + '</div>' +
+          '<div class="contact-link-handle">' + link.handle + '</div>' +
+        '</div>' +
+        '<span class="contact-arrow">→</span>' +
+      '</a>'
+    )).join('');
+  }
+
+  async function openArticle(file, title) {
+    const viewer = document.getElementById('articleViewer');
+    const content = document.getElementById('viewerContent');
+    const status = document.getElementById('viewerStatus');
+    viewer.classList.add('is-open');
+    viewer.setAttribute('aria-hidden', 'false');
+    status.textContent = title;
+    content.innerHTML = '<p class="loading">Loading article</p>';
+    document.body.style.overflow = 'hidden';
+
+    try {
+      const response = await fetch('contents/articles/' + file);
+      if (!response.ok) throw new Error('Failed to load article');
+      const markdown = await response.text();
+      content.innerHTML = renderMarkdown(markdown);
+    } catch (error) {
+      content.innerHTML = '<p>Unable to load this article right now.</p>';
+    }
+  }
+
+  function closeArticle() {
+    const viewer = document.getElementById('articleViewer');
+    viewer.classList.remove('is-open');
+    viewer.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+    if (Number.isNaN(date.getTime())) return dateString;
+    return date.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+  }
+
+  function setupInteractions() {
+    const cursor = document.getElementById('cursor');
+    const cursorRing = document.getElementById('cursorRing');
+
+    if (window.matchMedia('(pointer: fine)').matches) {
+      window.addEventListener('mousemove', (event) => {
+        cursor.style.transform = 'translate(' + (event.clientX - 5) + 'px, ' + (event.clientY - 5) + 'px)';
+        cursorRing.style.transform = 'translate(' + (event.clientX - 18) + 'px, ' + (event.clientY - 18) + 'px)';
+      });
+
+      document.querySelectorAll('a, button, .article-card').forEach((el) => {
+        el.addEventListener('mouseenter', () => cursorRing.classList.add('hover'));
+        el.addEventListener('mouseleave', () => cursorRing.classList.remove('hover'));
+      });
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.18 });
+
+    document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+
+    document.addEventListener('click', (event) => {
+      const articleCard = event.target.closest('[data-article-file]');
+      if (articleCard) {
+        openArticle(articleCard.dataset.articleFile, articleCard.dataset.articleTitle);
+      }
+
+      if (event.target.closest('[data-close-viewer="true"]') || event.target.closest('#viewerClose')) {
+        closeArticle();
       }
     });
-  }, { threshold: 0.1 });
-  reveals.forEach(el => observer.observe(el));
 
-  // Parallax on hero text
-  document.addEventListener('mousemove', e => {
-    const x = (e.clientX / window.innerWidth - 0.5) * 12;
-    const y = (e.clientY / window.innerHeight - 0.5) * 8;
-    document.querySelector('.hero-portrait-bg').style.transform = `translate(${x}px, ${y}px)`;
-    document.querySelectorAll('.geo-ring').forEach((r, i) => {
-      const factor = (i + 1) * 0.4;
-      r.style.transform += ` translate(${x * factor}px, ${y * factor}px)`;
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') closeArticle();
+      if ((event.key === 'Enter' || event.key === ' ') && document.activeElement?.matches?.('[data-article-file]')) {
+        event.preventDefault();
+        openArticle(document.activeElement.dataset.articleFile, document.activeElement.dataset.articleTitle);
+      }
     });
-  });
+  }
 
-  // Nav background on scroll
-  const nav = document.querySelector('nav');
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 60) {
-      nav.style.background = 'rgba(10,7,5,0.95)';
-      nav.style.backdropFilter = 'blur(12px)';
-    } else {
-      nav.style.background = '';
-      nav.style.backdropFilter = '';
+  async function init() {
+    try {
+      const [configText, homeText, projectsText, resumeText, publicationsText, awardsText, academicText, articlesIndex] = await Promise.all([
+        fetch(SITE_FILES.config).then((res) => res.text()),
+        fetch(SITE_FILES.home).then((res) => res.text()),
+        fetch(SITE_FILES.projects).then((res) => res.text()),
+        fetch(SITE_FILES.resume).then((res) => res.text()),
+        fetch(SITE_FILES.publications).then((res) => res.text()),
+        fetch(SITE_FILES.awards).then((res) => res.text()),
+        fetch(SITE_FILES.academic).then((res) => res.text()),
+        fetch(SITE_FILES.articlesIndex).then((res) => res.json())
+      ]);
+
+      const config = parseYaml(configText);
+      const homeData = stripSocialLinksBlock(homeText);
+      state.articles = Array.isArray(articlesIndex.articles) ? articlesIndex.articles : [];
+      state.socialLinks = homeData.socialLinks;
+
+      buildHero(config, homeData.markdown, resumeText, state.articles);
+      buildProjects(projectsText);
+      buildMarquee(projectsText, state.articles);
+      buildResume(resumeText, awardsText, academicText);
+      buildWriting(publicationsText, academicText, state.articles);
+      buildContact(state.socialLinks);
+      setupInteractions();
+    } catch (error) {
+      document.getElementById('aboutContent').innerHTML = '<p>Content could not be loaded. Please check that the markdown files are available.</p>';
+      document.getElementById('projectsGrid').innerHTML = '<article class="project-card"><h3 class="project-title">Content unavailable</h3><p class="project-summary">Markdown content could not be loaded.</p></article>';
     }
-  });
+  }
+
+  init();
 </script>
 </body>
 </html>
