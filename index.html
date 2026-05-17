@@ -240,6 +240,42 @@
     justify-content: center;
   }
 
+  .hero-portrait-orbit {
+    position: absolute;
+    width: 456px;
+    height: 456px;
+    border-radius: 50%;
+    border: 1px solid rgba(200,71,10,0.22);
+    opacity: 0.9;
+    animation: rotateSlow 24s linear infinite;
+  }
+
+  .hero-portrait-orbit::before,
+  .hero-portrait-orbit::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+  }
+
+  .hero-portrait-orbit::before {
+    width: 12px;
+    height: 12px;
+    top: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--ember);
+    box-shadow: 0 0 18px rgba(200,71,10,0.65);
+  }
+
+  .hero-portrait-orbit::after {
+    width: 7px;
+    height: 7px;
+    right: 46px;
+    bottom: 34px;
+    background: rgba(200,71,10,0.78);
+    box-shadow: 0 0 14px rgba(200,71,10,0.45);
+  }
+
   .hero-portrait-bg {
     width: 380px;
     height: 380px;
@@ -250,6 +286,10 @@
     opacity: 0;
     animation: fadeIn 1.2s 1s forwards;
     box-shadow: 0 0 120px rgba(200,71,10,0.12), inset 0 0 60px rgba(0,0,0,0.5);
+  }
+
+  .hero-portrait-bg:hover {
+    box-shadow: 0 0 150px rgba(200,71,10,0.18), inset 0 0 60px rgba(0,0,0,0.42);
   }
 
   .hero-portrait-image {
@@ -328,10 +368,38 @@
   }
 
   .scroll-bar {
+    position: relative;
     width: 1px;
-    height: 48px;
-    background: linear-gradient(to bottom, var(--ember), transparent);
-    animation: scrollPulse 2s ease-in-out infinite;
+    height: 54px;
+    background: linear-gradient(to bottom, rgba(200,71,10,0.15), rgba(200,71,10,0.9), transparent);
+    overflow: visible;
+  }
+
+  .scroll-bar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--ember);
+    transform: translate(-50%, 0);
+    box-shadow: 0 0 16px rgba(200,71,10,0.55);
+    animation: scrollDot 2.1s ease-in-out infinite;
+  }
+
+  .scroll-bar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 14px;
+    height: 14px;
+    border: 1px solid rgba(200,71,10,0.25);
+    border-radius: 50%;
+    transform: translate(-50%, -3px);
+    animation: scrollHalo 2.1s ease-in-out infinite;
   }
 
   .scroll-label {
@@ -408,6 +476,7 @@
     padding: 36px;
     position: relative;
     overflow: hidden;
+    transition: transform 0.3s ease, border-color 0.3s ease, background 0.3s ease;
   }
 
   .about-card::before {
@@ -419,6 +488,20 @@
     height: 2px;
     background: linear-gradient(90deg, var(--ember), transparent);
     opacity: 0.6;
+  }
+
+  .about-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(200,71,10,0.06), transparent 38%, transparent 100%);
+    pointer-events: none;
+  }
+
+  .about-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(200,71,10,0.2);
+    background: rgba(200,71,10,0.035);
   }
 
   .about-card-label {
@@ -1051,6 +1134,18 @@
     50% { opacity: 1; transform: scaleY(1.1); }
   }
 
+  @keyframes scrollDot {
+    0% { transform: translate(-50%, 0); opacity: 0.9; }
+    60% { transform: translate(-50%, 34px); opacity: 1; }
+    100% { transform: translate(-50%, 46px); opacity: 0.15; }
+  }
+
+  @keyframes scrollHalo {
+    0% { transform: translate(-50%, -3px) scale(0.85); opacity: 0.5; }
+    60% { transform: translate(-50%, 26px) scale(1.15); opacity: 0.18; }
+    100% { transform: translate(-50%, 40px) scale(1.4); opacity: 0; }
+  }
+
   @keyframes marquee {
     from { transform: translateX(0); }
     to { transform: translateX(-50%); }
@@ -1159,6 +1254,7 @@
         <div class="geo-ring"></div>
       </div>
       <div class="hero-portrait-wrap">
+        <div class="hero-portrait-orbit"></div>
         <div class="hero-portrait-bg" id="heroMonogram" data-monogram="">
           <img src="assets/img/Nash.png" alt="Portrait of Nashwan Mustafa" class="hero-portrait-image">
           <div class="hero-portrait-glow"></div>
