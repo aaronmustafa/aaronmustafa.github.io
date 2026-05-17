@@ -83,7 +83,3 @@ Focused on operational reliability, infrastructure security, automation, and tea
 - Kurdistan Government Human Capacity Development Scholarship Program, 2012
 - Dean's List of Excellence Award, School of Engineering and Science, Queensland University of Technology, 2013, 2014, and 2015
 
-## Publications
-
-- Mustafa, N., Rawezh Ziad Kamla, and Tara Yahiya. "An Implementation of Software Routing for Building a Private Cloud." *International Journal of Computer Network and Information Security* (2018). [Paper](https://www.researchgate.net/publication/323918941_An_Implementation_of_Software_Routing_for_Building_a_Private_Cloud)
-- Mustafa, N., Rawezh Ziad Kamla, and Tara Yahiya. "An Implementation of Software Routing for Building a Private Cloud." *American Journal of Neural Networks and Applications* (2018). [Paper](https://www.researchgate.net/publication/327164649_American_Journal_of_Neural_Networks_and_Applications)

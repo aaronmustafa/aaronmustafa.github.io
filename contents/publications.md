@@ -11,7 +11,3 @@
 
 #### Research Intersts
 Deep Learning, Artificial Intelligence, Cyber Security both offensive and defensive technologies.
-
-
-#### Support or Contact
-Having trouble with Pages? [contact support](https://nbmustafa.github.io/contact) and we’ll help you sort it out.
