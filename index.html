@@ -257,9 +257,11 @@
     inset: 0;
     width: 100%;
     height: 100%;
+    display: block;
     object-fit: cover;
-    object-position: center top;
-    filter: saturate(0.92) contrast(1.04);
+    object-position: center 18%;
+    filter: saturate(0.98) contrast(1.06) brightness(1.02);
+    z-index: 0;
   }
 
   .hero-portrait-bg::before {
@@ -342,16 +344,13 @@
   .section-divider {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 16px;
     padding: 0 60px;
     margin-bottom: 80px;
   }
 
   .divider-num {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.6rem;
-    color: var(--ember);
-    letter-spacing: 0.1em;
+    display: none;
   }
 
   .divider-line {
@@ -706,23 +705,6 @@
     text-decoration: none;
     border-bottom: 1px solid rgba(200,71,10,0.45);
     padding-bottom: 3px;
-  }
-
-  .article-viewer-inline {
-    position: sticky;
-    top: 110px;
-    min-height: 60vh;
-    max-height: calc(100vh - 140px);
-    overflow: auto;
-  }
-
-  .article-viewer-inline .viewer-status {
-    margin-bottom: 22px;
-  }
-
-  .article-viewer-empty {
-    color: var(--mist);
-    line-height: 1.9;
   }
 
   .vision-strip {
@@ -1159,9 +1141,9 @@
         </div>
       </div>
       <div id="writingPanels">
-        <div class="article-viewer-panel article-viewer-inline reveal">
-          <div class="viewer-status">Article Viewer</div>
-          <div class="article-viewer-empty">Select an article and open it to read it here.</div>
+        <div class="writing-panel reveal">
+          <div class="writing-label">Loading</div>
+          <div class="writing-title">Publications and academic content are on the way.</div>
         </div>
       </div>
     </div>

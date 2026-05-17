@@ -345,7 +345,7 @@ function buildWriting(publicationsMd, academicMd, articles) {
     '<section class="article-group reveal reveal-delay-' + (groupIndex % 3) + '">' +
       '<div class="article-group-meta">' + String(topicArticles.length).padStart(2, '0') + ' Articles</div>' +
       '<h3 class="article-group-title">' + topic + '</h3>' +
-      topicArticles.map((article, index) => (
+      topicArticles.map((article) => (
         '<article class="article-card">' +
           '<div class="article-meta">' +
             '<span class="article-topic">' + article.topic + '</span>' +
@@ -361,10 +361,6 @@ function buildWriting(publicationsMd, academicMd, articles) {
   )).join('');
 
   panels.innerHTML =
-    '<article class="article-viewer-panel article-viewer-inline reveal">' +
-      '<div class="viewer-status" id="inlineViewerStatus">Article Viewer</div>' +
-      '<div class="rich-markdown" id="inlineViewerContent"><p class="article-viewer-empty">Select an article and use the open article link to read it here.</p></div>' +
-    '</article>' +
     '<article class="writing-panel reveal reveal-delay-1">' +
       '<div class="writing-label">Publications</div>' +
       '<h3 class="writing-title">Detailed publication record</h3>' +
@@ -406,19 +402,28 @@ function buildContact(homeLinks) {
   observeRevealElements(document.getElementById('contact'));
 }
 
-async function openArticleInline(file, title) {
-  const content = document.getElementById('inlineViewerContent');
-  const status = document.getElementById('inlineViewerStatus');
-  if (!content || !status) return;
-
+async function openArticle(file, title) {
+  const viewer = document.getElementById('articleViewer');
+  const content = document.getElementById('viewerContent');
+  const status = document.getElementById('viewerStatus');
+  viewer.classList.add('is-open');
+  viewer.setAttribute('aria-hidden', 'false');
   status.textContent = title;
   content.innerHTML = '<p class="loading">Loading article</p>';
+  document.body.style.overflow = 'hidden';
   try {
     const markdown = await fetchText('../contents/articles/' + file);
     content.innerHTML = renderMarkdown(markdown);
   } catch {
     content.innerHTML = '<p>Unable to load this article right now.</p>';
   }
+}
+
+function closeArticle() {
+  const viewer = document.getElementById('articleViewer');
+  viewer.classList.remove('is-open');
+  viewer.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
 }
 
 function setupInteractions() {
@@ -475,8 +480,16 @@ function setupInteractions() {
     const articleLink = event.target.closest('[data-article-file]');
     if (articleLink) {
       event.preventDefault();
-      openArticleInline(articleLink.dataset.articleFile, articleLink.dataset.articleTitle);
+      openArticle(articleLink.dataset.articleFile, articleLink.dataset.articleTitle);
     }
+
+    if (event.target.closest('[data-close-viewer="true"]') || event.target.closest('#viewerClose')) {
+      closeArticle();
+    }
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') closeArticle();
   });
 }
 
