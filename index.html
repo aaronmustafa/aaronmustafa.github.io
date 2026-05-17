@@ -141,7 +141,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 110px 60px 80px;
+    padding: 72px 60px 80px;
     position: relative;
     z-index: 2;
   }
@@ -175,7 +175,7 @@
   }
 
   .hero-role {
-    margin-top: 36px;
+    margin-top: 24px;
     display: flex;
     align-items: center;
     gap: 16px;
@@ -241,9 +241,9 @@
   }
 
   .hero-portrait-bg {
-    width: 360px;
-    height: 480px;
-    border-radius: 180px 180px 0 0;
+    width: 380px;
+    height: 380px;
+    border-radius: 50%;
     background: linear-gradient(160deg, #2a1f14 0%, #1a1008 60%, #0d0805 100%);
     position: relative;
     overflow: hidden;
@@ -259,7 +259,7 @@
     height: 100%;
     display: block;
     object-fit: cover;
-    object-position: center 18%;
+    object-position: center 20%;
     filter: saturate(0.98) contrast(1.06) brightness(1.02);
     z-index: 0;
   }
@@ -277,7 +277,7 @@
   .hero-portrait-bg::after {
     content: attr(data-monogram);
     position: absolute;
-    bottom: 40px;
+    bottom: 24px;
     left: 50%;
     transform: translateX(-50%);
     font-family: 'Cormorant Garamond', serif;
@@ -316,12 +316,13 @@
   }
 
   .hero-scroll {
-    position: absolute;
-    bottom: 40px;
-    left: 60px;
+    position: relative;
+    bottom: auto;
+    left: auto;
     display: flex;
     align-items: center;
     gap: 14px;
+    margin-top: 22px;
     opacity: 0;
     animation: fadeUp 0.8s 1.2s forwards;
   }
@@ -369,10 +370,7 @@
 
   .about {
     padding: 120px 60px;
-    display: grid;
-    grid-template-columns: 0.45fr 1.55fr;
-    gap: 48px;
-    align-items: start;
+    display: block;
     position: relative;
   }
 
@@ -386,16 +384,6 @@
     background: linear-gradient(to bottom, transparent, rgba(200,71,10,0.2) 30%, rgba(200,71,10,0.2) 70%, transparent);
   }
 
-  .about-tag {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(3rem, 5vw, 5.5rem);
-    font-weight: 300;
-    line-height: 1;
-    color: rgba(212,196,160,0.08);
-    letter-spacing: -0.03em;
-    margin-bottom: 40px;
-  }
-
   .about-heading {
     font-family: 'Cormorant Garamond', serif;
     font-size: clamp(2rem, 3vw, 3rem);
@@ -406,6 +394,50 @@
   }
 
   .about-heading em { font-style: italic; color: var(--sand); }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+    align-items: start;
+  }
+
+  .about-card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    padding: 36px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .about-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--ember), transparent);
+    opacity: 0.6;
+  }
+
+  .about-card-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ember);
+    margin-bottom: 18px;
+  }
+
+  .about-card-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    font-weight: 300;
+    line-height: 1.05;
+    color: var(--cream);
+    margin-bottom: 16px;
+  }
 
   .rich-markdown {
     font-size: 0.92rem;
@@ -1042,7 +1074,7 @@
     .hero { grid-template-columns: 1fr; }
     .hero-left {
       justify-content: flex-start;
-      padding: 125px 30px 60px;
+      padding: 96px 30px 60px;
     }
     .hero-right { display: none; }
     .about,
@@ -1054,11 +1086,10 @@
       padding-right: 30px;
     }
     .about {
-      grid-template-columns: 1fr;
-      gap: 48px;
       padding-top: 80px;
       padding-bottom: 80px;
     }
+    .about-grid { grid-template-columns: 1fr; }
     .projects,
     .resume,
     .writing { padding-top: 80px; padding-bottom: 80px; }
@@ -1067,7 +1098,6 @@
       padding-top: 80px;
     }
     .section-divider { padding: 0 30px; margin-bottom: 50px; }
-    .hero-scroll { left: 30px; }
     footer {
       padding: 30px;
       flex-direction: column;
@@ -1132,14 +1162,11 @@
   </section>
 
   <section class="about" id="about">
-    <div class="about-left">
-      <div class="about-tag reveal">About</div>
-    </div>
-    <div class="about-right">
-      <h2 class="about-heading reveal" id="aboutHeading">Building practical <em>platforms</em> with depth, security, and clarity.</h2>
-      <div class="rich-markdown reveal reveal-delay-1" id="aboutContent">
-        <p class="loading">Loading profile content</p>
-      </div>
+    <div class="about-grid" id="aboutGrid">
+      <article class="about-card reveal">
+        <div class="about-card-label">Loading</div>
+        <div class="about-card-title">About content is being prepared.</div>
+      </article>
     </div>
   </section>
 

@@ -246,13 +246,50 @@ function buildHero(config, homeMd, articles) {
   document.getElementById('footerCopy').innerHTML = config['copyright-text'] || personName;
   document.getElementById('footerMark').textContent = ((firstName[0] || 'N') + (lastName[0] || 'M')).toUpperCase();
 
-  const headings = splitSections(homeMd, 2);
-  const introSection = headings[0];
+  const sections = splitSections(homeMd, 2);
+  const introSection = sections[0];
+  const detailSections = splitSections(homeMd, 3);
+  const focusSection = detailSections.find((section) => /what i focus on/i.test(section.title));
+  const highlightsSection = detailSections.find((section) => /selected highlights/i.test(section.title));
+  const exploreSection = detailSections.find((section) => /explore more/i.test(section.title));
+
+  const cards = [];
   if (introSection) {
-    document.getElementById('aboutHeading').innerHTML = introSection.title.replace("I'm", 'I’m').replace('Nashwan', '<em>Nashwan</em>');
-    const bodyWithoutFirstHeading = homeMd.replace(/^##\s+.*(?:\r?\n)+/, '');
-    document.getElementById('aboutContent').innerHTML = renderMarkdown(bodyWithoutFirstHeading);
+    const introBody = introSection.body
+      .replace(/^###\s+What I focus on[\s\S]*$/m, '')
+      .trim();
+    cards.push({
+      label: 'About',
+      title: introSection.title.replace("I'm", 'I’m'),
+      body: introBody
+    });
   }
+  if (focusSection) {
+    cards.push({
+      label: 'Focus',
+      title: focusSection.title,
+      body: focusSection.body
+    });
+  }
+  const combinedBody = [
+    highlightsSection ? '### ' + highlightsSection.title + '\n' + highlightsSection.body : '',
+    exploreSection ? '### ' + exploreSection.title + '\n' + exploreSection.body : ''
+  ].filter(Boolean).join('\n\n');
+  if (combinedBody) {
+    cards.push({
+      label: 'Highlights',
+      title: 'Selected highlights and next steps',
+      body: combinedBody
+    });
+  }
+
+  document.getElementById('aboutGrid').innerHTML = cards.map((card, index) => (
+    '<article class="about-card reveal reveal-delay-' + (index % 3) + '">' +
+      '<div class="about-card-label">' + card.label + '</div>' +
+      '<h2 class="about-card-title">' + parseInline(card.title.replace('Nashwan', '<em>Nashwan</em>')) + '</h2>' +
+      '<div class="rich-markdown">' + renderMarkdown(card.body) + '</div>' +
+    '</article>'
+  )).join('');
 
   observeRevealElements(document.getElementById('about'));
 }
@@ -550,7 +587,12 @@ async function init() {
     buildContact(state.socialLinks);
   } catch (error) {
     console.error(error);
-    document.getElementById('aboutContent').innerHTML = '<p>Content could not be loaded. Please check that the markdown files are available.</p>';
+    document.getElementById('aboutGrid').innerHTML =
+      '<article class="about-card">' +
+        '<div class="about-card-label">Unavailable</div>' +
+        '<div class="about-card-title">Content could not be loaded.</div>' +
+        '<div class="rich-markdown"><p>Please check that the markdown files are available.</p></div>' +
+      '</article>';
   }
 }
 

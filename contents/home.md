@@ -27,9 +27,3 @@ I’m a Lead Platform Engineer with 15+ years of experience designing and implem
 - Enabled cloud and Kubernetes platform expansion into new regions
 - Designed secure private connectivity models for external partners and shared services
 - Improved platform operations through GitOps adoption and higher automation maturity
-
-### Explore more
-
-- [View resume](resume.html) for certifications, education, publications, and broader experience
-- [Browse projects](projects.html) for selected case-study style work
-- [Read articles](index_articles.html) for practical writing on Kubernetes, AWS, and platform engineering
