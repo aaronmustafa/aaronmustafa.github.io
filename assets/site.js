@@ -6,12 +6,14 @@ const SITE_FILES = {
   publications: '../contents/publications.md',
   awards: '../contents/awards.md',
   academic: '../contents/academic.md',
-  articlesIndex: '../contents/articles/index.json'
+  articlesIndex: '../contents/articles/index.json',
+  ckadIndex: '../contents/ckad/ckad.md'
 };
 
 const state = {
   articles: [],
-  socialLinks: []
+  socialLinks: [],
+  revealObserver: null
 };
 
 function assetUrl(path) {
@@ -221,6 +223,11 @@ function splitSubsections(md, level = 3) {
   return splitSections(md, level);
 }
 
+function observeRevealElements(root = document) {
+  if (!state.revealObserver) return;
+  root.querySelectorAll('.reveal').forEach((el) => state.revealObserver.observe(el));
+}
+
 function buildHero(config, homeMd, resumeMd, articles) {
   const personName = (config['page-top-title'] || 'Nashwan Mustafa').trim();
   const subtitle = config['home-subtitle'] || 'Platform Engineering | MLOps and AI | Secure Cloud Platforms | Technical Writing';
@@ -264,11 +271,20 @@ function buildHero(config, homeMd, resumeMd, articles) {
       '<div class="stat-label">' + stat.label + '</div>' +
     '</div>'
   )).join('');
+
+  observeRevealElements(document.getElementById('about'));
 }
 
 function buildProjects(projectsMd) {
-  const sections = splitSubsections(projectsMd, 3);
+  const rootSections = splitSections(projectsMd, 2);
+  const selectedProjectsSection = rootSections.find((section) => /selected projects/i.test(section.title));
+  const labsSection = rootSections.find((section) => /hands-on labs/i.test(section.title));
+  const intro = selectedProjectsSection ? selectedProjectsSection.body.replace(/###\s[\s\S]*/m, '').trim() : '';
+  const sections = selectedProjectsSection ? splitSubsections('## ' + selectedProjectsSection.title + '\n' + selectedProjectsSection.body, 3) : splitSubsections(projectsMd, 3);
   const grid = document.getElementById('projectsGrid');
+  const introNode = document.getElementById('projectsIntro');
+
+  introNode.innerHTML = intro ? renderMarkdown(intro) : '';
 
   grid.innerHTML = sections.map((section, index) => {
     const bulletMatches = [...section.body.matchAll(/^\s*-\s+(.*)$/gm)].map((match) => match[1]);
@@ -282,6 +298,10 @@ function buildProjects(projectsMd) {
       '</article>'
     );
   }).join('');
+
+  observeRevealElements(document.getElementById('projects'));
+
+  return { labsSection };
 }
 
 function buildMarquee(projectsMd, articles) {
@@ -331,19 +351,18 @@ function buildResume(resumeMd, awardsMd, academicMd) {
     });
 
   grid.innerHTML = cards.join('');
+  observeRevealElements(document.getElementById('resume'));
 }
 
 function buildWriting(publicationsMd, academicMd, articles) {
   const column = document.getElementById('articlesColumn');
   const panels = document.getElementById('writingPanels');
-  const featured = articles.filter((article) => article.featured);
-  const selected = (featured.length ? featured : articles).slice(0, 6);
-  const publicationSection = splitSections(publicationsMd, 4).find((section) => /publications/i.test(section.title));
-  const academicSections = splitSections(academicMd, 4);
-  const educationSection = academicSections.find((section) => /education/i.test(section.title));
-  const researchSection = academicSections.find((section) => /research/i.test(section.title));
+  const ordered = [...articles].sort((a, b) => {
+    if (a.featured !== b.featured) return a.featured ? -1 : 1;
+    return (b.date || '').localeCompare(a.date || '');
+  });
 
-  column.innerHTML = selected.map((article, index) => (
+  column.innerHTML = ordered.map((article, index) => (
     '<article class="article-card reveal reveal-delay-' + (index % 3) + '" tabindex="0" data-article-file="' + article.file + '" data-article-title="' + article.title.replace(/"/g, '&quot;') + '">' +
       '<div class="article-meta">' +
         '<span class="article-topic">' + article.topic + '</span>' +
@@ -360,15 +379,12 @@ function buildWriting(publicationsMd, academicMd, articles) {
     {
       label: 'Publications',
       title: 'Academic and published work',
-      body: publicationSection ? publicationSection.body : publicationsMd.trim()
+      body: publicationsMd.trim()
     },
     {
       label: 'Academic Background',
       title: 'Education and research interests',
-      body: [
-        educationSection ? '#### ' + educationSection.title + '\n' + educationSection.body : '',
-        researchSection ? '#### ' + researchSection.title + '\n' + researchSection.body : ''
-      ].filter(Boolean).join('\n\n') || academicMd.trim()
+      body: academicMd.trim()
     }
   ].map((panel, index) => (
     '<article class="writing-panel reveal reveal-delay-' + (index + 1) + '">' +
@@ -377,6 +393,64 @@ function buildWriting(publicationsMd, academicMd, articles) {
       '<div class="rich-markdown">' + renderMarkdown(panel.body) + '</div>' +
     '</article>'
   )).join('');
+
+  observeRevealElements(document.getElementById('writing'));
+}
+
+function buildResources(labsSection, ckadMd) {
+  const resourcePanels = document.getElementById('resourcePanels');
+  const docsColumn = document.getElementById('docsColumn');
+  const ckadSections = splitSections(ckadMd, 4);
+  const ckadOverview = ckadSections.find((section) => /ckad exercises/i.test(section.title));
+  const ckadContents = ckadSections.find((section) => /ckad contents/i.test(section.title));
+  const ckadPractice = ckadSections.find((section) => /killercoda/i.test(section.title));
+  const labsBody = labsSection ? '## ' + labsSection.title + '\n\n' + labsSection.body : '';
+
+  resourcePanels.innerHTML = [
+    {
+      label: 'Hands-On Labs',
+      title: 'Practical learning projects and demos',
+      body: labsBody || 'Practical labs will appear here.'
+    },
+    {
+      label: 'CKAD Track',
+      title: 'Exam preparation and Kubernetes study material',
+      body: [
+        ckadOverview ? '#### ' + ckadOverview.title + '\n' + ckadOverview.body : '',
+        ckadPractice ? '#### ' + ckadPractice.title + '\n' + ckadPractice.body : ''
+      ].filter(Boolean).join('\n\n') || ckadMd.trim()
+    }
+  ].map((panel, index) => (
+    '<article class="resource-panel reveal reveal-delay-' + (index + 1) + '">' +
+      '<div class="resource-label">' + panel.label + '</div>' +
+      '<h3 class="resource-title">' + panel.title + '</h3>' +
+      '<div class="rich-markdown">' + renderMarkdown(panel.body) + '</div>' +
+    '</article>'
+  )).join('');
+
+  const docs = [
+    { file: '../contents/ckad/ckad_core_concepts.md', title: 'Core Concepts', tag: 'CKAD', summary: 'Core Kubernetes primitives, object behavior, and essential application developer concepts.' },
+    { file: '../contents/ckad/multi_container_pod.md', title: 'Multi-Container Pods', tag: 'CKAD', summary: 'Patterns for sidecars, adapters, and grouped workloads within a single pod.' },
+    { file: '../contents/ckad/pod_design.md', title: 'Pod Design', tag: 'CKAD', summary: 'Deployment styles, labels, selectors, and pod-oriented design exercises.' },
+    { file: '../contents/ckad/configuration.md', title: 'Configuration', tag: 'CKAD', summary: 'ConfigMaps, Secrets, security context, service accounts, and application configuration techniques.' },
+    { file: '../contents/ckad/observability.md', title: 'Observability', tag: 'CKAD', summary: 'Health checks, logging, monitoring, and debugging-oriented Kubernetes practice.' },
+    { file: '../contents/ckad/services_and_networking.md', title: 'Services and Networking', tag: 'CKAD', summary: 'Service exposure, DNS, ingress, and internal networking behavior.' },
+    { file: '../contents/ckad/state_persistence.md', title: 'State Persistence', tag: 'CKAD', summary: 'Persistent volumes, claims, and workload storage patterns.' },
+    { file: '../contents/ckad/helm.md', title: 'Helm', tag: 'Addon', summary: 'Helm packaging and templating notes for practical cluster delivery workflows.' },
+    { file: '../contents/ckad/crd.md', title: 'CRD', tag: 'Addon', summary: 'Custom Resource Definition concepts and extension patterns.' },
+    { file: '../contents/ckad/podman.md', title: 'Podman', tag: 'Addon', summary: 'Container runtime notes and Podman-based workflow references.' }
+  ];
+
+  docsColumn.innerHTML = docs.map((doc, index) => (
+    '<article class="doc-card reveal reveal-delay-' + (index % 3) + '" tabindex="0" data-doc-file="' + doc.file + '" data-doc-title="' + doc.title.replace(/"/g, '&quot;') + '">' +
+      '<div class="doc-meta"><span class="doc-tag">' + doc.tag + '</span><span>Open note</span></div>' +
+      '<h3 class="doc-title">' + doc.title + '</h3>' +
+      '<p class="doc-summary">' + doc.summary + '</p>' +
+      '<span class="article-link">Read note <span>→</span></span>' +
+    '</article>'
+  )).join('');
+
+  observeRevealElements(document.getElementById('resources'));
 }
 
 function buildContact(homeLinks) {
@@ -395,6 +469,8 @@ function buildContact(homeLinks) {
       '<span class="contact-arrow">→</span>' +
     '</a>'
   )).join('');
+
+  observeRevealElements(document.getElementById('contact'));
 }
 
 async function openArticle(file, title) {
@@ -412,6 +488,24 @@ async function openArticle(file, title) {
     content.innerHTML = renderMarkdown(markdown);
   } catch (error) {
     content.innerHTML = '<p>Unable to load this article right now.</p>';
+  }
+}
+
+async function openDocument(file, title) {
+  const viewer = document.getElementById('articleViewer');
+  const content = document.getElementById('viewerContent');
+  const status = document.getElementById('viewerStatus');
+  viewer.classList.add('is-open');
+  viewer.setAttribute('aria-hidden', 'false');
+  status.textContent = title;
+  content.innerHTML = '<p class="loading">Loading document</p>';
+  document.body.style.overflow = 'hidden';
+
+  try {
+    const markdown = await fetchText(file);
+    content.innerHTML = renderMarkdown(markdown);
+  } catch (error) {
+    content.innerHTML = '<p>Unable to load this document right now.</p>';
   }
 }
 
@@ -433,13 +527,13 @@ function setupInteractions() {
   const cursorRing = document.getElementById('cursorRing');
   const finePointer = window.matchMedia('(pointer: fine)').matches;
 
-  const observer = new IntersectionObserver((entries) => {
+  state.revealObserver = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) entry.target.classList.add('visible');
     });
   }, { threshold: 0.18 });
 
-  document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+  observeRevealElements(document);
 
   if (finePointer) {
     document.body.classList.add('custom-cursor-enabled');
@@ -472,13 +566,13 @@ function setupInteractions() {
     });
 
     document.addEventListener('mouseover', (event) => {
-      if (event.target.closest('a, button, .article-card')) {
+      if (event.target.closest('a, button, .article-card, .doc-card')) {
         cursorRing.classList.add('hover');
       }
     });
 
     document.addEventListener('mouseout', (event) => {
-      if (event.target.closest('a, button, .article-card')) {
+      if (event.target.closest('a, button, .article-card, .doc-card')) {
         cursorRing.classList.remove('hover');
       }
     });
@@ -495,6 +589,11 @@ function setupInteractions() {
       openArticle(articleCard.dataset.articleFile, articleCard.dataset.articleTitle);
     }
 
+    const docCard = event.target.closest('[data-doc-file]');
+    if (docCard) {
+      openDocument(docCard.dataset.docFile, docCard.dataset.docTitle);
+    }
+
     if (event.target.closest('[data-close-viewer="true"]') || event.target.closest('#viewerClose')) {
       closeArticle();
     }
@@ -505,6 +604,10 @@ function setupInteractions() {
     if ((event.key === 'Enter' || event.key === ' ') && document.activeElement?.matches?.('[data-article-file]')) {
       event.preventDefault();
       openArticle(document.activeElement.dataset.articleFile, document.activeElement.dataset.articleTitle);
+    }
+    if ((event.key === 'Enter' || event.key === ' ') && document.activeElement?.matches?.('[data-doc-file]')) {
+      event.preventDefault();
+      openDocument(document.activeElement.dataset.docFile, document.activeElement.dataset.docTitle);
     }
   });
 }
@@ -521,7 +624,8 @@ async function init() {
       publicationsText,
       awardsText,
       academicText,
-      articlesIndex
+      articlesIndex,
+      ckadText
     ] = await Promise.all([
       fetchText(SITE_FILES.config),
       fetchText(SITE_FILES.home),
@@ -530,7 +634,8 @@ async function init() {
       fetchText(SITE_FILES.publications),
       fetchText(SITE_FILES.awards),
       fetchText(SITE_FILES.academic),
-      fetchJson(SITE_FILES.articlesIndex)
+      fetchJson(SITE_FILES.articlesIndex),
+      fetchText(SITE_FILES.ckadIndex)
     ]);
 
     const config = parseYaml(configText);
@@ -539,10 +644,11 @@ async function init() {
     state.socialLinks = homeData.socialLinks;
 
     buildHero(config, homeData.markdown, resumeText, state.articles);
-    buildProjects(projectsText);
+    const { labsSection } = buildProjects(projectsText);
     buildMarquee(projectsText, state.articles);
     buildResume(resumeText, awardsText, academicText);
     buildWriting(publicationsText, academicText, state.articles);
+    buildResources(labsSection, ckadText);
     buildContact(state.socialLinks);
   } catch (error) {
     console.error(error);

@@ -501,7 +501,8 @@
 
   .projects,
   .resume,
-  .writing {
+  .writing,
+  .resources {
     padding: 120px 60px;
   }
 
@@ -512,7 +513,8 @@
 
   .projects-grid,
   .resume-grid,
-  .writing-grid {
+  .writing-grid,
+  .resources-grid {
     display: grid;
     gap: 24px;
   }
@@ -530,10 +532,17 @@
     align-items: start;
   }
 
+  .resources-grid {
+    grid-template-columns: 0.9fr 1.1fr;
+    align-items: start;
+  }
+
   .project-card,
   .resume-card,
   .writing-panel,
+  .resource-panel,
   .article-card,
+  .doc-card,
   .article-viewer-panel {
     background: var(--panel);
     border: 1px solid var(--line);
@@ -543,12 +552,16 @@
 
   .project-card,
   .resume-card,
-  .writing-panel { padding: 36px; }
+  .writing-panel,
+  .resource-panel,
+  .doc-card { padding: 36px; }
 
   .project-card::before,
   .resume-card::before,
   .writing-panel::before,
+  .resource-panel::before,
   .article-card::before,
+  .doc-card::before,
   .article-viewer-panel::before {
     content: '';
     position: absolute;
@@ -562,7 +575,8 @@
 
   .project-index,
   .resume-label,
-  .writing-label {
+  .writing-label,
+  .resource-label {
     font-family: 'DM Mono', monospace;
     font-size: 0.62rem;
     letter-spacing: 0.22em;
@@ -573,7 +587,9 @@
 
   .project-title,
   .resume-title,
-  .writing-title {
+  .writing-title,
+  .resource-title,
+  .doc-title {
     font-family: 'Cormorant Garamond', serif;
     font-size: 2rem;
     font-weight: 300;
@@ -584,8 +600,18 @@
 
   .project-summary,
   .resume-card .rich-markdown,
-  .writing-panel .rich-markdown {
+  .writing-panel .rich-markdown,
+  .resource-panel .rich-markdown {
     font-size: 0.9rem;
+  }
+
+  .section-intro {
+    margin-bottom: 32px;
+  }
+
+  .docs-column {
+    display: grid;
+    gap: 18px;
   }
 
   .project-points {
@@ -633,8 +659,15 @@
     transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
   }
 
+  .doc-card {
+    cursor: pointer;
+    transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+  }
+
   .article-card:hover,
-  .article-card:focus-visible {
+  .article-card:focus-visible,
+  .doc-card:hover,
+  .doc-card:focus-visible {
     transform: translateY(-4px);
     border-color: rgba(200,71,10,0.25);
     background: rgba(200,71,10,0.05);
@@ -682,6 +715,29 @@
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--cream);
+  }
+
+  .doc-meta {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: 14px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--mist);
+  }
+
+  .doc-tag {
+    color: var(--gold);
+  }
+
+  .doc-summary {
+    color: var(--mist);
+    line-height: 1.82;
+    font-size: 0.88rem;
   }
 
   .vision-strip {
@@ -934,7 +990,8 @@
   @media (max-width: 1100px) {
     .resume-grid,
     .writing-grid,
-    .projects-grid {
+    .projects-grid,
+    .resources-grid {
       grid-template-columns: 1fr;
     }
 
@@ -956,6 +1013,7 @@
     .projects,
     .resume,
     .writing,
+    .resources,
     .contact {
       padding-left: 30px;
       padding-right: 30px;
@@ -968,7 +1026,8 @@
     }
     .projects,
     .resume,
-    .writing { padding-top: 80px; padding-bottom: 80px; }
+    .writing,
+    .resources { padding-top: 80px; padding-bottom: 80px; }
     .contact {
       grid-template-columns: 1fr;
       padding-top: 80px;
@@ -1003,6 +1062,7 @@
     <li><a href="#projects">Projects</a></li>
     <li><a href="#resume">Resume</a></li>
     <li><a href="#writing">Writing</a></li>
+    <li><a href="#resources">Resources</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
 </nav>
@@ -1068,6 +1128,7 @@
       <div class="divider-line"></div>
       <span class="divider-label">Selected Work</span>
     </div>
+    <div class="section-intro rich-markdown reveal" id="projectsIntro"></div>
     <div class="projects-grid" id="projectsGrid">
       <div class="project-card reveal">
         <div class="project-index">Loading</div>
@@ -1127,10 +1188,32 @@
     </div>
   </section>
 
+  <section class="resources" id="resources">
+    <div class="section-divider reveal">
+      <span class="divider-num">05</span>
+      <div class="divider-line"></div>
+      <span class="divider-label">Labs and Study Notes</span>
+    </div>
+    <div class="resources-grid">
+      <div id="resourcePanels">
+        <div class="resource-panel reveal">
+          <div class="resource-label">Loading</div>
+          <div class="resource-title">Study resources are being prepared.</div>
+        </div>
+      </div>
+      <div class="docs-column" id="docsColumn">
+        <div class="doc-card reveal">
+          <div class="doc-meta"><span>Loading resources</span></div>
+          <div class="doc-title">Lab and CKAD documents are being prepared.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="contact" id="contact">
     <div>
       <div class="section-divider reveal" style="padding: 0; margin-bottom: 48px;">
-        <span class="divider-num">05</span>
+        <span class="divider-num">06</span>
         <div class="divider-line"></div>
         <span class="divider-label">Connect</span>
       </div>
