@@ -1,0 +1,148 @@
+{
+  "articles": [
+    {
+      "file": "kubernetes/AWS_Secrets_Manager_with_Kubernetes_Secrets_Store_CSI_Driver.md",
+      "title": "AWS Secrets Manager With Kubernetes Secrets Store CSI Driver",
+      "summary": "The AWS Secrets and Configuration Provider (ASCP) for the Kubernetes Secrets Store CSI Driver allows you to securely mount secrets stored in AWS Secrets Manager as files in your Amazon EKS pods. This integration ensur...",
+      "topic": "Kubernetes",
+      "date": "2026-04-19",
+      "featured": false
+    },
+    {
+      "file": "ai/Claude-Code-Project-Bootstrap.md",
+      "title": "Claude Code Project Bootstrap",
+      "summary": "This script is a powerful utility designed to bootstrap a professional-grade development environment for Claude Code. It ensures that your project structure is optimized for GenAI workflows, providing Claude with the...",
+      "topic": "AI",
+      "date": "2026-04-19",
+      "featured": false
+    },
+    {
+      "file": "aws/Cross_Account_Access_to_ECR.md",
+      "title": "Cross Account Access To ECR",
+      "summary": "To enable an Amazon EKS cluster to access an Amazon ECR repository across multiple AWS accounts in a multi-tenant environment, follow these steps:",
+      "topic": "AWS",
+      "date": "2026-04-19",
+      "featured": false
+    },
+    {
+      "file": "kubernetes/Deploy_Simple_NodeJs_App_with_helm.md",
+      "title": "Deploy Simple Node Js App With Helm",
+      "summary": "in this Article I will explain how to build, publish nodejs app to docker registery and then deploy the built image of nodejs app to minikube with helm.",
+      "topic": "Kubernetes",
+      "date": "2026-04-19",
+      "featured": false
+    },
+    {
+      "file": "aws/eks-access-secrets.md",
+      "title": "EKS Access Secrets",
+      "summary": "This guide explains how to enable cross-account access to AWS Secrets Manager secrets from an Amazon EKS cluster using IAM Roles for Service Accounts (IRSA).",
+      "topic": "AWS",
+      "date": "2026-04-19",
+      "featured": false
+    },
+    {
+      "file": "cloud-architecture/Enterprise_Hybrid_DNS_Hub.md",
+      "title": "Enterprise Hybrid DNS Hub",
+      "summary": "This design implements a production-grade, organization-wide DNS architecture using Amazon Route 53 Resolver. By centralizing inbound and outbound DNS traffic within a dedicated Shared Services (DNS Hub) Account, we e...",
+      "topic": "Cloud Architecture",
+      "date": "2026-04-19",
+      "featured": false
+    },
+    {
+      "file": "aws-security/eso-managing-cross-account-secrets.md",
+      "title": "Eso Managing Cross Account Secrets",
+      "summary": "As Kubernetes platform engineers, we often face the challenge of securely sharing secrets across AWS accounts.",
+      "topic": "AWS Security",
+      "date": "2026-04-19",
+      "featured": true
+    },
+    {
+      "file": "observability/fluent-bit.md",
+      "title": "Fluent Bit",
+      "summary": "in this Article I will explain how to configure fluent-bit on EKS for shipping container logs to CloudWatch Log Group.",
+      "topic": "Observability",
+      "date": "2026-04-19",
+      "featured": false
+    },
+    {
+      "file": "kubernetes-networking/ingress-istio-traffic-Custom-Port.md",
+      "title": "Ingress Istio Traffic Custom Port",
+      "summary": "To allow traffic on custom port 8443 to an EKS cluster via an NLB to the Istio Ingress Gateway and all the way to the pods—while considering that the Gatekeeper policy only allows Istio Gateway configuration on port 4...",
+      "topic": "Kubernetes Networking",
+      "date": "2026-04-19",
+      "featured": false
+    },
+    {
+      "file": "kubernetes/Istio_Ambient_Mode.md",
+      "title": "Istio Ambient Mode",
+      "summary": "Istio Ambient Mode offers an alternative deployment architecture that eliminates the need for sidecar proxies by using a \"split proxy\" model. Instead of injecting a proxy into every application pod, traffic is managed...",
+      "topic": "Kubernetes",
+      "date": "2026-04-19",
+      "featured": false
+    },
+    {
+      "file": "observability/kube-prometheus-grafana.md",
+      "title": "Kube Prometheus Grafana",
+      "summary": "A comprehensive set of Prometheus rules and a Grafana dashboard for Kubernetes cluster health monitoring:",
+      "topic": "Observability",
+      "date": "2026-04-19",
+      "featured": false
+    },
+    {
+      "file": "ai/kubernetes-cost-optimizer.md",
+      "title": "Kubernetes Cost Optimizer",
+      "summary": "Kubernetes cost management is one of those areas where teams often have the data, but not a fast or usable way to turn that data into action.",
+      "topic": "AI",
+      "date": "2026-04-19",
+      "featured": true
+    },
+    {
+      "file": "kubernetes/kubernetes-sandbox.md",
+      "title": "Kubernetes Sandbox",
+      "summary": "If you want a fast, repeatable way to stand up a local Kubernetes environment with GitOps and monitoring included, this pattern is designed for exactly that.",
+      "topic": "Kubernetes",
+      "date": "2026-04-19",
+      "featured": true
+    },
+    {
+      "file": "exams-prep/MLA-C01_Exam Prep.md",
+      "title": "MLA C01 Exam Prep",
+      "summary": "AWS Certified Machine Learning Engineer – Associate (MLA-C01) Official Guide",
+      "topic": "Exams Prep",
+      "date": "2026-04-19",
+      "featured": false
+    },
+    {
+      "file": "aws-security/Prevent_Accessing_Leaky_Public_S3_Buckets.md",
+      "title": "Prevent Accessing Leaky Public S3 Buckets",
+      "summary": "Unrestricted access to public S3 buckets (leaky, external, or malware-infected) poses a major risk to organizations. Attackers may leverage misconfigured buckets to exfiltrate data, deliver malware, or act as a stagin...",
+      "topic": "AWS Security",
+      "date": "2026-04-19",
+      "featured": false
+    },
+    {
+      "file": "kubernetes/RunContainerError.md",
+      "title": "Run Container Error",
+      "summary": "In Kubernetes, the RunContainerError occurs when a container within a pod fails to start due to issues encountered while Kubernetes tries to run it. This error is usually linked to configuration, runtime, or container...",
+      "topic": "Kubernetes",
+      "date": "2026-04-19",
+      "featured": false
+    },
+    {
+      "file": "cloud-architecture/shared-vpcendpoint-model.md",
+      "title": "Shared VPCEndpoint Model",
+      "summary": "The cost of VPC Endpoints can escalate quickly in multi-account AWS environments. While Interface Endpoints provide a scalable way to connect to AWS services, deploying them per-VPC across multiple Availability Zones...",
+      "topic": "Cloud Architecture",
+      "date": "2026-04-19",
+      "featured": false
+    },
+    {
+      "file": "kubernetes/Troubleshooting_OOMKilled_in_Kubernetes.md",
+      "title": "Troubleshooting OOMKilled In Kubernetes",
+      "summary": "An OOMKilled error occurs when a container or process is terminated because it exceeds the memory limit allocated to it. This is a common issue in Kubernetes and Docker environments.",
+      "topic": "Kubernetes",
+      "date": "2026-04-19",
+      "featured": false
+    }
+  ]
+}
