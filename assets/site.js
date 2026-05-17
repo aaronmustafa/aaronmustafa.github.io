@@ -45,15 +45,48 @@ function parseYaml(text) {
   }, {});
 }
 
+function escapeHtml(text) {
+  return String(text)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
 function parseInline(text) {
-  return text
+  const escaped = escapeHtml(text);
+
+  return escaped
+    .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1">')
     .replace(/`([^`]+)`/g, '<code>$1</code>')
     .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
     .replace(/\*([^*]+)\*/g, '<em>$1</em>')
     .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noreferrer">$1</a>');
 }
 
-function renderMarkdown(md) {
+function resolveMarkdownUrl(url, basePath = '') {
+  if (!url) return url;
+  if (/^(?:[a-z]+:|#|\/)/i.test(url)) return url;
+  const normalized = url.replace(/^\.\//, '');
+  if (normalized.startsWith('contents/')) {
+    return assetUrl('../' + normalized);
+  }
+  return assetUrl(basePath + normalized);
+}
+
+function renderTableRow(line, cellTag, basePath) {
+  const trimmed = line.trim().replace(/^\|/, '').replace(/\|$/, '');
+  const cells = trimmed.split('|').map((cell) => cell.trim());
+  return '<tr>' + cells.map((cell) => '<' + cellTag + '>' + parseInlineWithBase(cell, basePath) + '</' + cellTag + '>').join('') + '</tr>';
+}
+
+function parseInlineWithBase(text, basePath = '') {
+  return parseInline(text)
+    .replace(/<img src="([^"]+)" alt="([^"]*)">/g, (_, url, alt) => '<img src="' + resolveMarkdownUrl(url, basePath) + '" alt="' + alt + '">')
+    .replace(/<a href="([^"]+)" target="_blank" rel="noreferrer">/g, (_, url) => '<a href="' + resolveMarkdownUrl(url, basePath) + '" target="_blank" rel="noreferrer">');
+}
+
+function renderMarkdown(md, options = {}) {
+  const basePath = options.basePath || '';
   const lines = md.replace(/\r/g, '').split('\n');
   const html = [];
   let paragraph = [];
@@ -65,14 +98,14 @@ function renderMarkdown(md) {
 
   function flushParagraph() {
     if (paragraph.length) {
-      html.push('<p>' + parseInline(paragraph.join(' ').trim()) + '</p>');
+      html.push('<p>' + parseInlineWithBase(paragraph.join(' ').trim(), basePath) + '</p>');
       paragraph = [];
     }
   }
 
   function flushList() {
     if (listItems.length) {
-      html.push('<' + listType + '>' + listItems.map((item) => '<li>' + parseInline(item.trim()) + '</li>').join('') + '</' + listType + '>');
+      html.push('<' + listType + '>' + listItems.map((item) => '<li>' + parseInlineWithBase(item.trim(), basePath) + '</li>').join('') + '</' + listType + '>');
       listItems = [];
       listType = null;
     }
@@ -91,7 +124,9 @@ function renderMarkdown(md) {
     }
   }
 
-  for (const line of lines) {
+  for (let i = 0; i < lines.length; i += 1) {
+    const line = lines[i];
+
     if (line.startsWith('```')) {
       if (inCode) {
         flushCode();
@@ -121,7 +156,47 @@ function renderMarkdown(md) {
       flushParagraph();
       flushList();
       const level = Math.min(headingMatch[1].length, 4);
-      html.push('<h' + level + '>' + parseInline(headingMatch[2].trim()) + '</h' + level + '>');
+      html.push('<h' + level + '>' + parseInlineWithBase(headingMatch[2].trim(), basePath) + '</h' + level + '>');
+      continue;
+    }
+
+    if (/^\s{0,3}([-*_])(\s*\1){2,}\s*$/.test(line)) {
+      flushParagraph();
+      flushList();
+      html.push('<hr>');
+      continue;
+    }
+
+    if (line.includes('|') && i + 1 < lines.length && /^\s*\|?[\-:\s|]+\|?\s*$/.test(lines[i + 1]) && /-/.test(lines[i + 1])) {
+      flushParagraph();
+      flushList();
+      const headerLine = line;
+      const separatorLine = lines[i + 1];
+      const bodyRows = [];
+      i += 2;
+      while (i < lines.length && lines[i].includes('|') && lines[i].trim()) {
+        bodyRows.push(lines[i]);
+        i += 1;
+      }
+      i -= 1;
+      const header = renderTableRow(headerLine, 'th', basePath);
+      const body = bodyRows.map((row) => renderTableRow(row, 'td', basePath)).join('');
+      html.push('<div class="table-wrap"><table><thead>' + header + '</thead><tbody>' + body + '</tbody></table></div>');
+      continue;
+    }
+
+    const quoteMatch = line.match(/^\s*>\s?(.*)$/);
+    if (quoteMatch) {
+      flushParagraph();
+      flushList();
+      const quoteLines = [quoteMatch[1]];
+      while (i + 1 < lines.length) {
+        const nextQuote = lines[i + 1].match(/^\s*>\s?(.*)$/);
+        if (!nextQuote) break;
+        quoteLines.push(nextQuote[1]);
+        i += 1;
+      }
+      html.push('<blockquote><p>' + parseInlineWithBase(quoteLines.join(' ').trim(), basePath) + '</p></blockquote>');
       continue;
     }
 
@@ -146,7 +221,12 @@ function renderMarkdown(md) {
     if (line.trim().startsWith('<') && line.trim().endsWith('>')) {
       flushParagraph();
       flushList();
-      html.push(line);
+      const imgMatch = line.trim().match(/^<img([^>]*?)src="([^"]+)"([^>]*)>$/i);
+      if (imgMatch) {
+        html.push('<img' + imgMatch[1] + 'src="' + resolveMarkdownUrl(imgMatch[2], basePath) + '"' + imgMatch[3] + '>');
+      } else {
+        html.push(line);
+      }
       continue;
     }
 
@@ -286,8 +366,8 @@ function buildHero(config, homeMd, articles) {
   document.getElementById('aboutGrid').innerHTML = cards.map((card, index) => (
     '<article class="about-card reveal reveal-delay-' + (index % 3) + '">' +
       '<div class="about-card-label">' + card.label + '</div>' +
-      '<h2 class="about-card-title">' + parseInline(card.title.replace('Nashwan', '<em>Nashwan</em>')) + '</h2>' +
-      '<div class="rich-markdown">' + renderMarkdown(card.body) + '</div>' +
+      '<h2 class="about-card-title">' + escapeHtml(card.title).replace(/Nashwan/g, '<em>Nashwan</em>') + '</h2>' +
+      '<div class="rich-markdown">' + renderMarkdown(card.body, { basePath: '../contents/' }) + '</div>' +
     '</article>'
   )).join('');
 
@@ -300,7 +380,7 @@ function buildProjects(projectsMd) {
   const intro = selectedProjectsSection ? selectedProjectsSection.body.replace(/###\s[\s\S]*/m, '').trim() : '';
   const sections = selectedProjectsSection ? splitSubsections('## ' + selectedProjectsSection.title + '\n' + selectedProjectsSection.body, 3) : splitSubsections(projectsMd, 3);
 
-  document.getElementById('projectsIntro').innerHTML = intro ? renderMarkdown(intro) : '';
+  document.getElementById('projectsIntro').innerHTML = intro ? renderMarkdown(intro, { basePath: '../contents/' }) : '';
   document.getElementById('projectsGrid').innerHTML = sections.map((section, index) => {
     const bulletMatches = [...section.body.matchAll(/^\s*-\s+(.*)$/gm)].map((match) => match[1]);
     const summary = section.body.replace(/^\s*-\s+.*$/gm, '').trim();
@@ -308,7 +388,7 @@ function buildProjects(projectsMd) {
       '<article class="project-card reveal reveal-delay-' + (index % 4) + '">' +
         '<div class="project-index">' + String(index + 1).padStart(2, '0') + '</div>' +
         '<h3 class="project-title">' + parseInline(section.title) + '</h3>' +
-        '<div class="project-summary rich-markdown">' + renderMarkdown(summary) + '</div>' +
+        '<div class="project-summary rich-markdown">' + renderMarkdown(summary, { basePath: '../contents/' }) + '</div>' +
         (bulletMatches.length ? '<ul class="project-points">' + bulletMatches.map((point) => '<li>' + parseInline(point) + '</li>').join('') + '</ul>' : '') +
       '</article>'
     );
@@ -350,7 +430,7 @@ function buildResume(resumeMd, awardsMd) {
         '<article class="resume-card reveal' + layoutClass + '">' +
           '<div class="resume-label">' + title + '</div>' +
           '<h3 class="resume-title">' + title + '</h3>' +
-          '<div class="rich-markdown">' + renderMarkdown(byTitle.get(title)) + '</div>' +
+          '<div class="rich-markdown">' + renderMarkdown(byTitle.get(title), { basePath: '../contents/' }) + '</div>' +
         '</article>'
       );
     }).join('');
@@ -363,7 +443,7 @@ function buildPublications(publicationsMd) {
     '<article class="publication-card reveal">' +
       '<div class="publication-label">Publications</div>' +
       '<h3 class="publication-title">Detailed publication record</h3>' +
-      '<div class="rich-markdown">' + renderMarkdown(publicationsMd.trim()) + '</div>' +
+      '<div class="rich-markdown">' + renderMarkdown(publicationsMd.trim(), { basePath: '../contents/' }) + '</div>' +
     '</article>';
 
   observeRevealElements(document.getElementById('publications'));
@@ -436,7 +516,7 @@ function buildWriting(academicMd, articles) {
   state.articles = articles;
   const academicSections = splitSections(academicMd, 4);
   const supportSection = academicSections.find((section) => /support or contact/i.test(section.title));
-  document.getElementById('supportNote').innerHTML = supportSection ? renderMarkdown('#### ' + supportSection.title + '\n' + supportSection.body) : '';
+  document.getElementById('supportNote').innerHTML = supportSection ? renderMarkdown('#### ' + supportSection.title + '\n' + supportSection.body, { basePath: '../contents/' }) : '';
 
   observeRevealElements(document.querySelector('.support-note'));
   renderArticleBrowser();
@@ -473,7 +553,7 @@ async function openArticle(file, title) {
   document.body.style.overflow = 'hidden';
   try {
     const markdown = await fetchText('../contents/articles/' + file);
-    content.innerHTML = renderMarkdown(markdown);
+    content.innerHTML = renderMarkdown(markdown, { basePath: '../contents/articles/' });
   } catch {
     content.innerHTML = '<p>Unable to load this article right now.</p>';
   }
