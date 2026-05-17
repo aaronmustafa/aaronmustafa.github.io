@@ -131,7 +131,7 @@
 
   .hero {
     position: relative;
-    min-height: 100vh;
+    min-height: 78vh;
     display: grid;
     grid-template-columns: 1fr 1fr;
     overflow: hidden;
@@ -415,7 +415,7 @@
     align-items: center;
     gap: 16px;
     padding: 0 60px;
-    margin-bottom: 48px;
+    margin-bottom: 28px;
   }
 
   .divider-num {
@@ -437,7 +437,7 @@
   }
 
   .about {
-    padding: 104px 60px;
+    padding: 40px 60px 56px;
     display: block;
     position: relative;
   }
@@ -528,7 +528,7 @@
     color: var(--mist);
   }
 
-  .rich-markdown > * + * { margin-top: 18px; }
+  .rich-markdown > * + * { margin-top: 10px; }
 
   .rich-markdown h1,
   .rich-markdown h2,
@@ -538,8 +538,12 @@
     font-weight: 300;
     line-height: 1.15;
     color: var(--cream);
-    margin-top: 34px;
-    margin-bottom: 14px;
+    margin-top: 16px;
+    margin-bottom: 8px;
+  }
+
+  .rich-markdown > :first-child {
+    margin-top: 0;
   }
 
   .rich-markdown h2 { font-size: 2rem; }
@@ -611,7 +615,7 @@
   .resume,
   .publications,
   .writing {
-    padding: 104px 60px;
+    padding: 56px 60px;
   }
 
   .projects-bg,
@@ -1175,7 +1179,7 @@
     .hero { grid-template-columns: 1fr; }
     .hero-left {
       justify-content: flex-start;
-      padding: 96px 30px 60px;
+      padding: 84px 30px 40px;
     }
     .hero-right { display: none; }
     .about,
@@ -1187,19 +1191,19 @@
       padding-right: 30px;
     }
     .about {
-      padding-top: 80px;
-      padding-bottom: 80px;
+      padding-top: 36px;
+      padding-bottom: 44px;
     }
     .about-grid { grid-template-columns: 1fr; }
     .projects,
     .resume,
     .publications,
-    .writing { padding-top: 80px; padding-bottom: 80px; }
+    .writing { padding-top: 44px; padding-bottom: 44px; }
     .contact {
       grid-template-columns: 1fr;
-      padding-top: 80px;
+      padding-top: 44px;
     }
-    .section-divider { padding: 0 30px; margin-bottom: 36px; }
+    .section-divider { padding: 0 30px; margin-bottom: 20px; }
     footer {
       padding: 30px;
       flex-direction: column;
@@ -1260,7 +1264,7 @@
           <div class="hero-portrait-glow"></div>
         </div>
       </div>
-      <p class="hero-orbit-copy" id="heroOrbitCopy">Kubernetes / Cloud / AI / MLOps / Security / Writing</p>
+      <p class="hero-orbit-copy" id="heroOrbitCopy">Kubernetes / Cloud / AI / MLOps / Security / Consultation</p>
     </div>
   </section>
 
