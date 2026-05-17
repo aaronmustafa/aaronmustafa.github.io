@@ -278,7 +278,7 @@ function buildHero(config, homeMd, articles) {
   if (combinedBody) {
     cards.push({
       label: 'Highlights',
-      title: 'Selected highlights and next steps',
+      title: highlightsSection ? highlightsSection.title : 'Selected highlights',
       body: combinedBody
     });
   }
