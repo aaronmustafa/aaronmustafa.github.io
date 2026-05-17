@@ -343,7 +343,7 @@ function buildResume(resumeMd, awardsMd) {
     .filter((title) => byTitle.has(title))
     .map((title) => {
       let layoutClass = '';
-      if (/Professional Summary|Core Capability Areas/.test(title)) layoutClass = ' wide';
+      if (/Professional Summary|Core Capability Areas/.test(title)) layoutClass = ' half';
       if (/Selected Certifications|Education|Awards/.test(title)) layoutClass = ' third';
       if (/Working Experience/.test(title)) layoutClass = ' full';
       return (
