@@ -253,11 +253,12 @@
 
   .hero-art {
     position: absolute;
-    inset: 50% auto auto 68px;
+    inset: 50% auto auto 112px;
     display: flex;
     align-items: center;
     justify-content: center;
     transform: translateY(-50%);
+    z-index: 0;
   }
 
   .geo-ring {
@@ -266,9 +267,9 @@
     border: 1px solid rgba(212,196,160,0.08);
   }
 
-  .geo-ring:nth-child(1) { width: 352px; height: 352px; animation: rotateSlow 40s linear infinite; }
-  .geo-ring:nth-child(2) { width: 266px; height: 266px; border-color: rgba(200,71,10,0.1); animation: rotateSlow 28s linear infinite reverse; }
-  .geo-ring:nth-child(3) { width: 214px; height: 214px; animation: rotateSlow 20s linear infinite; }
+  .geo-ring:nth-child(1) { width: 448px; height: 448px; animation: rotateSlow 40s linear infinite; }
+  .geo-ring:nth-child(2) { width: 372px; height: 372px; border-color: rgba(200,71,10,0.1); animation: rotateSlow 28s linear infinite reverse; }
+  .geo-ring:nth-child(3) { width: 304px; height: 304px; animation: rotateSlow 20s linear infinite; }
 
   .geo-ring::before {
     content: '';
@@ -289,6 +290,7 @@
     align-items: center;
     justify-content: center;
     transform: translateY(-50%);
+    z-index: 1;
   }
 
   .hero-portrait-orbit {
@@ -400,7 +402,7 @@
     position: absolute;
     top: 50%;
     left: 34px;
-    width: 28px;
+    height: 320px;
     font-family: 'DM Mono', monospace;
     font-size: 0.62rem;
     line-height: 1.8;
@@ -408,7 +410,9 @@
     color: rgba(212,196,160,0.55);
     text-transform: uppercase;
     writing-mode: vertical-rl;
+    white-space: nowrap;
     transform: translateY(-50%);
+    z-index: 2;
   }
 
   .section-divider {
