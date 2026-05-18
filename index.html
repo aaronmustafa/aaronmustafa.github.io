@@ -243,8 +243,8 @@
 
   .hero-portrait-orbit {
     position: absolute;
-    width: 456px;
-    height: 456px;
+    width: 320px;
+    height: 320px;
     border-radius: 50%;
     border: 1px solid rgba(200,71,10,0.22);
     opacity: 0.9;
@@ -271,15 +271,15 @@
   .hero-portrait-orbit::after {
     width: 7px;
     height: 7px;
-    right: 46px;
-    bottom: 34px;
+    right: 32px;
+    bottom: 22px;
     background: rgba(200,71,10,0.78);
     box-shadow: 0 0 14px rgba(200,71,10,0.45);
   }
 
   .hero-portrait-bg {
-    width: 380px;
-    height: 380px;
+    width: 266px;
+    height: 266px;
     border-radius: 50%;
     background: linear-gradient(160deg, #2a1f14 0%, #1a1008 60%, #0d0805 100%);
     position: relative;
@@ -303,6 +303,10 @@
     object-position: center 20%;
     filter: saturate(0.98) contrast(1.06) brightness(1.02);
     z-index: 0;
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-user-drag: none;
   }
 
   .hero-portrait-bg::before {
@@ -1321,7 +1325,7 @@
       <div class="hero-portrait-wrap">
         <div class="hero-portrait-orbit"></div>
         <div class="hero-portrait-bg" id="heroMonogram" data-monogram="">
-          <img src="assets/img/Nash.png" alt="Portrait of Nashwan Mustafa" class="hero-portrait-image">
+          <img src="assets/img/Nash.png" alt="Portrait of Nashwan Mustafa" class="hero-portrait-image" draggable="false">
           <div class="hero-portrait-glow"></div>
         </div>
       </div>

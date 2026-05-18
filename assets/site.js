@@ -567,6 +567,7 @@ function closeArticle() {
 function setupInteractions() {
   const cursor = document.getElementById('cursor');
   const cursorRing = document.getElementById('cursorRing');
+  const heroMonogram = document.getElementById('heroMonogram');
   const finePointer = window.matchMedia('(pointer: fine)').matches;
 
   state.revealObserver = new IntersectionObserver((entries) => {
@@ -636,6 +637,12 @@ function setupInteractions() {
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape') closeArticle();
   });
+
+  if (heroMonogram) {
+    heroMonogram.addEventListener('contextmenu', (event) => {
+      event.preventDefault();
+    });
+  }
 }
 
 async function init() {
