@@ -202,9 +202,38 @@
   }
 
   .hero-role-line {
-    width: 48px;
+    position: relative;
+    width: 56px;
     height: 1px;
+    background: linear-gradient(90deg, rgba(200,71,10,0.22), rgba(200,71,10,0.92), rgba(200,71,10,0.12));
+    overflow: visible;
+  }
+
+  .hero-role-line::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
     background: var(--ember);
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 16px rgba(200,71,10,0.55);
+    animation: roleDot 2.1s ease-in-out infinite;
+  }
+
+  .hero-role-line::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 14px;
+    height: 14px;
+    border: 1px solid rgba(200,71,10,0.22);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    animation: roleHalo 2.1s ease-in-out infinite;
   }
 
   .hero-role-text {
@@ -236,7 +265,7 @@
 
   .geo-ring:nth-child(1) { width: 352px; height: 352px; animation: rotateSlow 40s linear infinite; }
   .geo-ring:nth-child(2) { width: 266px; height: 266px; border-color: rgba(200,71,10,0.1); animation: rotateSlow 28s linear infinite reverse; }
-  .geo-ring:nth-child(3) { width: 186px; height: 186px; animation: rotateSlow 20s linear infinite; }
+  .geo-ring:nth-child(3) { width: 214px; height: 214px; animation: rotateSlow 20s linear infinite; }
 
   .geo-ring::before {
     content: '';
@@ -366,8 +395,9 @@
   .hero-orbit-copy {
     position: absolute;
     top: 18%;
-    right: 6%;
+    right: 4%;
     width: 180px;
+    padding-left: 26px;
     font-family: 'DM Mono', monospace;
     font-size: 0.62rem;
     line-height: 1.8;
@@ -377,59 +407,41 @@
     writing-mode: vertical-rl;
   }
 
-  .hero-scroll {
-    position: relative;
-    bottom: auto;
-    left: auto;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    margin-top: 22px;
-    opacity: 0;
-    animation: fadeUp 0.8s 1.2s forwards;
-  }
-
-  .scroll-bar {
-    position: relative;
+  .hero-orbit-copy::before {
+    content: '';
+    position: absolute;
+    left: 2px;
+    top: 0;
     width: 1px;
     height: 54px;
     background: linear-gradient(to bottom, rgba(200,71,10,0.15), rgba(200,71,10,0.9), transparent);
     overflow: visible;
   }
 
-  .scroll-bar::before {
+  .hero-orbit-copy::after {
     content: '';
     position: absolute;
+    left: 2px;
     top: 0;
-    left: 50%;
     width: 7px;
     height: 7px;
     border-radius: 50%;
     background: var(--ember);
-    transform: translate(-50%, 0);
+    transform: translate(-43%, 0);
     box-shadow: 0 0 16px rgba(200,71,10,0.55);
     animation: scrollDot 2.1s ease-in-out infinite;
   }
 
-  .scroll-bar::after {
-    content: '';
+  .hero-orbit-copy-mark {
     position: absolute;
-    top: 0;
-    left: 50%;
+    left: -4px;
+    top: -3px;
     width: 14px;
     height: 14px;
     border: 1px solid rgba(200,71,10,0.25);
     border-radius: 50%;
-    transform: translate(-50%, -3px);
     animation: scrollHalo 2.1s ease-in-out infinite;
-  }
-
-  .scroll-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.6rem;
-    letter-spacing: 0.2em;
-    color: var(--mist);
-    text-transform: uppercase;
+    pointer-events: none;
   }
 
   .section-divider {
@@ -1232,6 +1244,18 @@
     100% { transform: translate(-50%, 40px) scale(1.4); opacity: 0; }
   }
 
+  @keyframes roleDot {
+    0% { transform: translate(-50%, -50%); opacity: 0.9; }
+    60% { transform: translate(42px, -50%); opacity: 1; }
+    100% { transform: translate(50px, -50%); opacity: 0.15; }
+  }
+
+  @keyframes roleHalo {
+    0% { transform: translate(-50%, -50%) scale(0.85); opacity: 0.5; }
+    60% { transform: translate(34px, -50%) scale(1.15); opacity: 0.18; }
+    100% { transform: translate(46px, -50%) scale(1.4); opacity: 0; }
+  }
+
   @keyframes marquee {
     from { transform: translateX(0); }
     to { transform: translateX(-50%); }
@@ -1333,10 +1357,6 @@
         <div class="hero-role-line"></div>
         <span class="hero-role-text" id="heroRole">Platform Engineering | MLOps and AI | Secure Cloud Platforms | Technical Writing</span>
       </div>
-      <div class="hero-scroll">
-        <div class="scroll-bar"></div>
-        <span class="scroll-label">Scroll</span>
-      </div>
     </div>
     <div class="hero-right">
       <div class="hero-art">
@@ -1351,7 +1371,7 @@
           <div class="hero-portrait-glow"></div>
         </div>
       </div>
-      <p class="hero-orbit-copy" id="heroOrbitCopy">Kubernetes / Cloud / AI / MLOps / Security / Consultation</p>
+      <p class="hero-orbit-copy" id="heroOrbitCopy"><span class="hero-orbit-copy-mark" aria-hidden="true"></span>Kubernetes / Cloud / AI / MLOps / Security / Consultation</p>
     </div>
   </section>
 
