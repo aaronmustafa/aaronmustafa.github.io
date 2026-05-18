@@ -13,7 +13,9 @@ const state = {
   articles: [],
   socialLinks: [],
   revealObserver: null,
-  selectedTopic: 'AI'
+  selectedTopic: 'AI',
+  currentArticleFile: '',
+  currentArticleTitle: ''
 };
 
 function assetUrl(path) {
@@ -307,6 +309,31 @@ function escapeAttr(value) {
   return String(value).replace(/"/g, '&quot;');
 }
 
+function buildArticleUrl(file) {
+  const url = new URL(window.location.href);
+  url.searchParams.set('article', file);
+  return url.toString();
+}
+
+function getArticleFromUrl() {
+  const url = new URL(window.location.href);
+  return url.searchParams.get('article') || '';
+}
+
+function clearArticleUrl() {
+  const url = new URL(window.location.href);
+  url.searchParams.delete('article');
+  return url.pathname + url.search + url.hash;
+}
+
+function syncSelectedTopicForArticle(file) {
+  const article = state.articles.find((item) => item.file === file);
+  if (article && article.topic) {
+    state.selectedTopic = article.topic;
+  }
+  return article;
+}
+
 function buildHero(config, homeMd, articles) {
   const personName = (config['page-top-title'] || 'Nashwan Mustafa').trim();
   const subtitle = config['home-subtitle'] || 'Platform Engineering | MLOps and AI | Secure Cloud Platforms | Technical Writing';
@@ -500,7 +527,7 @@ function renderArticleBrowser() {
           '</div>' +
           '<h4 class="article-title">' + article.title + '</h4>' +
           '<p class="article-summary">' + article.summary + '</p>' +
-          '<a href="#" class="article-link" data-article-file="' + article.file + '" data-article-title="' + escapeAttr(article.title) + '">Open article <span>→</span></a>' +
+          '<a href="' + escapeAttr(buildArticleUrl(article.file)) + '" class="article-link" data-article-file="' + article.file + '" data-article-title="' + escapeAttr(article.title) + '">Open article <span>→</span></a>' +
         '</article>'
       )).join('') +
       '</div>' +
@@ -539,15 +566,24 @@ function buildContact(homeLinks) {
   observeRevealElements(document.getElementById('contact'));
 }
 
-async function openArticle(file, title) {
+async function openArticle(file, title, options = {}) {
   const viewer = document.getElementById('articleViewer');
   const content = document.getElementById('viewerContent');
   const status = document.getElementById('viewerStatus');
+  const articleTitle = title || (state.articles.find((item) => item.file === file) || {}).title || 'Article viewer';
+
+  state.currentArticleFile = file;
+  state.currentArticleTitle = articleTitle;
   viewer.classList.add('is-open');
   viewer.setAttribute('aria-hidden', 'false');
-  status.textContent = title;
+  status.textContent = articleTitle;
   content.innerHTML = '<p class="loading">Loading article</p>';
   document.body.style.overflow = 'hidden';
+
+  if (!options.skipHistory) {
+    window.history.pushState({ article: file }, '', buildArticleUrl(file));
+  }
+
   try {
     const markdown = await fetchText('../contents/articles/' + file);
     content.innerHTML = renderMarkdown(markdown, { basePath: '../contents/articles/' });
@@ -556,11 +592,31 @@ async function openArticle(file, title) {
   }
 }
 
-function closeArticle() {
+function closeArticle(options = {}) {
   const viewer = document.getElementById('articleViewer');
   viewer.classList.remove('is-open');
   viewer.setAttribute('aria-hidden', 'true');
   document.body.style.overflow = '';
+  state.currentArticleFile = '';
+  state.currentArticleTitle = '';
+
+  if (!options.skipHistory && getArticleFromUrl()) {
+    window.history.pushState({}, '', clearArticleUrl());
+  }
+}
+
+function syncArticleFromUrl() {
+  const articleFile = getArticleFromUrl();
+  if (!articleFile) {
+    if (state.currentArticleFile) closeArticle({ skipHistory: true });
+    return;
+  }
+
+  const article = syncSelectedTopicForArticle(articleFile);
+  if (article) renderArticleBrowser();
+
+  if (state.currentArticleFile === articleFile) return;
+  openArticle(articleFile, article ? article.title : '', { skipHistory: true });
 }
 
 function setupInteractions() {
@@ -637,6 +693,10 @@ function setupInteractions() {
     if (event.key === 'Escape') closeArticle();
   });
 
+  window.addEventListener('popstate', () => {
+    syncArticleFromUrl();
+  });
+
   if (heroMonogram) {
     heroMonogram.addEventListener('contextmenu', (event) => {
       event.preventDefault();
@@ -671,6 +731,7 @@ async function init() {
     buildPublications(publicationsText);
     buildWriting(academicText, state.articles);
     buildContact(state.socialLinks);
+    syncArticleFromUrl();
   } catch (error) {
     console.error(error);
     document.getElementById('aboutGrid').innerHTML =
