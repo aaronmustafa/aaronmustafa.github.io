@@ -318,7 +318,6 @@ function buildHero(config, homeMd, articles) {
   document.getElementById('navLogo').textContent = personName;
   document.getElementById('heroEyebrow').textContent = eyebrow;
   document.getElementById('heroRole').textContent = subtitle;
-  document.getElementById('heroName').innerHTML = firstName + (lastName ? '<em>' + lastName + '</em>' : '');
   document.getElementById('heroMonogram').setAttribute('data-monogram', (firstName[0] || 'N') + (lastName[0] || 'M'));
   document.getElementById('heroOrbitCopy').textContent = 'AI / Kubernetes / AWS Cloud / Everything as a Code';
   document.getElementById('footerCopy').innerHTML = config['copyright-text'] || personName;

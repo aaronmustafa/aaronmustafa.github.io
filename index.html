@@ -107,7 +107,7 @@
     font-weight: 300;
     letter-spacing: 0.3em;
     text-transform: uppercase;
-    color: var(--sand);
+    color: var(--ember);
     text-decoration: none;
   }
 
@@ -122,13 +122,13 @@
     font-size: 0.68rem;
     letter-spacing: 0.15em;
     text-transform: uppercase;
-    color: var(--mist);
+    color: rgba(200,71,10,0.78);
     text-decoration: none;
     transition: color 0.3s;
   }
 
   .nav-links a:hover,
-  .nav-links a:focus-visible { color: var(--cream); }
+  .nav-links a:focus-visible { color: var(--ember); }
 
   .hero {
     position: relative;
@@ -158,21 +158,38 @@
     animation: fadeUp 0.8s 0.3s forwards;
   }
 
-  .hero-name {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(3.2rem, 5.8vw, 6.1rem);
-    font-weight: 300;
-    line-height: 0.9;
-    letter-spacing: -0.02em;
-    color: var(--cream);
+  .hero-signal {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 6px;
     opacity: 0;
     animation: fadeUp 0.9s 0.5s forwards;
   }
 
-  .hero-name em {
-    font-style: italic;
-    color: var(--sand);
+  .hero-signal-line {
     display: block;
+    height: 1px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, rgba(200,71,10,0.95), rgba(200,71,10,0.18));
+    box-shadow: 0 0 16px rgba(200,71,10,0.18);
+  }
+
+  .hero-signal-line.long {
+    width: clamp(180px, 24vw, 320px);
+  }
+
+  .hero-signal-line.short {
+    width: 72px;
+    opacity: 0.75;
+  }
+
+  .hero-signal-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--ember);
+    box-shadow: 0 0 16px rgba(200,71,10,0.55);
   }
 
   .hero-role {
@@ -217,9 +234,9 @@
     border: 1px solid rgba(212,196,160,0.08);
   }
 
-  .geo-ring:nth-child(1) { width: 500px; height: 500px; animation: rotateSlow 40s linear infinite; }
-  .geo-ring:nth-child(2) { width: 380px; height: 380px; border-color: rgba(200,71,10,0.1); animation: rotateSlow 28s linear infinite reverse; }
-  .geo-ring:nth-child(3) { width: 260px; height: 260px; animation: rotateSlow 20s linear infinite; }
+  .geo-ring:nth-child(1) { width: 352px; height: 352px; animation: rotateSlow 40s linear infinite; }
+  .geo-ring:nth-child(2) { width: 266px; height: 266px; border-color: rgba(200,71,10,0.1); animation: rotateSlow 28s linear infinite reverse; }
+  .geo-ring:nth-child(3) { width: 186px; height: 186px; animation: rotateSlow 20s linear infinite; }
 
   .geo-ring::before {
     content: '';
@@ -1306,7 +1323,11 @@
   <section class="hero">
     <div class="hero-left">
       <p class="hero-eyebrow" id="heroEyebrow">Platform and AI Engineering</p>
-      <h1 class="hero-name" id="heroName">Nashwan<em>Mustafa</em></h1>
+      <div class="hero-signal" aria-hidden="true">
+        <span class="hero-signal-line long"></span>
+        <span class="hero-signal-dot"></span>
+        <span class="hero-signal-line short"></span>
+      </div>
       <div class="hero-role">
         <div class="hero-role-line"></div>
         <span class="hero-role-text" id="heroRole">Platform Engineering | MLOps and AI | Secure Cloud Platforms | Technical Writing</span>
