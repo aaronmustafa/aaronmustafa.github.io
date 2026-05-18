@@ -350,7 +350,7 @@ function buildHero(config, homeMd, articles) {
     });
   }
   const combinedBody = [
-    highlightsSection ? '### ' + highlightsSection.title + '\n' + highlightsSection.body : '',
+    highlightsSection ? highlightsSection.body : '',
     exploreSection ? '### ' + exploreSection.title + '\n' + exploreSection.body : ''
   ].filter(Boolean).join('\n\n');
   if (combinedBody) {
