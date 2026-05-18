@@ -2,9 +2,7 @@ const SITE_FILES = {
   config: '../contents/config.yml',
   home: '../contents/home.md',
   projects: '../contents/projects.md',
-  resume: '../contents/resume.md',
-  publications: '../contents/publications.md',
-  awards: '../contents/awards.md',
+  profile: '../contents/profile.md',
   academic: '../contents/academic.md',
   articlesIndex: '../contents/articles/index.json'
 };
@@ -429,48 +427,28 @@ function buildMarquee(projectsMd, articles) {
   document.getElementById('marqueeTrack').innerHTML = doubled.map((item) => '<div class="marquee-item"><span class="marquee-text">' + item + '</span><span class="marquee-dot"></span></div>').join('');
 }
 
-function buildResume(resumeMd, awardsMd) {
-  const sections = splitSections(resumeMd, 2);
-  const byTitle = new Map(sections.map((section) => [section.title, section.body]));
-  if (!byTitle.get('Awards') && awardsMd.trim()) byTitle.set('Awards', awardsMd.trim());
+function buildResume(profileMd) {
+  const sections = splitSections(profileMd, 2);
+  const summarySection = sections.find((section) => /professional summary/i.test(section.title));
+  const projectsSection = sections.find((section) => /recent platform projects/i.test(section.title));
+  const publicationsSection = sections.find((section) => /academic publications/i.test(section.title));
 
-  const order = [
-    'Professional Summary',
-    'Core Capability Areas',
-    'Working Experience',
-    'Selected Certifications',
-    'Education',
-    'Awards'
-  ];
-
-  document.getElementById('resumeGrid').innerHTML = order
-    .filter((title) => byTitle.has(title))
-    .map((title) => {
-      let layoutClass = '';
-      if (/Professional Summary|Core Capability Areas/.test(title)) layoutClass = ' half';
-      if (/Selected Certifications|Education|Awards/.test(title)) layoutClass = ' third';
-      if (/Working Experience/.test(title)) layoutClass = ' full';
-      return (
-        '<article class="resume-card reveal' + layoutClass + '">' +
-          '<div class="resume-label">' + title + '</div>' +
-          '<h3 class="resume-title">' + title + '</h3>' +
-          '<div class="rich-markdown">' + renderMarkdown(byTitle.get(title), { basePath: '../contents/' }) + '</div>' +
-        '</article>'
-      );
-    }).join('');
-
-  observeRevealElements(document.getElementById('resume'));
-}
-
-function buildPublications(publicationsMd) {
-  document.getElementById('publicationsGrid').innerHTML =
-    '<article class="publication-card reveal">' +
-      '<div class="publication-label">Publications</div>' +
-      '<h3 class="publication-title">Detailed publication record</h3>' +
-      '<div class="rich-markdown">' + renderMarkdown(publicationsMd.trim(), { basePath: '../contents/' }) + '</div>' +
+  document.getElementById('resumeGrid').innerHTML =
+    '<article class="resume-card full reveal resume-launcher">' +
+      '<div class="resume-label">Profile</div>' +
+      '<h3 class="resume-title">Experience, projects, and publications</h3>' +
+      '<div class="rich-markdown">' +
+        (summarySection ? renderMarkdown(summarySection.body, { basePath: '../contents/' }) : '<p>A complete professional profile is available here.</p>') +
+      '</div>' +
+      '<div class="resume-meta">' +
+        (projectsSection ? '<span>Recent Projects</span>' : '') +
+        (publicationsSection ? '<span>Academic Publications</span>' : '') +
+        '<span>Full Resume</span>' +
+      '</div>' +
+      '<a href="#" class="article-link resume-link" data-profile-file="profile.md" data-profile-title="Professional Profile">Open full profile <span>→</span></a>' +
     '</article>';
 
-  observeRevealElements(document.getElementById('publications'));
+  observeRevealElements(document.getElementById('resume'));
 }
 
 function renderArticleBrowser() {
@@ -592,6 +570,24 @@ async function openArticle(file, title, options = {}) {
   }
 }
 
+async function openProfile(file, title) {
+  const viewer = document.getElementById('articleViewer');
+  const content = document.getElementById('viewerContent');
+  const status = document.getElementById('viewerStatus');
+  viewer.classList.add('is-open');
+  viewer.setAttribute('aria-hidden', 'false');
+  status.textContent = title || 'Professional Profile';
+  content.innerHTML = '<p class="loading">Loading profile</p>';
+  document.body.style.overflow = 'hidden';
+
+  try {
+    const markdown = await fetchText('../contents/' + file);
+    content.innerHTML = renderMarkdown(markdown, { basePath: '../contents/' });
+  } catch {
+    content.innerHTML = '<p>Unable to load this profile right now.</p>';
+  }
+}
+
 function closeArticle(options = {}) {
   const viewer = document.getElementById('articleViewer');
   viewer.classList.remove('is-open');
@@ -682,6 +678,14 @@ function setupInteractions() {
     if (articleLink) {
       event.preventDefault();
       openArticle(articleLink.dataset.articleFile, articleLink.dataset.articleTitle);
+      return;
+    }
+
+    const profileLink = event.target.closest('[data-profile-file]');
+    if (profileLink) {
+      event.preventDefault();
+      openProfile(profileLink.dataset.profileFile, profileLink.dataset.profileTitle);
+      return;
     }
 
     if (event.target.closest('[data-close-viewer="true"]') || event.target.closest('#viewerClose')) {
@@ -708,13 +712,11 @@ async function init() {
   setupInteractions();
 
   try {
-    const [configText, homeText, projectsText, resumeText, publicationsText, awardsText, academicText, articlesIndex] = await Promise.all([
+    const [configText, homeText, projectsText, profileText, academicText, articlesIndex] = await Promise.all([
       fetchText(SITE_FILES.config),
       fetchText(SITE_FILES.home),
       fetchText(SITE_FILES.projects),
-      fetchText(SITE_FILES.resume),
-      fetchText(SITE_FILES.publications),
-      fetchText(SITE_FILES.awards),
+      fetchText(SITE_FILES.profile),
       fetchText(SITE_FILES.academic),
       fetchJson(SITE_FILES.articlesIndex)
     ]);
@@ -727,8 +729,7 @@ async function init() {
     buildHero(config, homeData.markdown, state.articles);
     buildProjects(projectsText);
     buildMarquee(projectsText, state.articles);
-    buildResume(resumeText, awardsText);
-    buildPublications(publicationsText);
+    buildResume(profileText);
     buildWriting(academicText, state.articles);
     buildContact(state.socialLinks);
     syncArticleFromUrl();
