@@ -716,9 +716,9 @@ async function init() {
       fetchText(SITE_FILES.config),
       fetchText(SITE_FILES.home),
       fetchText(SITE_FILES.projects),
-      fetchText(SITE_FILES.profile),
-      fetchText(SITE_FILES.academic),
-      fetchJson(SITE_FILES.articlesIndex)
+      fetchText(SITE_FILES.profile).catch(() => ''),
+      fetchText(SITE_FILES.academic).catch(() => ''),
+      fetchJson(SITE_FILES.articlesIndex).catch(() => ({ articles: [] }))
     ]);
 
     const config = parseYaml(configText);
@@ -729,8 +729,8 @@ async function init() {
     buildHero(config, homeData.markdown, state.articles);
     buildProjects(projectsText);
     buildMarquee(projectsText, state.articles);
-    buildResume(profileText);
-    buildWriting(academicText, state.articles);
+    buildResume(profileText || '## Professional Summary\nA complete professional profile is being prepared.\n');
+    buildWriting(academicText || '', state.articles);
     buildContact(state.socialLinks);
     syncArticleFromUrl();
   } catch (error) {
