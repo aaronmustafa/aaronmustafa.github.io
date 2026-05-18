@@ -132,9 +132,9 @@
 
   .hero {
     position: relative;
-    min-height: 78vh;
+    min-height: 70vh;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(320px, 0.85fr) minmax(0, 1.15fr);
     overflow: hidden;
   }
 
@@ -142,9 +142,10 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 72px 60px 80px;
+    padding: 96px 60px 56px 24px;
     position: relative;
     z-index: 2;
+    order: 2;
   }
 
   .hero-eyebrow {
@@ -246,15 +247,17 @@
 
   .hero-right {
     position: relative;
-    overflow: hidden;
+    overflow: visible;
+    order: 1;
   }
 
   .hero-art {
     position: absolute;
-    inset: 0;
+    inset: 50% auto auto 68px;
     display: flex;
     align-items: center;
     justify-content: center;
+    transform: translateY(-50%);
   }
 
   .geo-ring {
@@ -281,10 +284,11 @@
 
   .hero-portrait-wrap {
     position: absolute;
-    inset: 0;
+    inset: 50% auto auto 68px;
     display: flex;
     align-items: center;
     justify-content: center;
+    transform: translateY(-50%);
   }
 
   .hero-portrait-orbit {
@@ -394,10 +398,9 @@
 
   .hero-orbit-copy {
     position: absolute;
-    top: 18%;
-    right: 4%;
-    width: 180px;
-    padding-left: 26px;
+    top: 50%;
+    left: 34px;
+    width: 28px;
     font-family: 'DM Mono', monospace;
     font-size: 0.62rem;
     line-height: 1.8;
@@ -405,43 +408,7 @@
     color: rgba(212,196,160,0.55);
     text-transform: uppercase;
     writing-mode: vertical-rl;
-  }
-
-  .hero-orbit-copy::before {
-    content: '';
-    position: absolute;
-    left: 2px;
-    top: 0;
-    width: 1px;
-    height: 54px;
-    background: linear-gradient(to bottom, rgba(200,71,10,0.15), rgba(200,71,10,0.9), transparent);
-    overflow: visible;
-  }
-
-  .hero-orbit-copy::after {
-    content: '';
-    position: absolute;
-    left: 2px;
-    top: 0;
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: var(--ember);
-    transform: translate(-43%, 0);
-    box-shadow: 0 0 16px rgba(200,71,10,0.55);
-    animation: scrollDot 2.1s ease-in-out infinite;
-  }
-
-  .hero-orbit-copy-mark {
-    position: absolute;
-    left: -4px;
-    top: -3px;
-    width: 14px;
-    height: 14px;
-    border: 1px solid rgba(200,71,10,0.25);
-    border-radius: 50%;
-    animation: scrollHalo 2.1s ease-in-out infinite;
-    pointer-events: none;
+    transform: translateY(-50%);
   }
 
   .section-divider {
@@ -471,7 +438,7 @@
   }
 
   .about {
-    padding: 40px 60px 56px;
+    padding: 24px 60px 56px;
     display: block;
     position: relative;
   }
@@ -1284,6 +1251,7 @@
     .nav-links a { font-size: 0.62rem; }
     .hero { grid-template-columns: 1fr; }
     .hero-left {
+      order: 1;
       justify-content: flex-start;
       padding: 84px 30px 40px;
     }
@@ -1371,7 +1339,7 @@
           <div class="hero-portrait-glow"></div>
         </div>
       </div>
-      <p class="hero-orbit-copy" id="heroOrbitCopy"><span class="hero-orbit-copy-mark" aria-hidden="true"></span>Kubernetes / Cloud / AI / MLOps / Security / Consultation</p>
+      <p class="hero-orbit-copy" id="heroOrbitCopy">Kubernetes / Cloud / AI / MLOps / Security / Consultation</p>
     </div>
   </section>
 
