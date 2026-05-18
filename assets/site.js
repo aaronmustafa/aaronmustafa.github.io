@@ -314,15 +314,13 @@ function buildHero(config, homeMd, articles) {
   const nameParts = personName.split(' ');
   const firstName = nameParts.shift() || personName;
   const lastName = nameParts.join(' ') || '';
-  const topics = Array.from(new Set(articles.slice(0, 5).map((article) => article.topic))).filter(Boolean);
-
   document.title = config.title || document.title;
   document.getElementById('navLogo').textContent = personName;
   document.getElementById('heroEyebrow').textContent = eyebrow;
   document.getElementById('heroRole').textContent = subtitle;
   document.getElementById('heroName').innerHTML = firstName + (lastName ? '<em>' + lastName + '</em>' : '');
   document.getElementById('heroMonogram').setAttribute('data-monogram', (firstName[0] || 'N') + (lastName[0] || 'M'));
-  document.getElementById('heroOrbitCopy').textContent = topics.length ? topics.join(' / ') : 'Kubernetes / Cloud / AI / MLOps / Security';
+  document.getElementById('heroOrbitCopy').textContent = 'AI / Kubernetes / AWS Cloud / Everything as a Code';
   document.getElementById('footerCopy').innerHTML = config['copyright-text'] || personName;
   document.getElementById('footerMark').textContent = ((firstName[0] || 'N') + (lastName[0] || 'M')).toUpperCase();
 
