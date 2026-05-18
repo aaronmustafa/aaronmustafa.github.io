@@ -488,7 +488,7 @@ function renderArticleBrowser() {
     );
   }).join('');
 
-  const selectedArticles = grouped[state.selectedTopic].slice(0, 4);
+  const selectedArticles = grouped[state.selectedTopic];
   panels.innerHTML =
     '<article class="writing-panel article-browser-panel reveal">' +
       '<div class="writing-label">Selected Section</div>' +
