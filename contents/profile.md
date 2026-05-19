@@ -2,16 +2,16 @@
 
 ## Professional Summary
 
-Highly accomplished Cloud and Platform Engineer with 15+ years of experience delivering secure, scalable, and automated infrastructure across enterprise ITIL environments. I specialise in AWS, Kubernetes, GitOps, MLOps, AI-enabled platform engineering, DevOps, and cloud security, with a strong track record of building self-service platforms, improving delivery workflows, and supporting large regulated organisations.
+Highly accomplished Cloud & Platform Engineer with over 15 years of experience delivering secure, scalable and automated infrastructure across enterprise ITIL environments. Expert in AWS, Kubernetes, GitOps, DevOps, GenAI and cloud security, with a proven track record of building self-service platforms, reducing costs, and accelerating delivery for large financial institutions.
 
 ## Core Capability Areas
 
-- Infrastructure services: DNS, DHCP, Nginx, NAT, proxy services, IDS/IPS, and monitoring platforms
-- Cloud platforms, Kubernetes, and containers: AWS, GCP, Azure, EKS, GKE, ECS, Istio, and service mesh patterns
-- DevOps and GitOps: GitHub Actions, Docker, Terraform, FluxCD, ArgoCD, Crossplane, Python, Golang, and Shell
-- Cloud and Kubernetes security: AWS Network Firewall, Kubernetes network policy, Gatekeeper, Calico, Kyverno, and policy-driven guardrails
-- Cloud and Kubernetes networking: VPCs, subnets, routing, transit gateways, Direct Connect, ingress, and service-to-service traffic design
-- MLOps and AI: AI agentic orchestration, retrieval-augmented generation (RAG), SageMaker, Bedrock, Hugging Face, Kubeflow, and ML delivery pipelines
+- Infrastructure services: including DNS, DHCP, Nginx, NAT, proxy, IDS/IPS, monitoring
+- Cloud Platforms, Kubernetes & Containers: AWS, GCP, Azure, EKS, GKE, ECS, Istio, Service Mesh
+- DevOps & GitOps: GitHub Actions, Docker, Terraform, FluxCD, ArgoCD, CrossPlane, Python, Golang, Shell
+- Cloud & Kubernetes Security: Istio, AWS Network Firewall, K8S Netpol, Gatekeeper, Calico, Kyverno
+- Cloud & Kubernetes Networks: VPCs, subnets, Transit Gateway, Direct Connect, routing, Istio
+- MLOps & AI: ML model with SageMaker, Bedrock, HuggingFace, Agentic AI, SKILLs
 
 ## Working Experience
 
@@ -19,49 +19,74 @@ Highly accomplished Cloud and Platform Engineer with 15+ years of experience del
 **Lead Platform Engineer, Public Cloud Container Service**  
 June 2025 - Current
 
-Focused on modern Kubernetes platform engineering for public cloud container services, with an emphasis on GitOps, self-service platform delivery, and secure operational patterns.  
-Contributing to repeatable EKS platform capabilities, automation workflows, and guardrail-driven engineering practices in a regulated enterprise environment.
+- Designed and deployed Claude-based cost optimizer skills that analyze cloud utilization patterns, projected $1M+ in annual savings across the bank’s Public Cloud Container’s Infra.
+- Engineered an AI-powered application to automate troubleshooting for tenants, successfully reducing manual support load by 50%.
+- Designed and Implemented EKS access control model to control namespace-scoped security isolation that reduced onboarding time by 85% while eliminating manual security risk.
+- Implemented GitOps-driven EKS platform, utilizing Terraform and ArgoCD to reduce cluster provisioning time from several hours to under 15 minutes.
+- Drove GitOps adoption and integrated security guardrails to meet CBA cloud compliance.
 
 ### Australia and New Zealand Banking Group
 **Lead Platform Engineer, Managed Kubernetes Squad**  
 July 2023 - Current
 
-Led managed Kubernetes platform improvements across scalability, consistency, GitOps adoption, and multi-tenant operating models.  
-Helped shape secure AWS and EKS platform patterns, service mesh controls, and onboarding approaches for long-term platform growth.
+- Re-Designed and implemented improvement on Managed Kubernetes Platform, adopted GitOps driven Multi-tenant EKS environment. Led to 50% operational cost saving.
+- Built a scalable Kubernetes services foundation aligned with long-term strategic growth.
+- Developed scalable AWS/Kubernetes deployment patterns for consistent and secure releases.
+- Lead developing GitOps environment, reducing deployment time by 60% and minimizing errors and drift.
+- Designed & implemented multi-tenant, multi-region EKS clusters and scalable tenant onboarding process.
+- Implemented and maintained Istio service mesh to control ingress and egress traffic.
 
 **Tech Lead Engineer, AWS Cloud Platform**  
 January 2022 - July 2023
 
-Provided technical leadership across AWS cloud platform engineering, automation, governance, and multi-account service design.  
-Focused on improving delivery workflows, strengthening platform controls, and supporting reliable cloud foundations for enterprise teams.
+- Led CI/CD automation, managing 2,000+ Terraform pipelines, reducing deployment times by 30%.
+- Automated AWS account vending and environment setup with Terraform, cutting provisioning time by 40%.
+- Built AWS networking (Direct Connect, TGW, VPCs) for 200+ accounts, ensuring scalability.
+- Enhanced AWS security with SCPs and IAM Permissions Boundaries, decreasing non-compliant usage by 15%.
+- Optimized cloud costs by 20% through best practices, maintaining performance and compliance.
+- Designed and supported cloud platform services, boosting reliability by 15% for enterprise workloads.
+- Led technical reviews as Tech Lead, ensuring 100% compliance and reducing post-deployment issues by 10%.
 
 ### National Australia Bank
 **Senior DevOps Engineer, Engineering Foundation - EKS Team**  
 September 2019 - January 2022
 
-Worked across Kubernetes, ECS, and AWS platform engineering to support modern application delivery in banking environments.  
-Contributed to infrastructure automation, CI/CD improvement, platform reliability, and stronger operational compliance practices.
+- Managed Kubernetes/ECS for 100+ microservices, boosting deployment efficiency by 20%.
+- Developed high-intensity AWS workloads, supporting the bank's contact center with optimized performance.
+- Deployed Amazon Connect solutions with Lex, Lambda, and DynamoDB, cutting call resolution time by 15%.
+- Automated infrastructure using Terraform, Ansible, and Python, reducing manual effort by 30%.
+- Implemented Jenkins CI/CD pipelines, speeding up delivery by 25% for 200+ monthly deployments.
+- Enhanced cloud platform reliability by 15% through design and end-to-end testing.
+- Automated patching procedure, achieving 100% compliance and zero audit violations.
 
 ### Queensland Government, Department of Health
 **Cloud Operations Specialist, Cloud Services Team**  
 October 2017 - September 2019
 
-Provided cloud operations and migration support across Azure and AWS in a large public-sector health environment.  
-Helped design and deliver scalable cloud solutions for multiple teams and services with a focus on reliability and operational efficiency.
+- Provided technical direction for Azure and AWS, ensuring scalable, secure and efficient migration to cloud.
+- Delivered cloud solutions for multiple clients in QHealth, improving efficiency by 20%.
+- Architected scalable cloud solutions for QHealth, supporting statewide sites and hospitals.
+- Designed AWS solutions with ASG, ALB, RDS, and DynamoDB, securing 50+ applications.
 
 ### RT Group and NGC Group
 **Cloud Engineer**  
 December 2015 - August 2017
 
-Delivered AWS-based cloud engineering, solution design, and security improvements for client-facing infrastructure and application workloads.  
-Supported architecture, consulting, and automation work across business-critical digital services and operational environments.
+- Implemented cloud solutions for 10+ clients, boosting performance by 30%.
+- Architected AWS infrastructure for payment apps, supporting 200,000+ users with 99.5% uptime.
+- Delivered pre-sales presentations, increasing client engagements by 40%.
+- Audited and implemented security recommendations, reducing client’s cloud vulnerabilities by 20%.
+- Automated Cisco device maintenance with Ansible, reducing effort by 40%.
 
 ### Department of Government Digital Services, Kurdistan Government
 **Network Systems Engineer**  
 August 2008 - December 2015
 
-Built and supported datacentre, network, virtualisation, and infrastructure services for government digital platforms over a long-term engineering role.  
-Focused on operational reliability, infrastructure security, automation, and team support across critical public-sector services.
+- Designed Azure and datacenter solutions for government digital services with 99.9% uptime.
+- Automated network ops with Ansible, cutting effort by 35%.
+- Managed 40+ ESXi hosts, 300+ VMs, 500+ TB EMC storage and backups with 99.99% HA.
+- Deployed Cisco Firepower IPS/VPNs, reducing incidents by 25%.
+- Led and mentored team of 8+, ensuring 98%+ SLA compliance.
 
 ## Selected Certifications
 
