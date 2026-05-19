@@ -406,7 +406,7 @@ function buildProfile(profileMd) {
   document.getElementById('projectsGrid').innerHTML =
     '<article class="resume-card full reveal resume-launcher">' +
       '<div class="resume-label">Profile</div>' +
-      '<h3 class="resume-title">Experience, projects, and publications</h3>' +
+      '<h3 class="resume-title">Experience, Projects, and Accomplishments</h3>' +
       '<div class="rich-markdown">' +
         '<p>' + escapeHtml(profileIntro) + '</p>' +
       '</div>' +
