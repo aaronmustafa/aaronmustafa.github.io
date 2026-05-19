@@ -401,15 +401,17 @@ function buildProfile(profileMd) {
   const summarySection = sections.find((section) => /professional summary/i.test(section.title));
   const projectsSection = sections.find((section) => /recent platform projects/i.test(section.title));
   const publicationsSection = sections.find((section) => /academic publications/i.test(section.title));
+  const profileIntro = 'Visionary and results-driven Lead Platform Engineer and Tech Lead with over 18 years of experience architecting, securing, and scaling enterprise-grade cloud and Kubernetes infrastructure. A proven track record across major Australian financial institutions (CBA, ANZ, NAB) and government sectors, specializing in driving multi-tenant EKS strategies, GitOps adoption, and cutting-edge GenAI platform automation. Adept at bridging the gap between complex cloud architecture and high-level business value, consistently delivering multi-million dollar cost optimizations, robust security compliance, and massive reductions in operational friction.';
 
   document.getElementById('projectsGrid').innerHTML =
     '<article class="resume-card full reveal resume-launcher">' +
       '<div class="resume-label">Profile</div>' +
       '<h3 class="resume-title">Experience, projects, and publications</h3>' +
       '<div class="rich-markdown">' +
-        (summarySection ? renderMarkdown(summarySection.body, { basePath: '../contents/' }) : '<p>A complete professional profile is available here.</p>') +
+        '<p>' + escapeHtml(profileIntro) + '</p>' +
       '</div>' +
       '<div class="resume-meta">' +
+        (summarySection ? '<span>Executive Summary</span>' : '') +
         (projectsSection ? '<span>Recent Projects</span>' : '') +
         (publicationsSection ? '<span>Academic Publications</span>' : '') +
         '<span>Full Resume</span>' +
