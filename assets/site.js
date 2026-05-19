@@ -396,44 +396,13 @@ function buildHero(config, homeMd, articles) {
   observeRevealElements(document.getElementById('about'));
 }
 
-function buildProjects(projectsMd) {
-  const rootSections = splitSections(projectsMd, 2);
-  const selectedProjectsSection = rootSections.find((section) => /selected projects/i.test(section.title));
-  const intro = selectedProjectsSection ? selectedProjectsSection.body.replace(/###\s[\s\S]*/m, '').trim() : '';
-  const sections = selectedProjectsSection ? splitSubsections('## ' + selectedProjectsSection.title + '\n' + selectedProjectsSection.body, 3) : splitSubsections(projectsMd, 3);
-
-  document.getElementById('projectsIntro').innerHTML = intro ? renderMarkdown(intro, { basePath: '../contents/' }) : '';
-  document.getElementById('projectsGrid').innerHTML = sections.map((section, index) => {
-    const bulletMatches = [...section.body.matchAll(/^\s*-\s+(.*)$/gm)].map((match) => match[1]);
-    const summary = section.body.replace(/^\s*-\s+.*$/gm, '').trim();
-    return (
-      '<article class="project-card reveal reveal-delay-' + (index % 4) + '">' +
-        '<div class="project-index">' + String(index + 1).padStart(2, '0') + '</div>' +
-        '<h3 class="project-title">' + parseInline(section.title) + '</h3>' +
-        '<div class="project-summary rich-markdown">' + renderMarkdown(summary, { basePath: '../contents/' }) + '</div>' +
-        (bulletMatches.length ? '<ul class="project-points">' + bulletMatches.map((point) => '<li>' + parseInline(point) + '</li>').join('') + '</ul>' : '') +
-      '</article>'
-    );
-  }).join('');
-
-  observeRevealElements(document.getElementById('projects'));
-}
-
-function buildMarquee(projectsMd, articles) {
-  const projectTitles = splitSubsections(projectsMd, 3).slice(0, 4).map((section) => section.title.replace(/^\d+\.\s*/, ''));
-  const articleTopics = Array.from(new Set(articles.map((article) => article.topic))).slice(0, 4);
-  const items = [...new Set(['Platform Engineering', ...projectTitles, ...articleTopics])].filter(Boolean);
-  const doubled = [...items, ...items];
-  document.getElementById('marqueeTrack').innerHTML = doubled.map((item) => '<div class="marquee-item"><span class="marquee-text">' + item + '</span><span class="marquee-dot"></span></div>').join('');
-}
-
-function buildResume(profileMd) {
+function buildProfile(profileMd) {
   const sections = splitSections(profileMd, 2);
   const summarySection = sections.find((section) => /professional summary/i.test(section.title));
   const projectsSection = sections.find((section) => /recent platform projects/i.test(section.title));
   const publicationsSection = sections.find((section) => /academic publications/i.test(section.title));
 
-  document.getElementById('resumeGrid').innerHTML =
+  document.getElementById('projectsGrid').innerHTML =
     '<article class="resume-card full reveal resume-launcher">' +
       '<div class="resume-label">Profile</div>' +
       '<h3 class="resume-title">Experience, projects, and publications</h3>' +
@@ -448,7 +417,7 @@ function buildResume(profileMd) {
       '<a href="#" class="article-link resume-link" data-profile-file="profile.md" data-profile-title="Professional Profile">Open full profile <span>→</span></a>' +
     '</article>';
 
-  observeRevealElements(document.getElementById('resume'));
+  observeRevealElements(document.getElementById('projects'));
 }
 
 function renderArticleBrowser() {
@@ -712,10 +681,9 @@ async function init() {
   setupInteractions();
 
   try {
-    const [configText, homeText, projectsText, profileText, academicText, articlesIndex] = await Promise.all([
+    const [configText, homeText, profileText, academicText, articlesIndex] = await Promise.all([
       fetchText(SITE_FILES.config),
       fetchText(SITE_FILES.home),
-      fetchText(SITE_FILES.projects),
       fetchText(SITE_FILES.profile).catch(() => ''),
       fetchText(SITE_FILES.academic).catch(() => ''),
       fetchJson(SITE_FILES.articlesIndex).catch(() => ({ articles: [] }))
@@ -727,9 +695,7 @@ async function init() {
     state.socialLinks = homeData.socialLinks;
 
     buildHero(config, homeData.markdown, state.articles);
-    buildProjects(projectsText);
-    buildMarquee(projectsText, state.articles);
-    buildResume(profileText || '## Professional Summary\nA complete professional profile is being prepared.\n');
+    buildProfile(profileText || '## Professional Summary\nA complete professional profile is being prepared.\n');
     buildWriting(academicText || '', state.articles);
     buildContact(state.socialLinks);
     syncArticleFromUrl();
