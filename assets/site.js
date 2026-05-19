@@ -334,7 +334,7 @@ function syncSelectedTopicForArticle(file) {
 
 function buildHero(config, homeMd, articles) {
   const personName = (config['page-top-title'] || 'Nashwan Mustafa').trim();
-  const subtitle = config['home-subtitle'] || 'Platform Engineering | MLOps and AI | Secure Cloud Platforms | Technical Writing';
+  const subtitle = config['home-subtitle'] || 'Platform Engineering | MLOps and AI | Secure Cloud Platforms | Technical Consulting';
   const eyebrow = config['top-section-bg-text'] || 'Platform and AI Engineering';
   const nameParts = personName.split(' ');
   const firstName = nameParts.shift() || personName;

@@ -1,6 +1,6 @@
 # Professional Profile
 
-## Professional Summary
+## Summary
 
 Visionary and results-driven Lead Platform Engineer and Tech Lead with over 18 years of experience architecting, securing, and scaling enterprise-grade cloud and Kubernetes infrastructure. A proven track record across major Australian financial institutions (CBA, ANZ, NAB) and government sectors, specializing in driving multi-tenant EKS strategies, GitOps adoption, and cutting-edge GenAI platform automation. Adept at bridging the gap between complex cloud architecture and high-level business value, consistently delivering multi-million dollar cost optimizations, robust security compliance, and massive reductions in operational friction.
 
