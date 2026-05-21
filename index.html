@@ -675,6 +675,7 @@
   .writing-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     align-items: stretch;
+    grid-auto-rows: 1fr;
   }
 
   .publications-grid {
@@ -788,11 +789,13 @@
   }
 
   .resume-launcher .rich-markdown {
-    max-width: 920px;
+    max-width: none;
+    width: 100%;
   }
 
   .resume-launcher .rich-markdown p {
     max-width: none;
+    width: 100%;
   }
 
   .resume-meta {
@@ -829,6 +832,10 @@
     height: 100%;
   }
 
+  #writingPanels {
+    height: 100%;
+  }
+
   .article-topic-card {
     display: grid;
     gap: 16px;
@@ -836,6 +843,7 @@
     background: rgba(212,196,160,0.02);
     border: 1px solid var(--line);
     min-height: 560px;
+    height: 100%;
     align-content: start;
   }
 
@@ -947,6 +955,8 @@
     max-height: 760px;
     overflow: hidden;
     height: 100%;
+    display: flex;
+    flex-direction: column;
   }
 
   .article-browser-results {
