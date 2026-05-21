@@ -842,28 +842,31 @@
   }
 
   .article-topic-card {
-    display: grid;
+    display: flex;
+    flex-direction: column;
     gap: 16px;
     padding: 28px;
     background: rgba(212,196,160,0.02);
     border: 1px solid var(--line);
     height: 760px;
-    align-content: start;
-    overflow: auto;
+    overflow: hidden;
     position: relative;
-  }
-
-  .article-topic-card::-webkit-scrollbar {
-    width: 8px;
-  }
-
-  .article-topic-card::-webkit-scrollbar-thumb {
-    background: rgba(212,196,160,0.16);
   }
 
   .article-topic-list {
     display: grid;
     gap: 14px;
+    overflow: auto;
+    min-height: 0;
+    padding-right: 6px;
+  }
+
+  .article-topic-list::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .article-topic-list::-webkit-scrollbar-thumb {
+    background: rgba(212,196,160,0.16);
   }
 
   .article-topic-name {
