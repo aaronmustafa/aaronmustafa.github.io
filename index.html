@@ -830,6 +830,10 @@
     margin-top: 24px;
   }
 
+  .resume-labs {
+    margin-top: 24px;
+  }
+
   .articles-column,
   .article-browser-results {
     display: grid;
@@ -845,6 +849,18 @@
     height: 760px;
     align-content: start;
     overflow: auto;
+    position: relative;
+  }
+
+  .article-topic-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--ember), transparent);
+    opacity: 0.6;
   }
 
   .article-topic-card::-webkit-scrollbar {

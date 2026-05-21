@@ -402,6 +402,7 @@ function buildProfile(profileMd) {
   const projectsSection = sections.find((section) => /recent platform projects/i.test(section.title));
   const publicationsSection = sections.find((section) => /academic publications/i.test(section.title));
   const profileIntro = 'Visionary and results-driven Lead Platform Engineer and Tech Lead with over 18 years of experience architecting, securing, and scaling enterprise-grade cloud and Kubernetes infrastructure. A proven track record across major Australian financial institutions (CBA, ANZ, NAB) and government sectors, specializing in driving multi-tenant EKS strategies, GitOps adoption, and cutting-edge GenAI platform automation. Adept at bridging the gap between complex cloud architecture and high-level business value, consistently delivering multi-million dollar cost optimizations, robust security compliance, and massive reductions in operational friction.';
+  const labsBlock = '### Hand-On Labs and Some Recent Personal Interest Works\n- [killercoda.com/nashwan](https://killercoda.com/nashwan)\n- [Kubernetes Sandbox Bootstrap](article.html?file=kubernetes%2Fkubernetes-sandbox.md)\n- [Kubernetes Cost Optimizer](article.html?file=ai%2Fkubernetes-cost-optimizer.md) And here is [codebase](https://github.com/nbmustafa/k8s-finizer)\n- [Claude Code Project Bootstrap](article.html?file=ai%2FClaude-Code-Project-Bootstrap.md)\n- [AI Agent Lab - A Platform for AI Agent Battlings](https://nbmustafa-ai-agent-lab.hf.space/)';
 
   document.getElementById('projectsGrid').innerHTML =
     '<article class="resume-card full reveal resume-launcher">' +
@@ -417,6 +418,7 @@ function buildProfile(profileMd) {
         '<span>Full Resume</span>' +
       '</div>' +
       '<a href="#" class="article-link resume-link" data-profile-file="profile.md" data-profile-title="Professional Profile">Open full profile <span>→</span></a>' +
+      '<div class="rich-markdown resume-labs">' + renderMarkdown(labsBlock, { basePath: '../contents/' }) + '</div>' +
     '</article>';
 
   observeRevealElements(document.getElementById('projects'));
