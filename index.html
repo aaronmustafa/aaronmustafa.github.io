@@ -674,7 +674,7 @@
 
   .writing-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    align-items: start;
+    align-items: stretch;
   }
 
   .publications-grid {
@@ -791,6 +791,10 @@
     max-width: 920px;
   }
 
+  .resume-launcher .rich-markdown p {
+    max-width: none;
+  }
+
   .resume-meta {
     display: flex;
     flex-wrap: wrap;
@@ -821,12 +825,23 @@
     gap: 18px;
   }
 
+  .articles-column {
+    height: 100%;
+  }
+
   .article-topic-card {
     display: grid;
     gap: 16px;
     padding: 28px;
     background: rgba(212,196,160,0.02);
     border: 1px solid var(--line);
+    min-height: 560px;
+    align-content: start;
+  }
+
+  .article-topic-list {
+    display: grid;
+    gap: 14px;
   }
 
   .article-topic-name {
@@ -931,6 +946,7 @@
     min-height: 560px;
     max-height: 760px;
     overflow: hidden;
+    height: 100%;
   }
 
   .article-browser-results {
@@ -1135,8 +1151,10 @@
   footer {
     padding: 40px 60px;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
+    gap: 12px;
+    text-align: center;
     border-top: 1px solid rgba(212,196,160,0.06);
   }
 
@@ -1253,15 +1271,31 @@
     nav { padding: 24px 30px; }
     .nav-links { gap: 18px; }
     .nav-links a { font-size: 0.62rem; }
-    .hero { grid-template-columns: 1fr; }
+    .hero {
+      min-height: auto;
+      padding: 84px 30px 36px;
+      gap: 20px;
+    }
     .hero-left {
-      order: 1;
+      order: 2;
       justify-content: flex-start;
       margin-left: 0;
       max-width: none;
-      padding: 84px 30px 40px;
+      padding: 0;
     }
-    .hero-right { display: none; }
+    .hero-right {
+      display: block;
+      order: 1;
+      width: 100%;
+      min-height: 360px;
+    }
+    .hero-art,
+    .hero-portrait-wrap {
+      left: 50%;
+    }
+    .hero-orbit-copy {
+      display: none;
+    }
     .about,
     .projects,
     .resume,
@@ -1286,9 +1320,7 @@
     .section-divider { padding: 0 30px; margin-bottom: 20px; }
     footer {
       padding: 30px;
-      flex-direction: column;
-      gap: 12px;
-      text-align: center;
+      justify-content: center;
     }
     .support-note { padding: 0 30px 60px; }
     .viewer { padding: 16px; }

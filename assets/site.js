@@ -449,17 +449,22 @@ function renderArticleBrowser() {
     state.selectedTopic = topics.includes('AI') ? 'AI' : topics[0];
   }
 
-  column.innerHTML = topics.map((topic, groupIndex) => {
-    const topicArticles = grouped[topic];
-    return (
-      '<section class="article-topic-card reveal reveal-delay-' + (groupIndex % 3) + '">' +
-        '<button type="button" class="article-topic-button' + (state.selectedTopic === topic ? ' is-active' : '') + '" data-topic-button="' + escapeAttr(topic) + '">' +
-          '<div class="article-topic-meta">' + String(topicArticles.length).padStart(2, '0') + ' Articles</div>' +
-          '<h3 class="article-topic-name">' + topic + '</h3>' +
-        '</button>' +
-      '</section>'
-    );
-  }).join('');
+  column.innerHTML =
+    '<section class="article-topic-card reveal">' +
+      '<div class="writing-label">Article Sections</div>' +
+      '<h3 class="writing-title">Browse by topic</h3>' +
+      '<div class="article-topic-list">' +
+      topics.map((topic) => {
+        const topicArticles = grouped[topic];
+        return (
+          '<button type="button" class="article-topic-button' + (state.selectedTopic === topic ? ' is-active' : '') + '" data-topic-button="' + escapeAttr(topic) + '">' +
+            '<div class="article-topic-meta">' + String(topicArticles.length).padStart(2, '0') + ' Articles</div>' +
+            '<h3 class="article-topic-name">' + topic + '</h3>' +
+          '</button>'
+        );
+      }).join('') +
+      '</div>' +
+    '</section>';
 
   const selectedArticles = grouped[state.selectedTopic];
   panels.innerHTML =
