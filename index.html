@@ -711,6 +711,7 @@
   .resume-card::before,
   .publication-card::before,
   .writing-panel::before,
+  .article-topic-card::before,
   .article-card::before,
   .article-viewer-panel::before {
     content: '';
@@ -850,17 +851,6 @@
     align-content: start;
     overflow: auto;
     position: relative;
-  }
-
-  .article-topic-card::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 2px;
-    background: linear-gradient(90deg, var(--ember), transparent);
-    opacity: 0.6;
   }
 
   .article-topic-card::-webkit-scrollbar {
