@@ -509,11 +509,21 @@ function buildContact(homeLinks) {
     { platform: 'Hugging Face', href: 'https://huggingface.co/nbmustafa', handle: 'nbmustafa' }
   ];
 
+  const iconMap = {
+    LinkedIn: 'LI',
+    GitHub: 'GH',
+    'Hugging Face': 'HF',
+    Email: 'EM'
+  };
+
   document.getElementById('contactLinks').innerHTML = links.map((link) => (
     '<a href="' + link.href + '" target="_blank" rel="noreferrer" class="contact-link-item">' +
-      '<div>' +
-        '<div class="contact-link-platform">' + link.platform + '</div>' +
-        '<div class="contact-link-handle">' + link.handle + '</div>' +
+      '<div class="contact-link-main">' +
+        '<span class="contact-icon">' + (iconMap[link.platform] || link.platform.slice(0, 2).toUpperCase()) + '</span>' +
+        '<div>' +
+          '<div class="contact-link-platform">' + link.platform + '</div>' +
+          '<div class="contact-link-handle">' + link.handle + '</div>' +
+        '</div>' +
       '</div>' +
       '<span class="contact-arrow">→</span>' +
     '</a>'
