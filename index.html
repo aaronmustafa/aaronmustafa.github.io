@@ -668,6 +668,10 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .projects-grid .resume-card.full {
+    grid-column: 1 / -1;
+  }
+
   .resume-grid {
     grid-template-columns: repeat(12, minmax(0, 1fr));
   }
@@ -832,28 +836,15 @@
     gap: 18px;
   }
 
-  .articles-column {
-    height: 100%;
-  }
-
-  #writingPanels {
-    height: 100%;
-  }
-
-  .articles-column > .article-topic-card,
-  #writingPanels > .article-browser-panel {
-    height: 100%;
-  }
-
   .article-topic-card {
     display: grid;
     gap: 16px;
     padding: 28px;
     background: rgba(212,196,160,0.02);
     border: 1px solid var(--line);
-    min-height: 560px;
-    height: 100%;
+    height: 760px;
     align-content: start;
+    overflow: auto;
   }
 
   .article-topic-list {
@@ -960,10 +951,8 @@
   }
 
   .article-browser-panel {
-    min-height: 560px;
-    max-height: 760px;
+    height: 760px;
     overflow: hidden;
-    height: 100%;
   }
 
   .article-browser-results {
