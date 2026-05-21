@@ -510,16 +510,16 @@ function buildContact(homeLinks) {
   ];
 
   const iconMap = {
-    LinkedIn: 'LI',
-    GitHub: 'GH',
-    'Hugging Face': 'HF',
-    Email: 'EM'
+    LinkedIn: '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.94 8.5H3.56V20h3.38V8.5ZM5.25 3a1.97 1.97 0 1 0 0 3.94a1.97 1.97 0 0 0 0-3.94ZM20.44 12.62c0-3.46-1.85-5.07-4.32-5.07c-1.99 0-2.88 1.09-3.38 1.86V8.5H9.37c.04.6 0 11.5 0 11.5h3.37v-6.42c0-.34.02-.68.13-.92c.27-.68.88-1.38 1.91-1.38c1.35 0 1.89 1.03 1.89 2.54V20h3.37v-7.38Z"/></svg>',
+    GitHub: '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2C6.48 2 2 6.58 2 12.23c0 4.52 2.87 8.35 6.84 9.7c.5.1.68-.22.68-.49c0-.24-.01-1.04-.01-1.89c-2.78.62-3.37-1.21-3.37-1.21c-.46-1.18-1.11-1.49-1.11-1.49c-.91-.64.07-.63.07-.63c1 .07 1.53 1.05 1.53 1.05c.9 1.57 2.35 1.12 2.92.86c.09-.67.35-1.12.64-1.38c-2.22-.26-4.56-1.14-4.56-5.08c0-1.12.39-2.03 1.03-2.75c-.1-.26-.45-1.31.1-2.73c0 0 .84-.27 2.75 1.05A9.3 9.3 0 0 1 12 6.84c.85 0 1.71.12 2.51.35c1.91-1.32 2.75-1.05 2.75-1.05c.55 1.42.2 2.47.1 2.73c.64.72 1.03 1.63 1.03 2.75c0 3.95-2.35 4.81-4.58 5.07c.36.32.68.94.68 1.9c0 1.37-.01 2.47-.01 2.8c0 .27.18.6.69.49A10.25 10.25 0 0 0 22 12.23C22 6.58 17.52 2 12 2Z"/></svg>',
+    'Hugging Face': '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="10" r="2" fill="currentColor"/><circle cx="16" cy="10" r="2" fill="currentColor"/><path fill="currentColor" d="M7.5 14.2c1.1 1.35 2.5 2.03 4.5 2.03c2 0 3.4-.68 4.5-2.03l1.1.9C16.2 17 14.4 18 12 18s-4.2-1-5.6-2.9l1.1-.9Z"/><path fill="currentColor" d="M4.5 12.2c-.83 0-1.5-.67-1.5-1.5c0-.83.67-1.5 1.5-1.5S6 9.87 6 10.7c0 .2-.04.39-.11.56c.73-1.46 2.12-2.46 3.76-2.46c1.04 0 1.99.4 2.7 1.07c.71-.67 1.66-1.07 2.7-1.07c1.64 0 3.03 1 3.76 2.46a1.5 1.5 0 1 1 1.69.94A5.9 5.9 0 0 1 21 14.5C21 18.09 17.42 21 12 21s-9-2.91-9-6.5c0-.8.18-1.57.5-2.3Z"/></svg>',
+    Email: '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3 6.75A1.75 1.75 0 0 1 4.75 5h14.5C20.22 5 21 5.78 21 6.75v10.5A1.75 1.75 0 0 1 19.25 19H4.75A1.75 1.75 0 0 1 3 17.25V6.75Zm1.8.25L12 12.03L19.2 7H4.8Zm14.45 10.5c.14 0 .25-.11.25-.25V8.46l-7.07 4.95a.75.75 0 0 1-.86 0L4.5 8.46v8.79c0 .14.11.25.25.25h14.5Z"/></svg>'
   };
 
   document.getElementById('contactLinks').innerHTML = links.map((link) => (
     '<a href="' + link.href + '" target="_blank" rel="noreferrer" class="contact-link-item">' +
       '<div class="contact-link-main">' +
-        '<span class="contact-icon">' + (iconMap[link.platform] || link.platform.slice(0, 2).toUpperCase()) + '</span>' +
+        '<span class="contact-icon">' + (iconMap[link.platform] || iconMap.Email) + '</span>' +
         '<div>' +
           '<div class="contact-link-platform">' + link.platform + '</div>' +
           '<div class="contact-link-handle">' + link.handle + '</div>' +
